@@ -134,6 +134,7 @@ npx curbcut https://example.com https://example.com/checkout \
 | `--crawl` | Follow links from the starting URL and scan the whole site. One origin, obeys `robots.txt` |
 | `--max-pages <n>` | Page cap while crawling. Default `200` |
 | `--ignore-robots` | Crawl paths `robots.txt` disallows. For sites you own |
+| `--pdf` | Also write a dated PDF conformance report |
 | `--out <dir>` | Output directory. Default `./curbcut-report` |
 | `--statement` | Also draft an accessibility statement |
 | `--json` | Also write the raw analysis |
@@ -141,7 +142,24 @@ npx curbcut https://example.com https://example.com/checkout \
 | `--quiet` | Print only the summary line |
 
 Output lands in `curbcut-report/`: `findings.md`, plus
-`accessibility-statement.md` and `analysis.json` when asked for.
+`accessibility-statement.md`, `analysis.json` and `conformance-report.pdf` when
+asked for.
+
+### The PDF report
+
+```bash
+npx curbcut https://example.com --crawl --pdf --org-name "Example GmbH"
+```
+
+A dated A4 document you can attach to an email or hand to a client. It states
+what was assessed, what failed and against which clause, which pages could not
+be loaded, and which clauses no automated tool can evaluate. The coverage limit
+is printed on the first page, above the findings, rather than in small type at
+the end.
+
+It is rendered by the same browser that does the scanning, so it adds no
+dependency. It is deliberately plain: no cover art, no score out of ten, no
+badge. Anything resembling a certificate would misrepresent what it is.
 
 ### Priority bands
 

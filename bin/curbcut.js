@@ -6,6 +6,7 @@ import { crawlAndScan } from '../src/crawl.js';
 import { analyze } from '../src/analyze.js';
 import { markdownReport } from '../src/report.js';
 import { draftStatement } from '../src/statement.js';
+import { writePdf } from '../src/pdf.js';
 
 const USAGE = `
 curbcut — map accessibility findings to EN 301 549 clauses
@@ -19,6 +20,7 @@ Options
   --ignore-robots      Crawl paths robots.txt disallows. Only for a site you
                        own, and it is recorded in the report either way.
   --out <dir>          Write output files to <dir> (default: ./curbcut-report)
+  --pdf                Also write a dated PDF conformance report
   --statement          Also draft an accessibility statement
   --json               Also write the raw analysis as JSON
   --org-name <name>    Organisation name, used in the statement
@@ -41,7 +43,7 @@ run is a starting point, not a conformance claim.
 function parseArgs(argv) {
   const opts = {
     urls: [], out: 'curbcut-report', statement: false, json: false,
-    org: {}, failOn: 'P1', quiet: false, help: false,
+    org: {}, failOn: 'P1', quiet: false, help: false, pdf: false,
     crawl: false, maxPages: 200, ignoreRobots: false,
   };
   for (let i = 0; i < argv.length; i++) {
@@ -51,6 +53,7 @@ function parseArgs(argv) {
       case '-h': case '--help': opts.help = true; break;
       case '--out': opts.out = next(); break;
       case '--statement': opts.statement = true; break;
+      case '--pdf': opts.pdf = true; break;
       case '--json': opts.json = true; break;
       case '--quiet': opts.quiet = true; break;
       case '--crawl': opts.crawl = true; break;
@@ -130,6 +133,15 @@ writeFileSync(join(opts.out, 'findings.md'), markdownReport(analysis, { target }
 
 if (opts.json) {
   writeFileSync(join(opts.out, 'analysis.json'), JSON.stringify(analysis, null, 2), 'utf8');
+}
+if (opts.pdf) {
+  const file = join(opts.out, 'conformance-report.pdf');
+  await writePdf(analysis, {
+    target,
+    scannedUrls: pages.filter((p) => !p.error).map((p) => p.url),
+    orgName: opts.org.name,
+  }, file);
+  log('  wrote ' + file);
 }
 if (opts.statement) {
   const site = opts.urls[0];

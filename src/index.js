@@ -6,3 +6,4 @@ export { clauseForCriterion, HARMONISED, MANUAL_ONLY_CLAUSES } from './en301549.
 export { SUCCESS_CRITERIA, criteriaFromAxeTags } from './wcag.js';
 export { scoreFinding, priorityBand } from './risk.js';
 export { crawlAndScan, normaliseUrl, parseRobots } from './crawl.js';
+export { pdfHtml, writePdf } from './pdf.js';
