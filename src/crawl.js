@@ -1,5 +1,5 @@
 import { chromium } from 'playwright';
-import { runAxe } from './scan.js';
+import { runAxe, browserMissingError } from './scan.js';
 
 // Whole-site crawling.
 //
@@ -164,7 +164,13 @@ export async function crawlAndScan(startUrl, options = {}) {
   const pages = [];
   const skipped = [];
 
-  const browser = await chromium.launch();
+  let browser;
+  try {
+    browser = await chromium.launch();
+  } catch (err) {
+    const friendly = browserMissingError(err);
+    throw friendly ?? err;
+  }
   try {
     const context = await browser.newContext({ viewport });
 

@@ -14,6 +14,26 @@ const RULE_TAGS = [
   'wcag22aa',
 ];
 
+// Playwright throws a wall of text when the browser binary is missing. For a
+// first-time `npx curbcut` that is the likeliest failure there is, so it gets a
+// plain sentence and the one command that fixes it.
+export function browserMissingError(err) {
+  const text = String(err && err.message ? err.message : err);
+  if (!/Executable doesn.t exist|browserType\.launch|playwright install/i.test(text)) {
+    return null;
+  }
+  return new Error(
+    [
+      'The headless browser is not installed yet.',
+      '',
+      '  npx playwright install chromium',
+      '',
+      'Curbcut drives a real browser so it sees the page the way a person does,',
+      'including anything rendered by JavaScript. The download is a one-off.',
+    ].join('\n')
+  );
+}
+
 // Runs axe inside an already-loaded page. Exported so the crawler can reuse the
 // exact same rule set rather than keeping a second copy that drifts.
 export async function runAxe(page) {
@@ -37,7 +57,13 @@ export async function scanUrls(urls, options = {}) {
     onProgress = () => {},
   } = options;
 
-  const browser = await chromium.launch();
+  let browser;
+  try {
+    browser = await chromium.launch();
+  } catch (err) {
+    const friendly = browserMissingError(err);
+    throw friendly ?? err;
+  }
   const pages = [];
 
   try {

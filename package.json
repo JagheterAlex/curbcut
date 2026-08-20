@@ -1,7 +1,15 @@
 {
   "name": "curbcut",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Map accessibility findings to EN 301 549 clauses and draft an honest accessibility statement. Built for the European Accessibility Act.",
+  "homepage": "https://curbcut.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JagheterAlex/curbcut.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JagheterAlex/curbcut/issues"
+  },
   "type": "module",
   "bin": {
     "curbcut": "./bin/curbcut.js"
