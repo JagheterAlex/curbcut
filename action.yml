@@ -1,0 +1,44 @@
+name: 'Curbcut'
+description: 'Check pages against EN 301 549 clauses for European Accessibility Act conformance evidence.'
+author: 'Curbcut'
+branding:
+  icon: 'check-square'
+  color: 'blue'
+
+inputs:
+  urls:
+    description: 'Space-separated URLs to scan.'
+    required: true
+  fail-on:
+    description: 'Fail the job at or above this priority band: P1, P2, P3, P4, or none.'
+    required: false
+    default: 'P1'
+  out:
+    description: 'Directory to write the report into.'
+    required: false
+    default: 'curbcut-report'
+  statement:
+    description: 'Also draft an accessibility statement.'
+    required: false
+    default: 'false'
+
+outputs:
+  report-path:
+    description: 'Path to the generated findings report.'
+    value: ${{ steps.run.outputs.report-path }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install browser
+      shell: bash
+      run: npx --yes playwright install --with-deps chromium
+
+    - name: Run Curbcut
+      id: run
+      shell: bash
+      run: |
+        args=(${{ inputs.urls }} --out "${{ inputs.out }}" --fail-on "${{ inputs.fail-on }}")
+        if [ "${{ inputs.statement }}" = "true" ]; then args+=(--statement); fi
+        npx --yes curbcut "${args[@]}"
+        echo "report-path=${{ inputs.out }}/findings.md" >> "$GITHUB_OUTPUT"

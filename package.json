@@ -1,0 +1,38 @@
+{
+  "name": "curbcut",
+  "version": "0.1.0",
+  "description": "Map accessibility findings to EN 301 549 clauses and draft an honest accessibility statement. Built for the European Accessibility Act.",
+  "type": "module",
+  "bin": {
+    "curbcut": "./bin/curbcut.js"
+  },
+  "exports": "./src/index.js",
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test",
+    "postinstall": "node -e \"console.log('curbcut: run npx playwright install chromium to fetch the browser')\""
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "wcag",
+    "en-301-549",
+    "european-accessibility-act",
+    "eaa",
+    "axe-core",
+    "audit"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "axe-core": "^4.10.2",
+    "playwright": "^1.49.0"
+  }
+}
