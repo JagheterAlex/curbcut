@@ -1,5 +1,8 @@
 # Curbcut
 
+[![npm](https://img.shields.io/npm/v/curbcut?color=f5c344&label=npm)](https://www.npmjs.com/package/curbcut)
+[![licence](https://img.shields.io/npm/l/curbcut?color=f5c344)](./LICENSE)
+
 Map accessibility findings onto **EN 301 549** clauses, rank them by what a
 regulator will actually ask about, and draft an accessibility statement that
 does not lie on your behalf.
@@ -13,13 +16,15 @@ your pages nowhere.
 npx curbcut https://example.com --statement
 ```
 
-> **Not published to npm yet.** The command above will work once it is. Until
-> then:
-> ```bash
-> git clone https://github.com/JagheterAlex/curbcut && cd curbcut
-> npm install && npx playwright install chromium
-> node bin/curbcut.js https://example.com --statement
-> ```
+The first run needs a browser, once:
+
+```bash
+npx playwright install chromium
+```
+
+Curbcut drives a real browser so it sees the page the way a person does,
+including anything rendered by JavaScript. Nothing is uploaded: the browser
+runs on your machine and the report is written next to you.
 
 ## Try it on something broken
 
@@ -28,7 +33,7 @@ so you can check the output against a known answer instead of trusting a
 screenshot:
 
 ```bash
-node bin/curbcut.js https://curbcut.org/demo/broken.html
+npx curbcut https://curbcut.org/demo/broken.html
 ```
 
 It should report five failing clauses across sixteen elements — two P1, one P2
@@ -37,7 +42,7 @@ and two P3. If it reports something else, that is a bug worth an issue.
 ## Scan a whole site
 
 ```bash
-node bin/curbcut.js https://example.com --crawl
+npx curbcut https://example.com --crawl
 ```
 
 The crawler follows links from the starting URL, stays on that one origin, and
@@ -126,6 +131,9 @@ npx curbcut https://example.com https://example.com/checkout \
 
 | Option | Meaning |
 | --- | --- |
+| `--crawl` | Follow links from the starting URL and scan the whole site. One origin, obeys `robots.txt` |
+| `--max-pages <n>` | Page cap while crawling. Default `200` |
+| `--ignore-robots` | Crawl paths `robots.txt` disallows. For sites you own |
 | `--out <dir>` | Output directory. Default `./curbcut-report` |
 | `--statement` | Also draft an accessibility statement |
 | `--json` | Also write the raw analysis |
