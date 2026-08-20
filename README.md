@@ -34,6 +34,26 @@ node bin/curbcut.js https://curbcut.org/demo/broken.html
 It should report five failing clauses across sixteen elements — two P1, one P2
 and two P3. If it reports something else, that is a bug worth an issue.
 
+## Scan a whole site
+
+```bash
+node bin/curbcut.js https://example.com --crawl
+```
+
+The crawler follows links from the starting URL, stays on that one origin, and
+**obeys robots.txt**. A conformance claim covers a service you control, not
+whatever you happen to link to, and a tool that lectures people about
+compliance has no business ignoring the one machine-readable instruction a site
+gives crawlers.
+
+`--max-pages <n>` caps the run at 200 pages by default. If the cap is reached,
+the run says so and reports how many known pages went unscanned, because a
+report that silently covers less of the site than the reader assumes is worse
+than no report.
+
+`--ignore-robots` exists for sites you own. It is recorded in the output either
+way.
+
 ## Why this exists
 
 The EAA deadline passed on 28 June 2025. Enforcement started in June 2026, and

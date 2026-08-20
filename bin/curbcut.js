@@ -2,6 +2,7 @@
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { scanUrls } from '../src/scan.js';
+import { crawlAndScan } from '../src/crawl.js';
 import { analyze } from '../src/analyze.js';
 import { markdownReport } from '../src/report.js';
 import { draftStatement } from '../src/statement.js';
@@ -12,6 +13,11 @@ curbcut — map accessibility findings to EN 301 549 clauses
   curbcut <url> [url...] [options]
 
 Options
+  --crawl              Follow links from the starting URL and scan the whole
+                       site. Stays on one origin and obeys robots.txt.
+  --max-pages <n>      Page cap while crawling (default: 200)
+  --ignore-robots      Crawl paths robots.txt disallows. Only for a site you
+                       own, and it is recorded in the report either way.
   --out <dir>          Write output files to <dir> (default: ./curbcut-report)
   --statement          Also draft an accessibility statement
   --json               Also write the raw analysis as JSON
@@ -36,6 +42,7 @@ function parseArgs(argv) {
   const opts = {
     urls: [], out: 'curbcut-report', statement: false, json: false,
     org: {}, failOn: 'P1', quiet: false, help: false,
+    crawl: false, maxPages: 200, ignoreRobots: false,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -46,6 +53,9 @@ function parseArgs(argv) {
       case '--statement': opts.statement = true; break;
       case '--json': opts.json = true; break;
       case '--quiet': opts.quiet = true; break;
+      case '--crawl': opts.crawl = true; break;
+      case '--ignore-robots': opts.ignoreRobots = true; break;
+      case '--max-pages': opts.maxPages = Number(next()); break;
       case '--org-name': opts.org.name = next(); break;
       case '--org-email': opts.org.email = next(); break;
       case '--org-country': opts.org.country = next(); break;
@@ -69,11 +79,39 @@ if (opts.help || opts.urls.length === 0) {
 
 const log = (...a) => { if (!opts.quiet) console.error(...a); };
 
-log('Scanning ' + opts.urls.length + ' page' + (opts.urls.length === 1 ? '' : 's') + '…');
+if (opts.crawl && opts.urls.length !== 1) {
+  console.error('--crawl takes exactly one starting URL.');
+  process.exit(2);
+}
+if (opts.crawl && (!Number.isInteger(opts.maxPages) || opts.maxPages < 1)) {
+  console.error('--max-pages must be a positive whole number.');
+  process.exit(2);
+}
 
-const pages = await scanUrls(opts.urls, {
-  onProgress: (url) => log('  ' + url),
-});
+let pages;
+let crawlResult = null;
+
+if (opts.crawl) {
+  log('Crawling ' + opts.urls[0] + '…');
+  crawlResult = await crawlAndScan(opts.urls[0], {
+    maxPages: opts.maxPages,
+    respectRobots: !opts.ignoreRobots,
+    onProgress: (url, n) => log('  [' + n + '] ' + url),
+    onSkip: (url) => log('  skipped by robots.txt: ' + url),
+  });
+  pages = crawlResult.pages;
+  if (crawlResult.reachedLimit) {
+    log('');
+    log('Stopped at the --max-pages limit of ' + opts.maxPages + '. ' +
+        crawlResult.notReached + ' known page(s) were not scanned, so this run ' +
+        'does not cover the whole site.');
+  }
+} else {
+  log('Scanning ' + opts.urls.length + ' page' + (opts.urls.length === 1 ? '' : 's') + '…');
+  pages = await scanUrls(opts.urls, {
+    onProgress: (url) => log('  ' + url),
+  });
+}
 
 const analysis = analyze(pages);
 
@@ -85,7 +123,9 @@ if (analysis.scannedPages === 0) {
 
 mkdirSync(opts.out, { recursive: true });
 
-const target = opts.urls.length === 1 ? opts.urls[0] : opts.urls.length + ' pages';
+const target = opts.crawl
+  ? opts.urls[0] + ' (crawled, ' + pages.length + ' page' + (pages.length === 1 ? '' : 's') + ')'
+  : (opts.urls.length === 1 ? opts.urls[0] : opts.urls.length + ' pages');
 writeFileSync(join(opts.out, 'findings.md'), markdownReport(analysis, { target }), 'utf8');
 
 if (opts.json) {

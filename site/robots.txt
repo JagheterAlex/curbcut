@@ -1,0 +1,10 @@
+# curbcut.org
+
+User-agent: *
+Allow: /
+
+# The demo page is deliberately inaccessible. It exists to be scanned from the
+# home page, not to be indexed as if it were real content.
+Disallow: /demo/
+
+Sitemap: https://curbcut.org/sitemap.xml

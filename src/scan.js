@@ -14,6 +14,21 @@ const RULE_TAGS = [
   'wcag22aa',
 ];
 
+// Runs axe inside an already-loaded page. Exported so the crawler can reuse the
+// exact same rule set rather than keeping a second copy that drifts.
+export async function runAxe(page) {
+  await page.addScriptTag({ content: axeSource });
+  return page.evaluate(
+    (tags) => window.axe.run(document, {
+      runOnly: { type: 'tag', values: tags },
+      resultTypes: ['violations', 'incomplete'],
+    }),
+    RULE_TAGS
+  );
+}
+
+export { RULE_TAGS };
+
 export async function scanUrls(urls, options = {}) {
   const {
     viewport = { width: 1280, height: 800 },
@@ -33,14 +48,7 @@ export async function scanUrls(urls, options = {}) {
       const page = await context.newPage();
       try {
         await page.goto(url, { waitUntil, timeout });
-        await page.addScriptTag({ content: axeSource });
-        const results = await page.evaluate(
-          (tags) => window.axe.run(document, {
-            runOnly: { type: 'tag', values: tags },
-            resultTypes: ['violations', 'incomplete'],
-          }),
-          RULE_TAGS
-        );
+        const results = await runAxe(page);
         pages.push({
           url,
           title: await page.title(),
