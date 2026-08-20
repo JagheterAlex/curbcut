@@ -75,11 +75,14 @@ export function parseRobots(text) {
     }
   }
 
-  const group =
-    groups.find((g) => g.agents.includes('curbcut')) ??
-    groups.find((g) => g.agents.includes('*'));
+  // Every group naming our agent applies, not just the first one. Real files
+  // split rules across several blocks for the same agent — Cloudflare, for one,
+  // prepends a managed `User-agent: *` block ahead of the site's own. Reading
+  // only the first group silently ignored the site owner's actual rules.
+  const named = groups.filter((g) => g.agents.includes('curbcut'));
+  const matching = named.length > 0 ? named : groups.filter((g) => g.agents.includes('*'));
 
-  const rules = group ? group.rules.filter((r) => r.path !== '') : [];
+  const rules = matching.flatMap((g) => g.rules).filter((r) => r.path !== '');
 
   return {
     isAllowed(pathname) {

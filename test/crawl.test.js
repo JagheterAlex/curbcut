@@ -89,3 +89,35 @@ test('a dollar sign anchors the end of the path', () => {
   assert.equal(r.isAllowed('/report'), false);
   assert.equal(r.isAllowed('/report/2026'), true);
 });
+
+test('rules split across several groups for the same agent are merged', () => {
+  // Exactly the shape Cloudflare serves: a managed wildcard block prepended
+  // ahead of the site owner's own wildcard block. Reading only the first group
+  // meant the owner's Disallow was silently ignored.
+  const r = parseRobots([
+    'User-agent: *',
+    'Allow: /',
+    '',
+    'User-agent: GPTBot',
+    'Disallow: /',
+    '',
+    'User-agent: *',
+    'Allow: /',
+    'Disallow: /demo/',
+    'Sitemap: https://example.com/sitemap.xml',
+  ].join('\n'));
+
+  assert.equal(r.isAllowed('/demo/broken.html'), false, 'the later Disallow must apply');
+  assert.equal(r.isAllowed('/terms'), true);
+});
+
+test('a curbcut group still overrides every wildcard group', () => {
+  const r = parseRobots([
+    'User-agent: *',
+    'Disallow: /',
+    '',
+    'User-agent: curbcut',
+    'Allow: /',
+  ].join('\n'));
+  assert.equal(r.isAllowed('/terms'), true);
+});
