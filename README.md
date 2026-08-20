@@ -7,16 +7,32 @@ does not lie on your behalf.
 Built for the **European Accessibility Act**. MIT licensed, runs locally, sends
 your pages nowhere.
 
+**[curbcut.org](https://curbcut.org)**
+
 ```bash
 npx curbcut https://example.com --statement
 ```
 
-> Not on npm yet. Until it is:
+> **Not published to npm yet.** The command above will work once it is. Until
+> then:
 > ```bash
 > git clone https://github.com/JagheterAlex/curbcut && cd curbcut
 > npm install && npx playwright install chromium
 > node bin/curbcut.js https://example.com --statement
 > ```
+
+## Try it on something broken
+
+There is a deliberately inaccessible page published for exactly this purpose,
+so you can check the output against a known answer instead of trusting a
+screenshot:
+
+```bash
+node bin/curbcut.js https://curbcut.org/demo/broken.html
+```
+
+It should report five failing clauses across sixteen elements — two P1, one P2
+and two P3. If it reports something else, that is a bug worth an issue.
 
 ## Why this exists
 
