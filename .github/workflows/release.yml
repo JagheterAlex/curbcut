@@ -24,13 +24,21 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
           package-manager-cache: false   # never cache in a release build
+
+      # Trusted publishing needs npm 11.5.1 or newer. Node 24 ships a new enough
+      # npm, but pinning it here means a future runner image cannot quietly
+      # downgrade us into the 404 that an unauthenticated publish returns.
+      - name: Use an npm that can do trusted publishing
+        run: |
+          npm install -g npm@^11.5.1
+          npm --version
 
       - name: Install dependencies
         run: npm ci
@@ -56,6 +64,7 @@ jobs:
             --fail-on P4
 
       - name: Check the tag matches package.json
+        if: startsWith(github.ref, 'refs/tags/')
         run: |
           tag="${GITHUB_REF_NAME#v}"
           pkg="$(node -p "require('./package.json').version")"
