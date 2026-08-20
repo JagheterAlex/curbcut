@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accessibility statement — Curbcut</title>
+<meta name="description" content="The accessibility statement for curbcut.org, written to the same standard we ask of our users, including what has not been verified.">
+<link rel="stylesheet" href="style.css">
+<link rel="canonical" href="https://curbcut.org/accessibility">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="/">
+      <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true" focusable="false">
+        <path d="M1 15h20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".35"/>
+        <path d="M1 11h6l4-9h10" fill="none" stroke="#f5c344" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      </svg>
+      Curbcut
+    </a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<section>
+<div class="wrap prose">
+
+<h1>Accessibility statement</h1>
+<p class="lede">For <code>curbcut.org</code>. Prepared 20 August 2026. We sell a tool
+that catches dishonest accessibility statements, so this one has to survive being read
+by a hostile expert.</p>
+
+<h2>Conformance status</h2>
+<p>Automated testing found <strong>no failures</strong> against EN 301 549 V3.2.1
+(2021-03) on any page of this site.</p>
+
+<div class="callout">
+  <p><strong>That is not a claim of full conformance, and we are not making one.</strong>
+  Automated testing detects roughly 30 to 40 percent of WCAG failures. A clean
+  automated result is a starting point. This site has <strong>not</strong> yet had a
+  manual audit, and it has not been tested by users of assistive technology. Until it
+  has, the honest status of this site is <em>partially conformant, verified by
+  automation only</em>.</p>
+</div>
+
+<h2>What was tested, and how</h2>
+<p>Every page of this site — the home page, the terms, the privacy policy and this
+statement — was evaluated on 20 August 2026 using Curbcut itself, which runs axe-core
+in a real headless browser. That is the same tool and the same output this site sells.
+If we would not run it on ourselves, you should not run it on your business.</p>
+<p>One page is excluded on purpose. <a href="/demo/broken.html">The demo page</a> is
+deliberately full of accessibility failures, because it exists to be scanned on the
+home page. It is not part of this statement and nothing links to it as real content.</p>
+
+<h2>What has not been verified</h2>
+<p>No automated tool can evaluate the following, and we have not yet evaluated them by
+hand. We list them because omitting them would imply a completeness we have not
+earned.</p>
+<ul>
+  <li>Clause 9.2.1.1 — keyboard operability across a complete user journey</li>
+  <li>Clause 9.2.4.5 — more than one way to locate a page</li>
+  <li>Clause 9.3.2.3 — consistent navigation</li>
+  <li>Clause 9.3.2.4 — consistent identification</li>
+  <li>Clause 9.3.3.4 — error prevention on legal, financial and data entry pages</li>
+  <li>Clause 12.1.2 — accessible product documentation</li>
+  <li>Clause 12.2.2 — accessible support services</li>
+</ul>
+<p>Clause 9.1.2 on time-based media does not currently apply, because this site
+contains no audio or video.</p>
+
+<h2>Known limitations</h2>
+<p>We are aware of the following and are not hiding them.</p>
+<ul>
+  <li><strong>No screen-reader testing has been performed.</strong> The markup uses
+    landmarks, a skip link, a single <code>h1</code> per page and a heading order with
+    no skipped levels, but intent and lived experience are different things.</li>
+  <li><strong>No testing with speech input or switch access.</strong></li>
+  <li><strong>Colour choices are calculated, not user-validated.</strong> Every
+    text and background pair on the site measures at least <strong>7.1:1</strong> in
+    both the light and the dark colour scheme, against the 4.5:1 that clause 9.1.4.3
+    requires. The site follows your operating system setting rather than forcing one.
+    Measured contrast is still not the same as asking a person with low vision whether
+    the page is comfortable to read.</li>
+</ul>
+
+<h2>Design decisions made deliberately</h2>
+<ul>
+  <li>No cookie banner, because the site sets no cookies. Consent overlays are one of
+    the most common keyboard traps on the web.</li>
+  <li>No accessibility overlay widget, and there never will be one. Our position on
+    overlays is on the <a href="/">home page</a>, with the citations.</li>
+  <li>Focus outlines are never removed. Content is readable and functional with
+    JavaScript disabled, because the site uses no JavaScript at all.</li>
+  <li>Text reflows to 320 pixels wide without horizontal scrolling and survives 200
+    percent zoom, because all sizing is relative.</li>
+</ul>
+
+<h2>Feedback</h2>
+<p>If you hit a barrier on this site, tell us at
+<a href="mailto:hello@curbcut.org">hello@curbcut.org</a>. We aim to reply within
+<strong>five working days</strong>. Describe the page and what happened; you do not
+need to know the clause number, that is our job.</p>
+<p>Reports of genuine barriers are treated as bug reports with priority over feature
+work. If you find something an automated scan missed on the site of a company that
+sells accessibility tooling, we would rather hear it from you than from a regulator.</p>
+
+<h2>Enforcement</h2>
+<p>Curbcut is published by a sole trader established in Ukraine and is not an EU public
+sector body, so the public sector web accessibility complaints procedure does not apply
+to this site. If you believe our response to a complaint is inadequate, you may contact
+the market surveillance authority designated under the European Accessibility Act in
+your own member state, since each state designates its own.</p>
+
+<h2>Review</h2>
+<p>This statement is re-checked whenever the site changes and reviewed at least
+annually. It will be updated the moment a manual audit is completed, and the wording
+above about partial conformance will change only when the evidence supports it.</p>
+
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/terms">Terms</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+      <li><a href="mailto:hello@curbcut.org">hello@curbcut.org</a></li>
+    </ul>
+    <p>Nothing on this site is legal advice.</p>
+  </div>
+</footer>
+
+</body>
+</html>

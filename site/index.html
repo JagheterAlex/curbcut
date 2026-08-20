@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Curbcut — accessibility findings, mapped to EN 301 549 clauses</title>
+<meta name="description" content="Curbcut turns axe-core findings into EN 301 549 clause references, ranks them by regulatory exposure, and drafts an accessibility statement that does not overclaim. Built for the European Accessibility Act. Free core, MIT licensed.">
+<link rel="stylesheet" href="style.css">
+<link rel="canonical" href="https://curbcut.org/">
+<meta property="og:title" content="Curbcut — accessibility findings, mapped to EN 301 549 clauses">
+<meta property="og:description" content="Your scanner found 47 issues. A regulator will ask about clause 9.1.4.3. Curbcut is the translation layer, not another overlay.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://curbcut.org/">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="/">
+      <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true" focusable="false">
+        <path d="M1 15h20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".35"/>
+        <path d="M1 11h6l4-9h10" fill="none" stroke="#f5c344" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      </svg>
+      Curbcut
+    </a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#mapping">Mapping</a></li>
+        <li><a href="#compare">Comparison</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="https://github.com/JagheterAlex/curbcut">GitHub</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ───────────── hero ───────────── -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+
+        <div>
+          <p class="eyebrow"><span class="dot"></span> EN 301 549 V3.2.1 · WCAG 2.1</p>
+          <h1>Your scanner found 47 issues. A regulator will ask about clause&nbsp;9.1.4.3.</h1>
+          <p class="lede measure">Curbcut translates accessibility findings into the
+            language a conformance claim is actually written in — the clauses of
+            EN&nbsp;301&nbsp;549 — ranks them by regulatory exposure, and drafts a
+            statement that does not lie on your behalf.</p>
+
+          <div class="actions">
+            <a class="btn btn-primary" href="#pricing">See pricing</a>
+            <a class="btn btn-ghost" href="https://github.com/JagheterAlex/curbcut">Read the source</a>
+          </div>
+
+          <p class="micro">Free core is MIT licensed and runs on your machine.
+            No account, no telemetry, no page ever uploaded.</p>
+        </div>
+
+        <div class="term">
+          <div class="term-bar">
+            <span class="knob"></span><span class="knob"></span><span class="knob"></span>
+            <span class="term-name">curbcut — bash</span>
+          </div>
+<pre><code><span class="c">$</span> npx curbcut https://curbcut.org/demo/broken.html
+
+Scanning 1 page…
+  <span class="u">https://curbcut.org/demo/broken.html</span>
+
+<span class="r1">P1</span>  Clause 9.4.1.2 — Name, Role, Value          <span class="c">3 elements</span>
+<span class="r1">P1</span>  Clause 9.1.1.1 — Non-text Content           <span class="c">1 element</span>
+<span class="r2">P2</span>  Clause 9.3.1.1 — Language of Page           <span class="c">1 element</span>
+<span class="r3">P3</span>  Clause 9.1.4.3 — Contrast (Minimum)        <span class="c">10 elements</span>
+<span class="r3">P3</span>  Clause 9.2.4.4 — Link Purpose (In Context)  <span class="c">1 element</span>
+
+<span class="a">5</span> clause(s) failing · <span class="a">16</span> element(s) · P1 2 P2 1 P3 2 P4 0
+written to curbcut-report/</code></pre>
+        </div>
+
+      </div>
+
+      <p class="micro">That is not a mock-up. <a href="/demo/broken.html">The page it
+        scans is public</a> — run the command yourself and you will get the same five
+        clauses.</p>
+    </div>
+  </section>
+
+  <!-- ───────────── mapping ───────────── -->
+  <section id="mapping">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>The gap it closes</h2>
+        <p class="lede measure">Scanners report rule identifiers. Conformance is not
+          claimed against <code>color-contrast</code>. It is claimed against a numbered
+          clause of a harmonised European standard. That translation is the product.</p>
+      </div>
+
+      <div class="tablewrap">
+        <table>
+          <caption>Actual output from the scan above. Six axe rules, five clauses,
+            ranked by what a market surveillance authority asks about first.</caption>
+          <thead>
+            <tr>
+              <th scope="col">What axe-core says</th>
+              <th scope="col">What you have to claim against</th>
+              <th scope="col">Band</th>
+              <th scope="col">Why that band</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>frame-title</code>, <code>label</code>, <code>link-name</code></td>
+              <td><span class="clause">9.4.1.2</span> Name, Role, Value</td>
+              <td><span class="band band-1">P1</span></td>
+              <td>An unlabelled password field stops a screen-reader user completing checkout. Task-blocking.</td>
+            </tr>
+            <tr>
+              <td><code>image-alt</code></td>
+              <td><span class="clause">9.1.1.1</span> Non-text Content</td>
+              <td><span class="band band-1">P1</span></td>
+              <td>The most cited criterion in enforcement correspondence, and the easiest for an inspector to verify.</td>
+            </tr>
+            <tr>
+              <td><code>html-has-lang</code></td>
+              <td><span class="clause">9.3.1.1</span> Language of Page</td>
+              <td><span class="band band-2">P2</span></td>
+              <td>One attribute, whole-document effect. Cheap to fix, conspicuous when absent.</td>
+            </tr>
+            <tr>
+              <td><code>color-contrast</code></td>
+              <td><span class="clause">9.1.4.3</span> Contrast (Minimum)</td>
+              <td><span class="band band-3">P3</span></td>
+              <td>Required, widespread, rarely blocks a task outright. Real work, not an emergency.</td>
+            </tr>
+            <tr>
+              <td><code>link-name</code></td>
+              <td><span class="clause">9.2.4.4</span> Link Purpose (In Context)</td>
+              <td><span class="band band-3">P3</span></td>
+              <td>Narrower reach than 9.4.1.2, same underlying markup defect.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout" style="margin-top:1.5rem">
+        <p><strong>Ten contrast failures do not outrank one missing form label.</strong>
+          Severity counts sort by how loudly a rule engine complains. Curbcut sorts by
+          whether a person can finish what they came to do, because that is the question
+          you will be asked.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── comparison ───────────── -->
+  <section id="compare">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Three things are sold to fix this</h2>
+        <p class="lede measure">One of them has been fined for it.</p>
+      </div>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Approach</th>
+              <th scope="col">What it gives you</th>
+              <th scope="col">The problem</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Overlay widgets</strong><br><span style="color:var(--faint);font-size:.85em">accessiBe, UserWay</span></td>
+              <td>One line of JavaScript, a promise of compliance, roughly €490 a year.</td>
+              <td>The US Federal Trade Commission fined accessiBe <strong>$1,000,000</strong> in April 2025 for misrepresenting exactly that promise. In the first half of 2025, <strong>22.6%</strong> of US web accessibility lawsuits targeted sites that already had an overlay installed. The widget is a liability, not a shield.</td>
+            </tr>
+            <tr>
+              <td><strong>Statement generators</strong></td>
+              <td>A free page saying you are fully compliant.</td>
+              <td>Generated without testing anything. A statement is a public legal claim, and it carries your name, not the generator's.</td>
+            </tr>
+            <tr>
+              <td><strong>Raw scanners</strong><br><span style="color:var(--faint);font-size:.85em">axe, Lighthouse, Pa11y</span></td>
+              <td>Accurate findings, free, no nonsense. Curbcut is built on axe-core.</td>
+              <td>They stop at rule identifiers. Nobody has ever been asked to demonstrate conformance with <code>color-contrast</code>.</td>
+            </tr>
+            <tr style="background:color-mix(in srgb, var(--accent) 7%, transparent)">
+              <td><strong>Curbcut</strong></td>
+              <td>Clause-level findings, exposure ranking, an honest statement draft, and the evidence trail behind it.</td>
+              <td>Automated testing still only reaches a third of the problem. We say so on every report instead of hiding it.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── features ───────────── -->
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-head"><h2>What it does</h2></div>
+
+      <div class="grid">
+        <div class="card">
+          <span class="tag">01 / MAPPING</span>
+          <h3>Findings become clauses</h3>
+          <p>Every result is reported as an EN 301 549 clause. WCAG 1.4.3 becomes clause
+            9.1.4.3, which is the form a conformance claim has to take.</p>
+        </div>
+        <div class="card">
+          <span class="tag">02 / SCOPE</span>
+          <h3>Knows which WCAG binds you</h3>
+          <p>The harmonised standard is V3.2.1, which adopts WCAG 2.1. Criteria added in
+            2.2 are good practice, not current EAA obligations. Curbcut reports them
+            separately instead of inflating your problem.</p>
+        </div>
+        <div class="card">
+          <span class="tag">03 / TRIAGE</span>
+          <h3>Ranked by exposure, not severity</h3>
+          <p>Four bands, from task-blocking failures of the harmonised standard down to
+            accessibility debt that sits outside it. Fix top-down and stop guessing.</p>
+        </div>
+        <div class="card">
+          <span class="tag">04 / EVIDENCE</span>
+          <h3>A statement that admits limits</h3>
+          <p>Pre-filled with what was tested, what was not, and which clauses no
+            automated tool can reach. The gaps are printed, not omitted.</p>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:1.5rem">
+        <p><strong>What no tool can do, this one included.</strong> Automated testing
+          detects roughly a third of accessibility barriers. Keyboard traps, focus order,
+          meaningful alternative text and screen-reader logic all need a human. Curbcut
+          names the clauses it could not verify rather than quietly scoring them as
+          passed. Anything claiming full automated conformance is selling you the
+          accessiBe problem.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── pricing ───────────── -->
+  <section id="pricing">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Pricing</h2>
+        <p class="lede measure">The scanner is free forever. What you pay for is
+          evidence you can hand to somebody else, and the fact that it stays current as
+          your site and the standard both move.</p>
+      </div>
+
+      <div class="tiers">
+
+        <div class="tier">
+          <div class="tier-top"><h3>Free</h3></div>
+          <span class="price">€0</span>
+          <p class="sub">MIT licensed. No account.</p>
+          <ul>
+            <li>Single-page scan</li>
+            <li>Full EN 301 549 clause mapping</li>
+            <li>WCAG 2.1 and 2.2 kept separate</li>
+            <li>Statement draft in Markdown</li>
+            <li>Runs locally, nothing uploaded</li>
+          </ul>
+          <a class="btn btn-ghost" href="https://github.com/JagheterAlex/curbcut">Get it on GitHub</a>
+        </div>
+
+        <div class="tier lead">
+          <div class="tier-top"><h3>Pro</h3><span class="pill">Most teams</span></div>
+          <span class="price">€390 <span class="per">/ year</span></span>
+          <p class="sub">One organisation, the sites it owns.</p>
+          <ul>
+            <li>Everything in Free</li>
+            <li>Whole-site crawl, not one page</li>
+            <li>Dated PDF conformance report</li>
+            <li>CI gate that fails builds on regressions</li>
+            <li>Scan history, so fixes are provable</li>
+            <li>Re-checks when the standard changes</li>
+            <li>Email support</li>
+          </ul>
+          <a class="btn btn-primary" href="mailto:hello@curbcut.org?subject=Curbcut%20Pro">Enquire about Pro</a>
+        </div>
+
+        <div class="tier">
+          <div class="tier-top"><h3>Agency</h3></div>
+          <span class="price">€990 <span class="per">/ year</span></span>
+          <p class="sub">For people who fix other people's sites.</p>
+          <ul>
+            <li>Everything in Pro</li>
+            <li>Unlimited client sites</li>
+            <li>Reports carry your branding</li>
+            <li>Per-client evidence trails</li>
+            <li>Named-contact support</li>
+          </ul>
+          <a class="btn btn-ghost" href="mailto:hello@curbcut.org?subject=Curbcut%20Agency">Enquire about Agency</a>
+        </div>
+
+      </div>
+
+      <div class="callout" style="margin-top:1.5rem">
+        <p><strong>For comparison, at time of writing.</strong> UserWay lists around
+          €490 a year and accessiBe starts near €41 a month for an overlay. AudioEye
+          runs $199–799 a month. axe DevTools Pro is roughly $1,250 a year per developer
+          seat. Curbcut is priced per organisation, not per seat, and it is not a widget
+          you bolt onto the page.</p>
+      </div>
+
+      <div class="callout" style="margin-top:1rem">
+        <p><strong>Checkout is not open yet.</strong> Licences are being set up with our
+          payment provider. Write to
+          <a href="mailto:hello@curbcut.org">hello@curbcut.org</a> and you will hear on
+          the day it opens. Nothing is charged before then and there is no mailing list
+          to escape from afterwards.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── faq ───────────── -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head"><h2>Questions people actually ask</h2></div>
+
+      <div class="qa">
+        <h3>Does the European Accessibility Act apply to me?</h3>
+        <p>It applies to businesses selling covered products or services in the EU with
+          more than 10 employees or more than €2 million in annual turnover.
+          Microenterprises providing services are exempt, though that exemption does not
+          extend to product manufacturers. The deadline was 28 June 2025 and national
+          authorities began supervising in June 2026.</p>
+      </div>
+
+      <div class="qa">
+        <h3>Will this make me compliant?</h3>
+        <p>No, and be suspicious of anything that says otherwise. Curbcut finds what
+          automation can find, names the clauses involved and shows the gaps it could not
+          test. Closing those gaps is engineering work, and some of it needs a human
+          tester.</p>
+      </div>
+
+      <div class="qa">
+        <h3>Do you upload my pages?</h3>
+        <p>No. The free tier runs entirely on your machine in a local headless browser.
+          There is no account, no telemetry and no server for anything to be sent to. The
+          source is public so you can confirm that rather than trust it.</p>
+      </div>
+
+      <div class="qa">
+        <h3>Why should I trust the numbers on this page?</h3>
+        <p>Because they are checkable. The FTC order against accessiBe, the EAA
+          thresholds and the litigation figures are public record. The scan in the
+          terminal above runs against <a href="/demo/broken.html">a page you can open</a>,
+          and the code producing every clause mapping is on GitHub.</p>
+      </div>
+
+      <div class="qa">
+        <h3>Is this site itself accessible?</h3>
+        <p>It had better be. Read the <a href="/accessibility">accessibility
+          statement</a>, written to the same standard we ask of you — including the parts
+          that remain unverified, which are listed by clause.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <ul>
+      <li><a href="/terms">Terms</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+      <li><a href="/accessibility">Accessibility statement</a></li>
+      <li><a href="/demo/broken.html">Demo page</a></li>
+      <li><a href="https://github.com/JagheterAlex/curbcut">Source code</a></li>
+      <li><a href="mailto:hello@curbcut.org">hello@curbcut.org</a></li>
+    </ul>
+    <p>Curbcut is an independent tool. It is not affiliated with, endorsed by or
+      certified by ETSI, CEN, CENELEC or the European Commission. EN 301 549 is a
+      standard published by those bodies; this is software that references it.
+      Competitor names and prices are cited for comparison and are the trade marks of
+      their respective owners.</p>
+    <p>Nothing on this site is legal advice.</p>
+  </div>
+</footer>
+
+</body>
+</html>
