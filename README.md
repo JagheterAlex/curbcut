@@ -61,20 +61,23 @@ way.
 
 ## Why this exists
 
-The EAA deadline passed on 28 June 2025. Enforcement started in June 2026, and
-2026 is the first full year national authorities are supervising against it.
-Penalties run from €5,000 to €40,000 in most member states, and up to 5% of
-turnover for large companies.
+The EAA deadline passed on 28 June 2025 and enforcement began immediately.
+French disability organisations issued formal notices to major retailers within
+days, Sweden opened market surveillance that October, and the first EAA cases
+reached a French commercial court in November 2025. Penalties run from €5,000 to
+€40,000 in most member states, and up to 5% of turnover for large companies.
 
 Two things are on sale to solve this, and neither does.
 
-**Overlay widgets** promise compliance from one line of JavaScript. In April
-2025 the FTC fined accessiBe $1,000,000 for misrepresenting exactly that.
-UserWay is defending a class action over similar claims. In the first half of
-2025, **22.6% of US web accessibility lawsuits targeted sites that had an
-overlay installed** — the widget is a liability, not a shield. The National
-Federation of the Blind, the American Council of the Blind and hundreds of
-disability organisations have said so publicly for years.
+**Overlay widgets** promise compliance from one line of JavaScript. The US
+Federal Trade Commission brought a case over exactly that promise in January
+2025 and approved the final order in April, requiring accessiBe to pay
+**$1,000,000**; the same complaint covered reviews presented as independent that
+were not. UsableNet's 2025 midyear report counted **456 US accessibility
+lawsuits, 22.6% of the total**, filed against sites that already had an overlay
+installed — the widget is a liability, not a shield. The National Federation of
+the Blind, the American Council of the Blind and hundreds of disability
+organisations have said so publicly for years.
 
 **Free statement generators** emit "this website is fully compliant" without
 testing anything. A statement is a public claim. An unsupported one is the
@@ -93,12 +96,19 @@ Curbcut fills that gap. It is the translation layer, not another widget.
 clause. WCAG 1.4.3 becomes clause 9.1.4.3, which is the form a conformance
 claim takes.
 
-**Knows which WCAG version is actually binding.** The harmonised standard is
-EN 301 549 V3.2.1 (2021-03), and it adopts WCAG **2.1**. Criteria introduced in
-WCAG 2.2 — target size, dragging movements, accessible authentication — are
-good practice and are not current EAA obligations. Curbcut reports them,
-separately and clearly marked. Tools that present them as legal requirements are
-inflating your problem.
+**Knows which WCAG version is actually binding, and when that changes.** The
+harmonised standard today is EN 301 549 V3.2.1 (2021-03), which adopts WCAG
+**2.1**. Criteria introduced in WCAG 2.2 — target size, dragging movements,
+accessible authentication — are good practice and are not current EAA
+obligations.
+
+That is a dated fact, not a permanent one. **V4.1.1 adopts WCAG 2.2 and is
+expected to be cited in the Official Journal of the EU around the end of 2026**,
+and an obligation begins when a version is cited there, not when it is
+published. Curbcut reports 2.2 criteria separately either way, so you can see
+what is coming without being billed for it a year early. Tools that present 2.2
+as a legal requirement today are inflating your problem; tools that omit it
+entirely are hiding your next one.
 
 **Ranks by legal exposure, not by rule severity.** One unlabelled checkout
 button outranks four hundred low-contrast footer links. Scoring weights whether
