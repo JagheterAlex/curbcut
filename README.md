@@ -11,6 +11,13 @@ your pages nowhere.
 npx curbcut https://example.com --statement
 ```
 
+> Not on npm yet. Until it is:
+> ```bash
+> git clone https://github.com/JagheterAlex/curbcut && cd curbcut
+> npm install && npx playwright install chromium
+> node bin/curbcut.js https://example.com --statement
+> ```
+
 ## Why this exists
 
 The EAA deadline passed on 28 June 2025. Enforcement started in June 2026, and
