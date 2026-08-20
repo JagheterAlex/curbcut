@@ -135,6 +135,8 @@ npx curbcut https://example.com https://example.com/checkout \
 | `--max-pages <n>` | Page cap while crawling. Default `200` |
 | `--ignore-robots` | Crawl paths `robots.txt` disallows. For sites you own |
 | `--pdf` | Also write a dated PDF conformance report |
+| `--baseline <file>` | Compare against a previous `analysis.json` |
+| `--fail-on-regression` | Exit non-zero if anything newly failed or got worse |
 | `--out <dir>` | Output directory. Default `./curbcut-report` |
 | `--statement` | Also draft an accessibility statement |
 | `--json` | Also write the raw analysis |
@@ -160,6 +162,35 @@ the end.
 It is rendered by the same browser that does the scanning, so it adds no
 dependency. It is deliberately plain: no cover art, no score out of ten, no
 badge. Anything resembling a certificate would misrepresent what it is.
+
+### Proving a fix happened
+
+A single scan is a snapshot and proves nothing about direction. Two dated scans
+and an honest diff between them are evidence.
+
+```bash
+# Record where you are today
+npx curbcut https://example.com --crawl --json
+
+# Later, after the work
+npx curbcut https://example.com --crawl --baseline curbcut-report/analysis.json
+```
+
+Findings are matched by **clause**, not by axe rule. A clause can start failing
+for a different reason than it did last month — the rule changes, the obligation
+does not — and a diff keyed on rule ids would call that one fix plus one new
+break, which badly describes a page that never stopped failing 9.4.1.2.
+
+Four outcomes are reported separately, because they are different conversations:
+newly failing, worse than baseline, no longer failing, and improved but still
+failing.
+
+If the later scan covered **fewer pages** than the baseline, the comparison says
+so before anything else. Fewer failures can simply mean fewer pages were
+assessed, and reporting that as progress would be a lie by arithmetic.
+
+`--fail-on-regression` is for CI: fail the build when something breaks that used
+to work, even if the absolute result is otherwise within tolerance.
 
 ### Priority bands
 

@@ -7,3 +7,4 @@ export { SUCCESS_CRITERIA, criteriaFromAxeTags } from './wcag.js';
 export { scoreFinding, priorityBand } from './risk.js';
 export { crawlAndScan, normaliseUrl, parseRobots } from './crawl.js';
 export { pdfHtml, writePdf } from './pdf.js';
+export { compareAnalyses, describeComparison } from './baseline.js';

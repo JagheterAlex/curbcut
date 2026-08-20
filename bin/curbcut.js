@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { scanUrls } from '../src/scan.js';
 import { crawlAndScan } from '../src/crawl.js';
@@ -7,6 +7,7 @@ import { analyze } from '../src/analyze.js';
 import { markdownReport } from '../src/report.js';
 import { draftStatement } from '../src/statement.js';
 import { writePdf } from '../src/pdf.js';
+import { compareAnalyses, describeComparison } from '../src/baseline.js';
 
 const USAGE = `
 curbcut — map accessibility findings to EN 301 549 clauses
@@ -21,6 +22,10 @@ Options
                        own, and it is recorded in the report either way.
   --out <dir>          Write output files to <dir> (default: ./curbcut-report)
   --pdf                Also write a dated PDF conformance report
+  --baseline <file>    Compare against a previous analysis.json and report what
+                       changed. Writes comparison.md
+  --fail-on-regression Exit non-zero if anything newly failed or got worse,
+                       even when the absolute result is otherwise acceptable
   --statement          Also draft an accessibility statement
   --json               Also write the raw analysis as JSON
   --org-name <name>    Organisation name, used in the statement
@@ -44,6 +49,7 @@ function parseArgs(argv) {
   const opts = {
     urls: [], out: 'curbcut-report', statement: false, json: false,
     org: {}, failOn: 'P1', quiet: false, help: false, pdf: false,
+    baseline: null, failOnRegression: false,
     crawl: false, maxPages: 200, ignoreRobots: false,
   };
   for (let i = 0; i < argv.length; i++) {
@@ -54,6 +60,8 @@ function parseArgs(argv) {
       case '--out': opts.out = next(); break;
       case '--statement': opts.statement = true; break;
       case '--pdf': opts.pdf = true; break;
+      case '--baseline': opts.baseline = next(); break;
+      case '--fail-on-regression': opts.failOnRegression = true; break;
       case '--json': opts.json = true; break;
       case '--quiet': opts.quiet = true; break;
       case '--crawl': opts.crawl = true; break;
@@ -134,6 +142,39 @@ writeFileSync(join(opts.out, 'findings.md'), markdownReport(analysis, { target }
 if (opts.json) {
   writeFileSync(join(opts.out, 'analysis.json'), JSON.stringify(analysis, null, 2), 'utf8');
 }
+let diff = null;
+if (opts.baseline) {
+  let before;
+  try {
+    before = JSON.parse(readFileSync(opts.baseline, 'utf8'));
+  } catch (err) {
+    console.error('Could not read the baseline at ' + opts.baseline + ' — ' + err.message);
+    process.exit(2);
+  }
+  diff = compareAnalyses(before, analysis);
+  const text = describeComparison(diff);
+  writeFileSync(
+    join(opts.out, 'comparison.md'),
+    [
+      '# Change since the baseline',
+      '',
+      'Baseline: `' + opts.baseline + '`  ',
+      'Compared: ' + new Date().toISOString(),
+      '',
+      '```',
+      text,
+      '```',
+      '',
+    ].join('\n'),
+    'utf8'
+  );
+  if (!opts.quiet) {
+    console.error('');
+    console.error(text);
+    console.error('');
+  }
+}
+
 if (opts.pdf) {
   const file = join(opts.out, 'conformance-report.pdf');
   await writePdf(analysis, {
@@ -160,6 +201,10 @@ console.log(
   ' P3 ' + s.byPriority.P3 + ' P4 ' + s.byPriority.P4 +
   ' · written to ' + opts.out
 );
+
+if (opts.failOnRegression && diff && (diff.introduced.length > 0 || diff.regressed.length > 0)) {
+  process.exit(1);
+}
 
 if (opts.failOn === 'none') process.exit(0);
 const cutoff = BAND_ORDER.indexOf(opts.failOn);
