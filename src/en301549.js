@@ -14,6 +14,57 @@ export const HARMONISED = {
   webClausePrefix: '9',
 };
 
+// The revision that replaces it.
+//
+// An obligation begins when a version is cited in the Official Journal of the
+// EU, not when ETSI publishes it. V4.1.0 went out as a final draft in June 2026
+// and 30 November 2026 is the citation date in ETSI's own work programme. That
+// is a scheduled milestone, and schedules move: this is reported as "expected",
+// and nothing here calls it law until it is.
+//
+// It matters because it cuts both ways, which almost nobody says out loud. Six
+// success criteria arrive. One leaves.
+export const INCOMING = {
+  standard: 'EN 301 549',
+  version: 'V4.1.1',
+  adoptsWcag: '2.2',
+  expectedCitation: '2026-11-30',
+  citationCaveat:
+    'Scheduled for citation in the Official Journal on 30 November 2026 per ' +
+    'the ETSI work programme. The obligation begins on citation, not on ' +
+    'publication, and the date can move.',
+};
+
+// What changes at citation, stated per criterion.
+//
+// `automatable` was not judged by hand. It is what axe-core 4.13.0 actually
+// has a rule for, checked against the engine: of the six criteria arriving,
+// exactly one can be tested by machine. The other five need a person, and for
+// some of them a person using assistive technology.
+//
+// This is the single most useful fact we know about the transition, and it is
+// the opposite of what a tool vendor is supposed to say.
+export const INCOMING_CHANGES = {
+  arriving: [
+    { criterion: '2.4.11', title: 'Focus Not Obscured (Minimum)', level: 'AA', automatable: false,
+      why: 'Requires knowing whether a sticky header or cookie bar covers the focused control at the moment it receives focus.' },
+    { criterion: '2.5.7', title: 'Dragging Movements', level: 'AA', automatable: false,
+      why: 'Requires finding every drag interaction and confirming a single-pointer alternative exists.' },
+    { criterion: '2.5.8', title: 'Target Size (Minimum)', level: 'AA', automatable: true,
+      why: 'axe-core measures rendered target geometry directly.' },
+    { criterion: '3.2.6', title: 'Consistent Help', level: 'A', automatable: false,
+      why: 'Requires comparing where help appears across several pages, and judging whether it is the same help.' },
+    { criterion: '3.3.7', title: 'Redundant Entry', level: 'A', automatable: false,
+      why: 'Requires walking a multi-step form and noticing information asked for twice.' },
+    { criterion: '3.3.8', title: 'Accessible Authentication (Minimum)', level: 'AA', automatable: false,
+      why: 'Requires judging whether a login imposes a cognitive function test with no alternative.' },
+  ],
+  leaving: [
+    { criterion: '4.1.1', title: 'Parsing', level: 'A',
+      why: 'Removed in WCAG 2.2. Duplicate ids and malformed markup stop being a conformance failure in their own right, though they still cause real problems that other criteria catch.' },
+  ],
+};
+
 /**
  * Map a WCAG success criterion to its EN 301 549 clause for web content.
  * Returns `inHarmonised: false` for criteria that WCAG 2.2 introduced. Those
@@ -26,6 +77,9 @@ export function clauseForCriterion(sc) {
   if (!meta) return null;
 
   const inHarmonised = meta.since !== '2.2';
+  // Required once V4.1.1 is cited: everything WCAG 2.2 keeps. That includes the
+  // criteria 2.2 introduced, and excludes the one it removed.
+  const inIncoming = meta.obsoletedIn !== '2.2';
   const notes = [];
   if (!inHarmonised) {
     notes.push(
@@ -34,12 +88,21 @@ export function clauseForCriterion(sc) {
       ', which adopts WCAG ' + HARMONISED.adoptsWcag +
       '. Treat as good practice and future-proofing, not as a current EAA obligation.'
     );
+    notes.push(
+      'Expected to become required when ' + INCOMING.standard + ' ' +
+      INCOMING.version + ' is cited, scheduled for ' +
+      INCOMING.expectedCitation + '. Fixing it now is early, not wasted.'
+    );
   }
   if (meta.obsoletedIn) {
     notes.push(
-      'Removed from WCAG ' + meta.obsoletedIn + ', but still present in the ' +
-      'harmonised standard. Fixing it remains the safe choice while ' +
-      HARMONISED.version + ' is the version cited for conformance.'
+      'Removed from WCAG ' + meta.obsoletedIn + ', and listed in the harmonised ' +
+      HARMONISED.standard + ' ' + HARMONISED.version + ' only because that ' +
+      'version adopts WCAG ' + HARMONISED.adoptsWcag + '. W3C errata of ' +
+      '21 September 2023 added a note to WCAG 2.0 and 2.1 that this criterion ' +
+      '"should be considered as always satisfied for any content using HTML or ' +
+      'XML". It cannot be failed today and stops being listed at all once ' +
+      INCOMING.version + ' is cited. Do not spend a budget cycle on it.'
     );
   }
 
@@ -49,6 +112,7 @@ export function clauseForCriterion(sc) {
     level: meta.level,
     clause: HARMONISED.webClausePrefix + '.' + sc,
     inHarmonised,
+    inIncoming,
     notes,
   };
 }

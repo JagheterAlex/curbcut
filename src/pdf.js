@@ -114,6 +114,39 @@ export function pdfHtml(analysis, meta = {}) {
        </div>`
     : '';
 
+  // Printed before the findings, for the same reason the coverage note is: the
+  // reader is deciding what to fund, and one of their current failures is about
+  // to stop counting while five things nobody can scan for start counting.
+  const t = analysis.transition;
+  const transition = t
+    ? `<h2>What changes when ${esc(t.to.version)} is cited</h2>
+       <p class="quiet">${esc(t.to.citationCaveat)}</p>
+       <table class="kv"><tbody>
+         <tr><td>WCAG adopted today (${esc(analysis.standard.version)})</td><td>${esc(analysis.standard.adoptsWcag)}</td></tr>
+         <tr><td>WCAG adopted from citation (${esc(t.to.version)})</td><td>${esc(t.to.adoptsWcag)}</td></tr>
+         <tr><td>Clauses failing today</td><td>${t.failingToday}</td></tr>
+         <tr><td>Clauses failing at citation</td><td>${t.failingAtCitation}</td></tr>
+       </tbody></table>
+       ${t.becomingRequired.length ? `<p><strong>Failures that become obligations.</strong></p>
+         <ul class="bands">${t.becomingRequired
+           .map((f) => `<li>Clause ${esc(f.clause)} &mdash; ${esc(f.title)} (WCAG ${esc(f.criterion)}, level ${esc(f.level)}), ${f.nodeCount} element${f.nodeCount === 1 ? '' : 's'}</li>`)
+           .join('')}</ul>` : ''}
+       ${t.noLongerRequired.length ? `<p><strong>Failures that stop being obligations.</strong> Still worth fixing, but they should not compete for a budget cycle with the list above.</p>
+         <ul class="bands">${t.noLongerRequired
+           .map((f) => `<li>Clause ${esc(f.clause)} &mdash; ${esc(f.title)}. ${esc(f.why)}</li>`)
+           .join('')}</ul>` : ''}
+       <div class="caveat">
+         <p><strong>What this scan will not tell you about the transition.</strong>
+         WCAG ${esc(t.to.adoptsWcag)} adds ${t.arriving.length} criteria at levels A and AA.
+         This scan has a check for ${t.arriving.length - t.undetectable.length} of them.
+         The other ${t.undetectable.length} require a person, and are absent from the
+         findings below because they were never assessed &mdash; not because they pass.</p>
+         <ul class="bands">${t.arriving
+           .map((c) => `<li><strong>${esc(c.criterion)} ${esc(c.title)}</strong> (${esc(c.level)}) &mdash; ${c.automatable ? 'checked by this scan. ' : '<em>requires a person.</em> '}${esc(c.why)}</li>`)
+           .join('')}</ul>
+       </div>`
+    : '';
+
   const errors = analysis.errors.length
     ? `<h2>Pages that could not be scanned</h2>
        <p class="quiet">These are reported rather than dropped. A page that failed to
@@ -190,6 +223,8 @@ export function pdfHtml(analysis, meta = {}) {
 </div>
 
 ${assetWarn}
+
+${transition}
 
 <h2>How to read the priority bands</h2>
 <ul class="bands">

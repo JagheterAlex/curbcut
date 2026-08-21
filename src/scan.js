@@ -8,10 +8,22 @@ const axeSource = require('axe-core').source;
 // reported separately. `best-practice` is excluded: those rules are opinions
 // about good markup, and mixing them into a conformance report is how tools end
 // up crying wolf.
+//
+// `wcag2a-obsolete` is deliberately absent, and the reason is worth writing
+// down because the opposite looks correct at first glance. It carries the
+// duplicate-id rules for 4.1.1 Parsing, which EN 301 549 V3.2.1 still lists
+// because it adopts WCAG 2.1 — so leaving the tag out looks like a gap in a
+// required clause. It is not. W3C published errata on 21 September 2023 adding
+// a note to WCAG 2.0 and 2.1 that 4.1.1 "should be considered as always
+// satisfied for any content using HTML or XML". Running those rules would
+// report failures of a criterion that cannot be failed.
+//
+// `wcag22a` has no rules today. It is listed so that the two level A criteria
+// WCAG 2.2 adds are picked up the day axe ships a check for them.
 const RULE_TAGS = [
   'wcag2a', 'wcag2aa',
   'wcag21a', 'wcag21aa',
-  'wcag22aa',
+  'wcag22a', 'wcag22aa',
 ];
 
 // Playwright throws a wall of text when the browser binary is missing. For a

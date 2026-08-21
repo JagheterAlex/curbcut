@@ -12,7 +12,15 @@ import { parseRobots } from '../../src/robots.js';
 
 // Same rule set as the CLI. `best-practice` stays out: those are opinions about
 // markup, and mixing them into a conformance report is how tools cry wolf.
-const RULE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
+// Must match src/scan.js exactly. If the web scanner and the command line tool
+// run different rule sets they will disagree about the same page, and the whole
+// claim that one is the other in a browser stops being true.
+// `wcag2a-obsolete` is excluded on purpose; see the note in src/scan.js.
+const RULE_TAGS = [
+  'wcag2a', 'wcag2aa',
+  'wcag21a', 'wcag21aa',
+  'wcag22a', 'wcag22aa',
+];
 
 const NAV_TIMEOUT_MS = 25000;
 

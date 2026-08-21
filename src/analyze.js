@@ -1,5 +1,8 @@
 import { criteriaFromAxeTags, SUCCESS_CRITERIA } from './wcag.js';
-import { clauseForCriterion, MANUAL_ONLY_CLAUSES, HARMONISED, AUTOMATED_COVERAGE_NOTE } from './en301549.js';
+import {
+  clauseForCriterion, MANUAL_ONLY_CLAUSES, HARMONISED, AUTOMATED_COVERAGE_NOTE,
+  INCOMING, INCOMING_CHANGES,
+} from './en301549.js';
 import { scoreFinding, priorityBand } from './risk.js';
 
 /**
@@ -89,6 +92,7 @@ export function analyze(pages) {
         title: entry.title,
         level: entry.level,
         inHarmonised: entry.inHarmonised,
+        inIncoming: entry.inIncoming,
         notes: entry.notes,
         impact: entry.worstImpact,
         nodeCount: entry.nodeCount,
@@ -102,13 +106,57 @@ export function analyze(pages) {
 
   return {
     standard: HARMONISED,
+    incoming: INCOMING,
     scannedPages,
     errors,
     assetWarnings,
     findings,
     summary: summarise(findings),
+    transition: transitionFor(findings),
     manualOnly: MANUAL_ONLY_CLAUSES,
     coverageNote: AUTOMATED_COVERAGE_NOTE,
+  };
+}
+
+/**
+ * What this page's result becomes when V4.1.1 is cited.
+ *
+ * Two numbers, not one. A site can improve on paper at the transition because
+ * something stops being required, and a report that only counted the arrivals
+ * would describe the day dishonestly. `noLongerFailing` is usually 4.1.1
+ * Parsing and it is the reason not to spend this quarter fixing duplicate ids.
+ *
+ * `undetectable` is the number that should decide a budget: of the six criteria
+ * arriving, five cannot be scanned for at all. A clean automated result against
+ * V4.1.1 says even less than a clean one says today, and pretending otherwise
+ * is how a tool ends up lying on somebody's behalf.
+ */
+function transitionFor(findings) {
+  const becomingRequired = findings.filter((f) => !f.inHarmonised && f.inIncoming);
+  const noLongerRequired = findings.filter((f) => f.inHarmonised && !f.inIncoming);
+  const requiredToday = findings.filter((f) => f.inHarmonised).length;
+
+  return {
+    to: INCOMING,
+    becomingRequired: becomingRequired.map((f) => ({
+      clause: f.clause, criterion: f.criterion, title: f.title,
+      level: f.level, nodeCount: f.nodeCount,
+    })),
+    noLongerRequired: noLongerRequired.map((f) => ({
+      clause: f.clause, criterion: f.criterion, title: f.title,
+      why: INCOMING_CHANGES.leaving.find((l) => l.criterion === f.criterion)?.why ?? '',
+    })),
+    failingToday: requiredToday,
+    failingAtCitation: requiredToday + becomingRequired.length - noLongerRequired.length,
+    // Every criterion the transition adds, whether or not this scan found a
+    // problem with it. Five of these were never assessed and cannot be.
+    arriving: INCOMING_CHANGES.arriving,
+    // What the revision removes, as information rather than as findings. In
+    // practice noLongerRequired above stays empty, because the only departing
+    // criterion is one W3C errata already deem impossible to fail, so we never
+    // scan for it. The reader still deserves to know it is going.
+    leaving: INCOMING_CHANGES.leaving,
+    undetectable: INCOMING_CHANGES.arriving.filter((c) => !c.automatable),
   };
 }
 

@@ -206,6 +206,27 @@ if (analysis.assetWarnings.length) {
   console.error('');
 }
 
+// stdout carries the one-line summary a script might parse. The transition goes
+// to stderr alongside it: it changes what somebody funds next quarter, and it is
+// not something they will find by reading a clause list.
+const t = analysis.transition;
+if (t && (t.becomingRequired.length || t.noLongerRequired.length)) {
+  log('');
+  log('When ' + t.to.version + ' is cited (scheduled ' + t.to.expectedCitation + '):');
+  if (t.becomingRequired.length) {
+    log('  ' + t.becomingRequired.length + ' current finding(s) become obligations — ' +
+        t.becomingRequired.map((f) => f.clause).join(', '));
+  }
+  if (t.noLongerRequired.length) {
+    log('  ' + t.noLongerRequired.length + ' stop being obligations — ' +
+        t.noLongerRequired.map((f) => f.clause).join(', '));
+  }
+  log('  clauses failing: ' + t.failingToday + ' today, ' + t.failingAtCitation + ' then');
+  log('  ' + t.undetectable.length + ' of the ' + t.arriving.length +
+      ' arriving criteria need a person and were not assessed');
+  log('');
+}
+
 const s = analysis.summary;
 console.log(
   s.clausesFailingHarmonised + ' clause(s) of the harmonised standard failing · ' +

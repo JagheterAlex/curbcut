@@ -103,12 +103,33 @@ accessible authentication — are good practice and are not current EAA
 obligations.
 
 That is a dated fact, not a permanent one. **V4.1.1 adopts WCAG 2.2 and is
-expected to be cited in the Official Journal of the EU around the end of 2026**,
-and an obligation begins when a version is cited there, not when it is
-published. Curbcut reports 2.2 criteria separately either way, so you can see
-what is coming without being billed for it a year early. Tools that present 2.2
-as a legal requirement today are inflating your problem; tools that omit it
-entirely are hiding your next one.
+scheduled for citation in the Official Journal of the EU on 30 November 2026**,
+per the ETSI work programme. An obligation begins when a version is cited there,
+not when it is published, and a scheduled date can move — so Curbcut reports it
+as expected, never as settled law. Tools that present 2.2 as a legal requirement
+today are inflating your problem; tools that omit it entirely are hiding your
+next one.
+
+**Shows you the transition, in both directions.** Every report says what the
+result becomes when the new version is cited: which of your current findings
+turn into obligations, and which stop being any. Six success criteria arrive.
+One leaves.
+
+**Refuses to check what cannot be failed.** The departing criterion is 4.1.1
+Parsing, and it is the detail most tools get wrong. W3C errata of 21 September
+2023 added a note to WCAG 2.0 and 2.1 that it "should be considered as always
+satisfied for any content using HTML or XML" — so it cannot be failed even
+today, under the version cited right now. Curbcut does not scan for it and says
+plainly that fixing duplicate ids buys you no conformance. A scanner that
+reports it is selling you work.
+
+**Counts what a machine cannot do.** Of the six criteria arriving with WCAG 2.2,
+automated testing has a rule for exactly **one** — target size. Focus not
+obscured, dragging movements, consistent help, redundant entry and accessible
+authentication all need a person. That number is not our opinion: a test in this
+repository checks it against the axe-core build in use and fails if it drifts.
+Anyone selling you an automated WCAG 2.2 readiness check is selling you one
+sixth of one.
 
 **Ranks by legal exposure, not by rule severity.** One unlabelled checkout
 button outranks four hundred low-contrast footer links. Scoring weights whether

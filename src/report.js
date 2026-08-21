@@ -55,6 +55,74 @@ export function markdownReport(analysis, meta = {}) {
     out.push('');
   }
 
+  // The transition section sits above the findings on purpose. Somebody reading
+  // this in 2026 is deciding what to fund next quarter, and the fact that one
+  // of their current failures stops mattering — while five things they cannot
+  // scan for start mattering — changes that decision more than any single
+  // finding below does.
+  const t = analysis.transition;
+  if (t) {
+    out.push('## What changes when ' + t.to.version + ' is cited');
+    out.push('');
+    out.push(t.to.citationCaveat);
+    out.push('');
+    out.push('| | Today (' + analysis.standard.version + ') | From citation (' + t.to.version + ') |');
+    out.push('| --- | --- | --- |');
+    out.push('| WCAG version adopted | ' + analysis.standard.adoptsWcag + ' | ' + t.to.adoptsWcag + ' |');
+    out.push('| Clauses failing on this scan | ' + t.failingToday + ' | ' + t.failingAtCitation + ' |');
+    out.push('');
+
+    if (t.becomingRequired.length) {
+      out.push('**Failures that become obligations.** Found on this scan, not ' +
+               'currently required, required once the new version is cited.');
+      out.push('');
+      for (const f of t.becomingRequired) {
+        out.push('- Clause ' + f.clause + ' — ' + f.title + ' (WCAG ' + f.criterion +
+                 ', level ' + f.level + ') · ' + f.nodeCount +
+                 ' element' + (f.nodeCount === 1 ? '' : 's'));
+      }
+      out.push('');
+    }
+
+    if (t.noLongerRequired.length) {
+      out.push('**Failures that stop being obligations.** Fixing these is still ' +
+               'defensible, but they should not compete for a budget cycle with ' +
+               'the list above.');
+      out.push('');
+      for (const f of t.noLongerRequired) {
+        out.push('- Clause ' + f.clause + ' — ' + f.title + '. ' + f.why);
+      }
+      out.push('');
+    }
+
+    if (t.leaving.length && !t.noLongerRequired.length) {
+      out.push('**What the revision removes.**');
+      out.push('');
+      for (const c of t.leaving) {
+        out.push('- **' + c.criterion + ' ' + c.title + '** (' + c.level + ') — ' + c.why +
+                 ' This scan does not test for it and never reported it, so nothing ' +
+                 'in the findings below changes when it goes.');
+      }
+      out.push('');
+    }
+
+    out.push('**What this scan will not tell you about the transition.** WCAG ' +
+             t.to.adoptsWcag + ' adds ' + t.arriving.length + ' criteria at levels A and AA. ' +
+             'This scan has a check for ' +
+             (t.arriving.length - t.undetectable.length) + ' of them.');
+    out.push('');
+    for (const c of t.arriving) {
+      out.push('- **' + c.criterion + ' ' + c.title + '** (' + c.level + ') — ' +
+               (c.automatable ? 'checked by this scan. ' : '*requires a person.* ') +
+               c.why);
+    }
+    out.push('');
+    out.push('That means ' + t.undetectable.length + ' of the ' + t.arriving.length +
+             ' criteria arriving are absent from the findings above because they ' +
+             'were never assessed, not because they pass.');
+    out.push('');
+  }
+
   out.push('## Priority bands');
   out.push('');
   for (const [band, meaning] of Object.entries(BAND_MEANING)) {
