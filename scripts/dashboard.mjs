@@ -16,7 +16,7 @@ const SRC = join(HERE, '..', '..', 'business', 'metrics', 'daily.json');
 const OUT = join(HERE, '..', '..', 'business', 'metrics', 'dashboard.html');
 
 const data = JSON.parse(readFileSync(SRC, 'utf8'));
-const days = Object.keys(data).filter((k) => k !== 'meta').sort();
+const days = Object.keys(data).filter((k) => /^\d{4}-\d{2}-\d{2}$/.test(k)).sort();
 const rows = days.map((d) => ({ date: d, ...data[d], actions: data[d].actions ?? {} }));
 
 const sum = (f) => rows.reduce((n, r) => n + (f(r) || 0), 0);
@@ -29,6 +29,12 @@ const totals = {
   scanRan: sum((r) => r.actions.scan_ran),
   leads: data.meta?.interestTotal ?? 0,
 };
+
+// The one bot-excluded measurement this site will ever have, read off the
+// Cloudflare Web Analytics dashboard before the beacon was removed. Kept as a
+// fixed record rather than a live figure, because the instrument that produced
+// it is being switched off on purpose.
+const truth = data.webAnalyticsBaseline ?? null;
 
 const esc = (v) => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const n = (v) => Number(v || 0).toLocaleString('en-GB');
@@ -43,7 +49,7 @@ const funnel = [
   {
     label: 'Arrived (upper bound)',
     value: totals.readerViews,
-    note: 'Page views whose user agent claims to be a browser. Headless Chrome, curl and unidentified agents are removed. Read the caveats: this over-counts.',
+    note: 'Page views whose user agent claims to be a browser. That is a string anything can set, so this counts bots that lie. Measured against a real bot filter it was about eight times too high.',
   },
   {
     label: 'Opened the scanner',
@@ -174,13 +180,35 @@ const html = `<title>Curbcut Vital Signs</title>
     <p class="sub">Measured ${esc(measured)} &middot; ${rows.length} day${rows.length === 1 ? '' : 's'} of record</p>
   </header>
 
+  ${truth ? `<section>
+    <h2>The one honest measurement</h2>
+    <p class="lead">Cloudflare had quietly injected an analytics beacon into our
+      pages. Before removing it &mdash; we tell people this site carries no scripts
+      &mdash; it was read once, with Cloudflare&rsquo;s own bot filter switched on.</p>
+    <ol class="funnel">
+      <li>
+        <div class="step-head">
+          <span class="step-label">Visits, 24 hours, bots excluded</span>
+          <span class="step-value">${n(truth.visits)}</span>
+        </div>
+        <p class="step-note">${esc(truth.window)}. Two days after two articles went out, so this is a peak and not a baseline.</p>
+      </li>
+      <li>
+        <div class="step-head">
+          <span class="step-label">Page views, same window</span>
+          <span class="step-value">${n(truth.pageViews)}</span>
+        </div>
+        <p class="step-note">Over the same period the user-agent method below reported 631. It overstates by roughly eight times, and every arrival figure on this page inherits that error.</p>
+      </li>
+    </ol>
+  </section>` : ''}
+
   <section>
     <h2>The only question that matters yet</h2>
     <p class="lead">People arrive. The question is whether anything happens next.
       At most <strong>${n(totals.readerViews)}</strong> page views came from something
-      claiming to be a browser &mdash; the true figure is nearer two thirds of that, for
-      reasons set out below &mdash; and <strong>${n(totals.leads)}</strong> addresses
-      have been left.</p>
+      claiming to be a browser, and the real figure is closer to an eighth of that.
+      <strong>${n(totals.leads)}</strong> addresses have been left.</p>
     <ol class="funnel">${funnelRows}</ol>
   </section>
 
@@ -220,16 +248,13 @@ const html = `<title>Curbcut Vital Signs</title>
       <p><strong>Two days is not a trend.</strong> Both days follow articles going out,
       so this is a spike and not a baseline. There is no chart on this page because
       two points cannot make one honestly.</p>
-      <p><strong>The arrival figure over-counts, and here is the measurement that
-      shows it.</strong> A user agent is a string any script can set to whatever it
-      likes, so a filter built on it lets through every bot polite enough to lie.
-      Cloudflare had quietly injected its own analytics beacon into our pages, which
-      only fires in a browser that executes JavaScript &mdash; something most crawlers
-      do not do. Over the same 23 hours it recorded <strong>383</strong> page views
-      where the user-agent method claimed 631. Treat the real figure as roughly
-      <strong>two thirds</strong> of the number above. The beacon is being switched
-      off because we told people this site carries no scripts, so this cross-check
-      was available exactly once.</p>
+      <p><strong>The arrival figures over-count by roughly eight times.</strong> A
+      user agent is a string any script can set, so a filter built on one lets through
+      every bot polite enough to lie. Cloudflare&rsquo;s own bot filter, read once
+      before the beacon was removed, counted <strong>77</strong> page views across
+      <strong>44</strong> visits in the window where the method below reported 631.
+      Every arrival number on this page is an upper bound of that order, and the
+      cross-check was available exactly once.</p>
       <p><strong>Some of the traffic is people looking for something to break into.</strong>
       Requests in the last day included <code>/.env</code> 36 times,
       <code>/public/.env</code> 30, <code>/.ssh/config</code> 21 and
