@@ -69,9 +69,17 @@ legitimate interest in delivering and protecting the site. We do not build profi
 from it and we do not attempt to identify you.</p>
 
 <h3>Audience statistics</h3>
-<p>If we measure traffic, we use Cloudflare Web Analytics, which is cookieless, does
-not fingerprint visitors and produces aggregate counts only. No individual visitor can
-be singled out from it, by us or by anyone else.</p>
+<p>We read the request statistics Cloudflare already derives from its own server
+logs &mdash; how many requests and page views a day, which countries they came from,
+which browser families. This is measured <strong>on the server</strong>. There is no
+beacon, no counter script and no cookie, and nothing is added to any page to make it
+work. We can see that four hundred people visited on a Tuesday; we cannot see which
+pages any one of them read, or follow anybody from one page to the next.</p>
+<p>An earlier version of this page said we would use Cloudflare Web Analytics. That
+product needs a small JavaScript file on every page, which would have contradicted the
+promise two paragraphs above and the claim on our
+<a href="/accessibility.html">accessibility statement</a> that this site runs no
+scripts at all. We chose the promise over the product.</p>
 
 <h2>If you email us</h2>
 <p>Mail to <code>hello@curbcut.org</code> is routed by Cloudflare Email Routing and
@@ -93,6 +101,15 @@ keyed on a <strong>salted hash</strong> of your IP address, where the salt chang
 every hour and the counter expires after an hour. Your address itself is never
 written down, and the hash cannot be turned back into it or matched across hours.
 The basis for this is our legitimate interest in keeping a free service usable.</p>
+<p>We count how often the scanner is <em>used</em>, in the plainest way we could
+think of: a row per day per outcome, holding a number. Opened the form, ran a scan,
+served a cached result, refused the address, failed. That is the whole record. It does
+not contain the address you scanned, your address, your browser or any identifier,
+and no row can be traced to a person or to a visit.</p>
+<p>Knowing which sites people check would be the most commercially valuable thing on
+this website for us to keep, which is exactly why we say plainly that we do not keep
+it. We need to know whether anybody uses this tool. We do not need to know who, and
+the difference is not a technicality.</p>
 <p>We obey the target site's robots.txt, and we refuse addresses on private
 networks.</p>
 

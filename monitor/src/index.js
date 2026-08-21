@@ -15,6 +15,11 @@ import { page, thanks, errorPage } from './pages.js';
 import { scanForm, scanResult, scanBusy } from './scan-pages.js';
 import { validateTarget, robotsAllows, scanOnePage } from './scan.js';
 import { checkRateLimit, readCachedScan, writeCachedScan } from './limits.js';
+import {
+  countUsage,
+  SCAN_VIEWED, SCAN_RAN, SCAN_CACHED, SCAN_REFUSED, SCAN_FAILED, SCAN_LIMITED,
+  INTEREST_LEFT,
+} from './usage.js';
 
 const MAX_FIELD = 400;
 
@@ -76,7 +81,7 @@ async function recordInterest(env, fields, sourceUrl) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
     if (url.pathname === '/api/health') {
@@ -86,7 +91,10 @@ export default {
     }
 
     if (url.pathname === '/scan' || url.pathname === '/scan/') {
-      if (request.method === 'GET') return page(scanForm(), 200);
+      if (request.method === 'GET') {
+        countUsage(env, ctx, SCAN_VIEWED);
+        return page(scanForm(), 200);
+      }
       if (request.method !== 'POST') {
         return new Response('Method not allowed', { status: 405, headers: { allow: 'GET, POST' } });
       }
@@ -101,12 +109,14 @@ export default {
       const raw = fields.get('url');
       const checked = validateTarget(typeof raw === 'string' ? raw : '');
       if (checked.error) {
+        countUsage(env, ctx, SCAN_REFUSED);
         return page(scanForm(typeof raw === 'string' ? raw : '', checked.error), 400);
       }
       const target = checked.url;
 
       const cachedResult = await readCachedScan(env, target);
       if (cachedResult) {
+        countUsage(env, ctx, SCAN_CACHED);
         return page(
           scanResult(cachedResult.analysis, {
             target,
@@ -119,10 +129,12 @@ export default {
 
       const limit = await checkRateLimit(env, request);
       if (!limit.ok) {
+        countUsage(env, ctx, SCAN_LIMITED);
         return page(scanBusy(limit.reason, limit.retryAfter), 429);
       }
 
       if (!(await robotsAllows(target))) {
+        countUsage(env, ctx, SCAN_REFUSED);
         return page(
           scanForm(
             target,
@@ -138,6 +150,7 @@ export default {
       try {
         analysis = await scanOnePage(env, target);
       } catch (err) {
+        countUsage(env, ctx, err && err.code === 'BUSY' ? SCAN_LIMITED : SCAN_FAILED);
         if (err && err.code === 'BUSY') {
           return page(
             scanBusy(
@@ -165,6 +178,7 @@ export default {
       }
 
       const scannedAt = new Date().toISOString();
+      countUsage(env, ctx, SCAN_RAN);
       await writeCachedScan(env, target, { analysis, scannedAt });
       return page(scanResult(analysis, { target, cached: false, scannedAt }), 200);
     }
@@ -208,6 +222,7 @@ export default {
         );
       }
 
+      countUsage(env, ctx, INTEREST_LEFT);
       return page(thanks(), 200);
     }
 

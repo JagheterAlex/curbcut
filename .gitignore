@@ -7,3 +7,6 @@ tmp-test/
 # local build artefacts
 site/_preview-all.html
 curbcut-report/
+
+# wrangler build cache
+monitor/.wrangler/
