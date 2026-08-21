@@ -12,7 +12,7 @@ zone_name = "curbcut.org"
 [[d1_databases]]
 binding = "DB"
 database_name = "curbcut"
-database_id = "PLACEHOLDER_SET_BY_WRANGLER_D1_CREATE"
+database_id = "03bade3a-799a-481c-8eab-1e4978a6ddcc"
 
 [observability]
 enabled = true
