@@ -15,6 +15,7 @@
 // with nothing behind them is a fact worth recording rather than avoiding.
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -31,14 +32,26 @@ const DB = '03bade3a-799a-481c-8eab-1e4978a6ddcc';
 const OUR_COUNTRY = 'UA';
 const NOT_A_READER = new Set(['ChromeHeadless', 'Curl', 'Unknown', 'HeadlessChrome']);
 
+const CONFIG = join(
+  process.env.APPDATA ?? '',
+  'xdg.config', '.wrangler', 'config', 'default.toml'
+);
+
 function token() {
-  const cfg = join(
-    process.env.APPDATA ?? '',
-    'xdg.config', '.wrangler', 'config', 'default.toml'
-  );
-  const m = readFileSync(cfg, 'utf8').match(/^oauth_token = "(.+)"$/m);
-  if (!m) throw new Error('No oauth_token in ' + cfg + ' — run `wrangler login`.');
+  const m = readFileSync(CONFIG, 'utf8').match(/^oauth_token = "(.+)"$/m);
+  if (!m) throw new Error('No oauth_token in ' + CONFIG + ' — run `wrangler login`.');
   return m[1];
+}
+
+// The wrangler OAuth token lasts about an hour, which is shorter than the gap
+// between runs of this script. Wrangler refreshes it whenever it runs, so a
+// throwaway command is the whole recovery: no second credential to store, and
+// nothing for a person to do at three in the morning. Called once, on the first
+// authentication failure, and never in a loop.
+function refreshToken() {
+  execFileSync('npx', ['wrangler', 'whoami'], {
+    stdio: 'ignore', shell: true, cwd: join(HERE, '..'),
+  });
 }
 
 const day = (offset = 0) => {
@@ -47,12 +60,20 @@ const day = (offset = 0) => {
   return d.toISOString().slice(0, 10);
 };
 
-async function cf(url, init) {
+const isAuthError = (body) =>
+  Array.isArray(body?.errors) && body.errors.some((e) => e.code === 10000);
+
+async function cf(url, init, retried = false) {
   const res = await fetch(url, {
     ...init,
     headers: { authorization: 'Bearer ' + token(), 'content-type': 'application/json', ...(init?.headers) },
   });
   const body = await res.json();
+
+  if (isAuthError(body) && !retried) {
+    refreshToken();
+    return cf(url, init, true);
+  }
   if (!body.success && body.errors) throw new Error(JSON.stringify(body.errors).slice(0, 300));
   return body;
 }
