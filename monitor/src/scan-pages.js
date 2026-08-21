@@ -148,6 +148,19 @@ export function scanResult(analysis, meta) {
      <pre class="cmd"><code>npx curbcut ${esc(new URL(target).origin)} --crawl --pdf</code></pre>
      <p>Free, MIT licensed, runs on your machine, uploads nothing.</p>
 
+     <div class="callout" style="margin-top:1.5rem">
+       <p><strong>Or have it done for you, &euro;290.</strong> The whole site up to
+       200 pages, delivered as a dated PDF you can forward to whoever asked, with a
+       statement draft and a fix list ordered by regulatory exposure. Two working
+       days. Ask at
+       <a href="mailto:hello@curbcut.org?subject=Curbcut%20audit&amp;body=Site%20to%20audit%3A%20${esc(new URL(target).origin)}%0D%0AApproximate%20number%20of%20pages%3A%20">hello@curbcut.org</a>
+       and you get a fixed price back before anything is invoiced.</p>
+       <p>It is the same automation you just ran, done thoroughly and written up &mdash;
+       <strong>not a manual audit</strong>. Nobody tests your site with a screen reader
+       or tabs your checkout. Anyone selling a &euro;290 &ldquo;full audit&rdquo; is
+       selling you something automation cannot deliver.</p>
+     </div>
+
      <p style="margin-top:2rem"><a class="btn btn-ghost" href="/scan">Check another page</a>
      &nbsp; <a class="btn btn-ghost" href="/#signup">Get told when monitoring opens</a></p>`
   );
