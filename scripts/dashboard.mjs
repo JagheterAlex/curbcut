@@ -28,7 +28,13 @@ const totals = {
   scanViewed: sum((r) => r.actions.scan_viewed),
   scanRan: sum((r) => r.actions.scan_ran),
   leads: data.meta?.interestTotal ?? 0,
+  stylesheets: sum((r) => r.stylesheetFetches),
+  probes: sum((r) => r.probeRequests),
 };
+// Days where the stylesheet method was actually running. Cloudflare only serves
+// the dataset it needs for one day at a time on this plan, so the series starts
+// when we started asking rather than when the site did.
+const measuredDays = rows.filter((r) => typeof r.stylesheetFetches === 'number').length;
 
 // The one bot-excluded measurement this site will ever have, read off the
 // Cloudflare Web Analytics dashboard before the beacon was removed. Kept as a
@@ -47,9 +53,9 @@ const measured = data.meta?.lastRun
 // of 971 against 0 teaches nobody anything they cannot read from the digits.
 const funnel = [
   {
-    label: 'Arrived (upper bound)',
-    value: totals.readerViews,
-    note: 'Page views whose user agent claims to be a browser. That is a string anything can set, so this counts every bot polite enough to lie. Treat it as a ceiling, never as an audience.',
+    label: 'Arrived',
+    value: totals.stylesheets,
+    note: 'Stylesheet fetches. A crawler asks for the HTML and stops; a browser goes back for style.css. Under-counts anyone returning with it cached, so read it as a floor.',
   },
   {
     label: 'Opened the scanner',
@@ -71,10 +77,10 @@ const funnel = [
 const dayRows = rows.map((r) => `
   <tr>
     <td>${esc(r.date)}</td>
-    <td>${n(r.readerViews)}</td>
-    <td>${n(r.uniques)}</td>
+    <td>${typeof r.stylesheetFetches === 'number' ? n(r.stylesheetFetches) : '&mdash;'}</td>
+    <td class="dim">${n(r.readerViews)}</td>
+    <td class="dim">${typeof r.probeRequests === 'number' ? n(r.probeRequests) : '&mdash;'}</td>
     <td class="dim">${n(r.searchBotViews)}</td>
-    <td class="dim">${n(r.ourRequests)}</td>
     <td>${n(r.actions.scan_viewed)}</td>
     <td>${n(r.actions.scan_ran)}</td>
     <td class="${r.actions.interest_left ? 'good' : 'zero'}">${n(r.actions.interest_left)}</td>
@@ -208,10 +214,10 @@ const html = `<title>Curbcut Vital Signs</title>
   <section>
     <h2>The only question that matters yet</h2>
     <p class="lead">People arrive. The question is whether anything happens next.
-      At most <strong>${n(totals.readerViews)}</strong> page views came from something
-      claiming to be a browser. The real figure is a small fraction of that &mdash; see
-      the measurement above, and the caveats below.
-      <strong>${n(totals.leads)}</strong> addresses have been left.</p>
+      <strong>${n(totals.stylesheets)}</strong> browser page loads over
+      ${measuredDays} measured day${measuredDays === 1 ? '' : 's'}, against
+      ${n(totals.readerViews)} requests from clients merely <em>claiming</em> to be
+      browsers. <strong>${n(totals.leads)}</strong> addresses have been left.</p>
     <ol class="funnel">${funnelRows}</ol>
   </section>
 
@@ -222,10 +228,10 @@ const html = `<title>Curbcut Vital Signs</title>
         <thead>
           <tr>
             <th scope="col">Date</th>
-            <th scope="col">Reader views</th>
-            <th scope="col">Unique</th>
+            <th scope="col">Browser loads</th>
+            <th scope="col">UA-claimed</th>
+            <th scope="col">Probes</th>
             <th scope="col">Search bots</th>
-            <th scope="col">Ours</th>
             <th scope="col">Scanner seen</th>
             <th scope="col">Scans run</th>
             <th scope="col">Addresses</th>
@@ -258,11 +264,12 @@ const html = `<title>Curbcut Vital Signs</title>
       here reported 631 &mdash; but it had been set to skip EU visitors, so it measured
       a different population and the two cannot be divided into a correction factor.
       Read every arrival number here as an upper bound and nothing more.</p>
-      <p><strong>Some of the traffic is people looking for something to break into.</strong>
-      Requests in the last day included <code>/.env</code> 36 times,
-      <code>/public/.env</code> 30, <code>/.ssh/config</code> 21 and
-      <code>/storage/logs/laravel.log</code> 21. That is a credential sweep, not an
-      audience, and it hits every domain on the internet.</p>
+      <p><strong>${n(totals.probes)} requests were people looking for something to
+      break into.</strong> WordPress login pages, <code>xmlrpc.php</code>, PHP shells
+      dropped in theme folders, <code>.env</code> files, <code>.ssh/config</code>,
+      Laravel logs. This site runs none of that. It is the background noise of the
+      internet, it hits every domain, and it is excluded from the arrival figure
+      rather than flattering it.</p>
       <p><strong>The shape looks like crawling, not reading.</strong> Requests spread
       evenly across every page rather than concentrating on one article, which is what
       a systematic crawler does and not what a person arriving from a link does. Our

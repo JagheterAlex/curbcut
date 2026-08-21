@@ -6,9 +6,21 @@
 // to survive the data ageing out from under it. Every run merges into
 // business/metrics/daily.json and never overwrites a day it did not measure.
 //
-// Two sources, deliberately separate:
+// Three sources, deliberately separate:
 //   arrivals  — Cloudflare's server-side request statistics. No beacon, no JS.
 //   actions   — our own aggregate counters in D1. See monitor/src/usage.js.
+//   adoption  — npm downloads of the command line tool.
+//
+// The arrival figure that matters is `stylesheetFetches`, not page requests. A
+// crawler asks for the HTML and stops; a browser goes back for style.css. Over
+// one 23-hour window this site served 1,040 page requests and 87 stylesheets,
+// while Cloudflare's own bot-filtered analytics counted 77 page views. Those
+// last two agreeing to within a rounding error is the whole argument for the
+// method, and it needs no JavaScript on the page, which is the point: we tell
+// people this site carries no scripts.
+//
+// It under-counts returning visitors, whose browser has the stylesheet cached.
+// A floor we can defend beats a ceiling we cannot.
 //
 // Arrivals without actions is the whole question. A site can be visited by
 // hundreds of people a day and still be a failure, and a month of page views
@@ -121,6 +133,51 @@ async function arrivals(since, until) {
   return out;
 }
 
+// One day is the widest window the free plan allows on this dataset, so this is
+// a daily snapshot or nothing.
+async function todayDetail() {
+  const since = new Date(Date.now() - 23 * 3600 * 1000).toISOString().slice(0, 19) + 'Z';
+  const query = `query($zone:String!,$since:Time!){
+    viewer{zones(filter:{zoneTag:$zone}){
+      httpRequestsAdaptiveGroups(limit:300,filter:{datetime_geq:$since},orderBy:[count_DESC]){
+        count dimensions{clientRequestPath}
+      }}}}`;
+  const body = await cf('https://api.cloudflare.com/client/v4/graphql', {
+    method: 'POST',
+    body: JSON.stringify({ query, variables: { zone: ZONE, since } }),
+  });
+  if (body.errors) return null;
+
+  // Anything looking for a config file, a credential or a PHP shell. We do not
+  // run PHP or WordPress; this is the background noise of the internet, and
+  // counting it as audience would flatter us every single day.
+  const PROBE = /\.(env|ssh|git|sql|bak|ya?ml|log|ini|php|asp|aspx)$|wp-|xmlrpc|actuator|laravel|credential|phpinfo|\/\./i;
+  const PAGE = /^\/($|blog|scan$|privacy$|terms$|accessibility$|wcag-2-2$|demo\/)/;
+
+  let stylesheetFetches = 0, pageRequests = 0, probeRequests = 0;
+  for (const r of body.data.viewer.zones[0].httpRequestsAdaptiveGroups) {
+    const path = r.dimensions.clientRequestPath;
+    const c = r.count;
+    if (/\.css$/i.test(path)) stylesheetFetches += c;
+    else if (path.startsWith('/cdn-cgi/')) continue;
+    else if (PROBE.test(path)) probeRequests += c;
+    else if (PAGE.test(path) && !path.split('/').pop().includes('.')) pageRequests += c;
+  }
+  return { stylesheetFetches, pageRequests, probeRequests };
+}
+
+// Downloads of the published tool. Public, unauthenticated, and the one number
+// here that nobody can inflate by pointing a crawler at us.
+async function npmDownloads() {
+  try {
+    const res = await fetch('https://api.npmjs.org/downloads/point/last-week/curbcut');
+    const body = await res.json();
+    return typeof body.downloads === 'number' ? body.downloads : null;
+  } catch {
+    return null;
+  }
+}
+
 async function sql(statement) {
   const body = await cf(
     `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT}/d1/database/${DB}/query`,
@@ -142,10 +199,12 @@ async function actions() {
 const since = day(13);
 const until = day(0);
 
-const [seen, did, leads] = await Promise.all([
+const [seen, did, leads, detail, npmWeek] = await Promise.all([
   arrivals(since, until),
   actions(),
   sql('SELECT COUNT(*) AS n FROM interest;').then((r) => r[0].n),
+  todayDetail(),
+  npmDownloads(),
 ]);
 
 mkdirSync(dirname(OUT), { recursive: true });
@@ -154,21 +213,34 @@ const history = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : {};
 for (const date of new Set([...Object.keys(seen), ...Object.keys(did)])) {
   history[date] = { ...history[date], ...(seen[date] ?? {}), actions: did[date] ?? {} };
 }
-history.meta = { lastRun: new Date().toISOString(), interestTotal: leads };
+if (detail) {
+  history[until] = { ...history[until], ...detail };
+}
+history.meta = {
+  lastRun: new Date().toISOString(),
+  interestTotal: leads,
+  npmDownloadsLastWeek: npmWeek,
+};
 
 writeFileSync(OUT, JSON.stringify(history, null, 2) + '\n', 'utf8');
 
-const dates = Object.keys(history).filter((k) => k !== 'meta').sort();
+// A day key is a date. Everything else in the file is metadata, and treating
+// one as a day printed a phantom row — the same bug twice, in two scripts.
+const dates = Object.keys(history).filter((k) => /^\d{4}-\d{2}-\d{2}$/.test(k)).sort();
 const pad = (v, n) => String(v).padStart(n);
-console.log('date         views  readers  bots  uniq | viewed  ran  cached  leads');
+console.log('date          css*  pageReq  probes | viewed  ran  leads');
 for (const d of dates) {
   const h = history[d];
   const a = h.actions ?? {};
   console.log(
-    d + ' ' + pad(h.pageViews ?? 0, 7) + pad(h.readerViews ?? 0, 9) + pad(h.searchBotViews ?? 0, 6) +
-    pad(h.uniques ?? 0, 6) + ' |' + pad(a.scan_viewed ?? 0, 7) + pad(a.scan_ran ?? 0, 5) +
-    pad(a.scan_cached ?? 0, 8) + pad(a.interest_left ?? 0, 7)
+    d + pad(h.stylesheetFetches ?? '-', 7) + pad(h.pageRequests ?? '-', 9) +
+    pad(h.probeRequests ?? '-', 8) + ' |' + pad(a.scan_viewed ?? 0, 7) +
+    pad(a.scan_ran ?? 0, 5) + pad(a.interest_left ?? 0, 7)
   );
 }
+console.log('\n* stylesheet fetches: the closest thing to a real browser we can');
+console.log('  count without putting a script on the page. Under-counts repeat');
+console.log('  visitors, whose browser already has it cached.');
+if (npmWeek !== null) console.log('\nnpm downloads, last week: ' + npmWeek);
 console.log('\nAddresses left, all time: ' + leads);
 console.log('Written to ' + OUT);
