@@ -105,6 +105,45 @@ export function scanResult(analysis, meta) {
   const s = analysis.summary;
   const date = scannedAt.slice(0, 10);
 
+  // The transition sits between the summary and the findings on purpose. This
+  // page is where somebody who does not use a terminal arrives, which makes it
+  // the one surface where the date matters most: their last audit was written
+  // against WCAG 2.1, and five of the six criteria arriving cannot be scanned
+  // for at all.
+  const t = analysis.transition;
+  const transitionHtml = t
+    ? `<h2 style="margin-top:2.5rem">What changes when ${esc(t.to.version)} is cited</h2>
+       <p>${esc(t.to.citationCaveat)}</p>
+       <div class="tablewrap" style="margin-top:1rem">
+         <table>
+           <tbody>
+             <tr><td>WCAG adopted today</td><td>${esc(analysis.standard.adoptsWcag)}</td></tr>
+             <tr><td>WCAG adopted from citation</td><td>${esc(t.to.adoptsWcag)}</td></tr>
+             <tr><td>Clauses failing on this page today</td><td>${t.failingToday}</td></tr>
+             <tr><td>Clauses failing at citation</td><td>${t.failingAtCitation}</td></tr>
+           </tbody>
+         </table>
+       </div>
+       ${t.becomingRequired.length
+         ? `<p style="margin-top:1rem"><strong>Found here, not required yet, required then:</strong></p>
+            <ul>${t.becomingRequired
+              .map((f) => `<li>Clause ${esc(f.clause)} &mdash; ${esc(f.title)} (level ${esc(f.level)}), ${f.nodeCount} element${f.nodeCount === 1 ? '' : 's'}</li>`)
+              .join('')}</ul>`
+         : '<p style="margin-top:1rem">Nothing on this page fails a criterion that is arriving. That is not the same as being ready for it &mdash; see below.</p>'}
+       <div class="callout" style="margin-top:1.5rem">
+         <p><strong>Six criteria arrive. This scan can check one of them.</strong>
+         WCAG ${esc(t.to.adoptsWcag)} adds ${t.arriving.length} success criteria at levels A and AA.
+         Automated testing has a rule for ${t.arriving.length - t.undetectable.length}:
+         target size. The other ${t.undetectable.length} need a person, so they are
+         missing from the findings below because nobody looked, not because they pass.</p>
+         <ul>${t.arriving
+           .map((c) => `<li><strong>${esc(c.criterion)} ${esc(c.title)}</strong> (${esc(c.level)}) &mdash; ${c.automatable ? 'checked above. ' : '<em>needs a person.</em> '}${esc(c.why)}</li>`)
+           .join('')}</ul>
+         <p>Which is the honest reason a readiness check for this transition is
+         mostly manual work, whoever you buy it from.</p>
+       </div>`
+    : '';
+
   const notChecked = analysis.manualOnly
     .map((m) => `<li><strong>${esc(m.clause)}</strong> &mdash; ${esc(m.what)}. ${esc(m.why)}</li>`)
     .join('');
@@ -132,6 +171,8 @@ export function scanResult(analysis, meta) {
        certificate, and it is not legal advice.</p>
        <p><strong>What it cannot be.</strong> ${esc(analysis.coverageNote)}</p>
      </div>
+
+     ${transitionHtml}
 
      <h2 style="margin-top:2.5rem">Findings</h2>
      ${findingsHtml(analysis)}
