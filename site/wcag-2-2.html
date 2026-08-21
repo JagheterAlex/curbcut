@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Is your site ready for WCAG 2.2? — Curbcut</title>
+<meta name="description" content="EN 301 549 V4.1.1 adopts WCAG 2.2, scheduled for citation on 30 November 2026. Check a page free, and see honestly which of the six new criteria a scanner can and cannot check.">
+<link rel="stylesheet" href="style.css">
+<link rel="canonical" href="https://curbcut.org/wcag-2-2">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="/">
+      <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true" focusable="false">
+        <path d="M1 15h20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".35"/>
+        <path d="M1 11h6l4-9h10" fill="none" stroke="#f5c344" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      </svg>
+      Curbcut
+    </a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/scan">Scan a page</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/accessibility">Accessibility</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<section>
+<div class="wrap prose">
+
+<p class="eyebrow"><span class="dot"></span> Readiness check</p>
+<h1>Your last audit was written against WCAG 2.1.</h1>
+<p class="lede">EN&nbsp;301&nbsp;549 <strong>V4.1.1</strong> adopts WCAG&nbsp;2.2 and is
+scheduled for citation in the Official Journal on <strong>30 November 2026</strong>.
+Six success criteria arrive at levels A and AA. A scanner can check one of them.
+This page is about the other five.</p>
+
+<p class="actions">
+  <a class="btn btn-primary" href="/scan">Check a page free</a>
+  <a class="btn btn-ghost" href="/blog/en-301-549-v4-wcag-2-2">Why this date, and what moves it</a>
+</p>
+<p class="micro">No install, no account, no terminal. Every result shows two columns:
+what fails today under V3.2.1, and what the same page looks like once V4.1.1 is
+cited.</p>
+
+<h2>What you will have to do by hand</h2>
+<p>Automated testing measures geometry, contrast and markup. Five of the six criteria
+arriving are judgements about <em>behaviour</em>, and nothing in the page source
+reveals them. Each of these needs a person, sitting with your product:</p>
+
+<div class="tablewrap">
+<table>
+<thead>
+<tr>
+  <th scope="col">Criterion</th>
+  <th scope="col">Level</th>
+  <th scope="col">Who can check it</th>
+  <th scope="col">What the check actually is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>2.5.8</strong> Target Size</td><td>AA</td>
+  <td><strong>A scanner</strong></td>
+  <td>Measure every control against the minimum hit area.</td>
+</tr>
+<tr>
+  <td><strong>2.4.11</strong> Focus Not Obscured</td><td>AA</td>
+  <td>A person</td>
+  <td>Tab through the page and watch whether a sticky header or cookie bar covers
+      the control that just took focus.</td>
+</tr>
+<tr>
+  <td><strong>2.5.7</strong> Dragging Movements</td><td>AA</td>
+  <td>A person</td>
+  <td>Find every drag interaction, then confirm each one can also be done with a
+      single pointer.</td>
+</tr>
+<tr>
+  <td><strong>3.2.6</strong> Consistent Help</td><td>A</td>
+  <td>A person</td>
+  <td>Compare where help appears across several pages, and judge whether it is the
+      same help in the same place.</td>
+</tr>
+<tr>
+  <td><strong>3.3.7</strong> Redundant Entry</td><td>A</td>
+  <td>A person</td>
+  <td>Complete a multi-step form and notice anything it asks for twice.</td>
+</tr>
+<tr>
+  <td><strong>3.3.8</strong> Accessible Authentication</td><td>AA</td>
+  <td>A person</td>
+  <td>Judge whether your login imposes a cognitive function test with no
+      alternative.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout">
+<p><strong>This is the part vendors leave out.</strong> A tool reporting a clean
+WCAG&nbsp;2.2 result has checked one criterion in six and said nothing about the
+other five. It is not lying about what it found; it is quiet about what it never
+looked at.</p>
+<p>Our scanner prints the five it cannot evaluate, on every result, above the
+findings. A green result from us reads as <em>a starting point</em>, because that is
+what it is.</p>
+</div>
+
+<h2>One thing to take off the list</h2>
+<p><strong>4.1.1 Parsing</strong> leaves the standard at citation — and it already
+cannot be failed. W3C errata of 21 September 2023 added a note to WCAG 2.0 and 2.1
+that it <em>&ldquo;should be considered as always satisfied for any content using
+HTML or XML&rdquo;</em>.</p>
+<p>So <strong>fixing duplicate <code>id</code> attributes buys you no conformance</strong>,
+today or later. If a report has put that on your roadmap, it can come off.
+<a href="/blog/en-301-549-v4-wcag-2-2">The full explanation is in the article.</a></p>
+
+<h2>Have the whole site checked, &euro;290</h2>
+<div class="callout">
+<p>Up to 200 pages crawled and mapped to EN&nbsp;301&nbsp;549 clauses, ranked by
+regulatory exposure, delivered as a dated PDF you can forward to whoever asked, with
+a draft accessibility statement and a fix list in priority order. Both columns:
+today, and after citation. Two working days.</p>
+<p class="actions"><!--email_off--><a class="btn btn-primary" href="mailto:hello@curbcut.org?subject=WCAG%202.2%20readiness&amp;body=Site%3A%20%0D%0AApproximate%20number%20of%20pages%3A%20">Ask for a fixed price</a><!--email_on--></p>
+<p><strong>What it is not.</strong> It is automated testing done thoroughly and
+written up by a person. Nobody tests your site with a screen reader, tabs your
+checkout, or judges your login against 3.3.8. Automated testing detects roughly 30
+to 40 percent of WCAG failures, and five of the six criteria arriving sit in the part
+it cannot reach. If you need those five covered, you need a manual audit, and it
+costs more than this from people who do it properly.</p>
+</div>
+
+<h2>Before you act on any of it</h2>
+<ul>
+<li><strong>30 November is a scheduled milestone, not a passed law.</strong> An
+obligation begins when a version is cited in the Official Journal, and scheduled
+dates move. Until then the harmonised standard is V3.2.1, which adopts WCAG 2.1.</li>
+<li>Anyone telling you WCAG 2.2 is legally required today is describing next year as
+though it were this one.</li>
+<li>We are not a certification body, no report we produce is a certificate, and
+nothing here is legal advice.</li>
+<li>Curbcut is not affiliated with, endorsed by or accredited by ETSI, CEN, CENELEC
+or the European Commission.</li>
+</ul>
+
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+      <li><a href="/accessibility">Accessibility statement</a></li>
+      <li><!--email_off--><a href="mailto:hello@curbcut.org">hello@curbcut.org</a><!--email_on--></li>
+    </ul>
+    <p>Nothing on this site is legal advice.</p>
+  </div>
+</footer>
+
+</body>
+</html>
