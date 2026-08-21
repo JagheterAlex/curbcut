@@ -288,7 +288,7 @@ written to curbcut-report/</code></pre>
             <li>Told when the harmonised standard is revised</li>
             <li>Email support from the person who wrote it</li>
           </ul>
-          <!--email_off--><a class="btn btn-primary" href="mailto:hello@curbcut.org?subject=Curbcut%20Monitor">Tell me when it opens</a><!--email_on-->
+          <a class="btn btn-primary" href="#signup">Tell me when it opens</a>
         </div>
 
         <div class="tier">
@@ -302,9 +302,47 @@ written to curbcut-report/</code></pre>
             <li>Per-client evidence trails</li>
             <li>Named-contact support</li>
           </ul>
-          <!--email_off--><a class="btn btn-ghost" href="mailto:hello@curbcut.org?subject=Curbcut%20Agency">Tell me when it opens</a><!--email_on-->
+          <a class="btn btn-ghost" href="#signup">Tell me when it opens</a>
         </div>
 
+      </div>
+
+
+      <div class="signup" id="signup">
+        <h3>Tell me when Monitor opens</h3>
+        <p>One email, on the day it exists. No newsletter, and the record is
+          deleted the same day you ask.</p>
+
+        <form method="post" action="/api/interest">
+          <div class="fields">
+            <div class="field">
+              <label for="f-email">Email <span class="hint">required</span></label>
+              <input type="email" id="f-email" name="email" required autocomplete="email"
+                     placeholder="you@company.com">
+            </div>
+            <div class="field">
+              <label for="f-site">Site you would point it at <span class="hint">optional</span></label>
+              <input type="text" id="f-site" name="site" autocomplete="url"
+                     placeholder="example.com">
+            </div>
+            <div class="field wide">
+              <label for="f-use">What would you actually use it for?
+                <span class="hint">optional, and it decides what gets built first</span></label>
+              <textarea id="f-use" name="use_case" rows="3"
+                        placeholder="Weekly scan of a 300-page shop, and something I can send the client."></textarea>
+            </div>
+          </div>
+
+          <div class="trap" aria-hidden="true">
+            <label for="f-cw">Leave this field empty</label>
+            <input type="text" id="f-cw" name="company_website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button type="submit" class="btn btn-primary">Put me on the list</button>
+          <p class="small">Works without JavaScript, because this site has none.
+            We store the address and what you typed, nothing else — no cookie, no
+            tracking, no IP. See the <a href="/privacy">privacy policy</a>.</p>
+        </form>
       </div>
 
       <div class="callout" style="margin-top:1.5rem">
