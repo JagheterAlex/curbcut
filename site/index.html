@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Curbcut — accessibility findings, mapped to EN 301 549 clauses</title>
-<meta name="description" content="Curbcut turns axe-core findings into EN 301 549 clause references, ranks them by regulatory exposure, and drafts an accessibility statement that does not overclaim. Built for the European Accessibility Act. Free core, MIT licensed.">
+<meta name="description" content="Check a page against EN 301 549 in your browser, with nothing to install. Curbcut turns accessibility findings into clause references, ranks them by regulatory exposure, and says which clauses no automated tool can check. Built for the European Accessibility Act. Free and MIT licensed.">
 <link rel="stylesheet" href="style.css">
 <link rel="canonical" href="https://curbcut.org/">
 <meta property="og:title" content="Curbcut — accessibility findings, mapped to EN 301 549 clauses">
@@ -55,12 +55,14 @@
             statement that does not lie on your behalf.</p>
 
           <div class="actions">
-            <a class="btn btn-primary" href="#pricing">See pricing</a>
+            <a class="btn btn-primary" href="/scan">Check a page now</a>
             <a class="btn btn-ghost" href="https://github.com/JagheterAlex/curbcut">Read the source</a>
           </div>
 
-          <p class="micro">Free core is MIT licensed and runs on your machine.
-            No account, no telemetry, no page ever uploaded.</p>
+          <p class="micro"><strong>Nothing to install and no account.</strong> Paste an
+            address, get clause-level findings in about ten seconds. If you would rather
+            not send us a URL at all, the command line tool does more and runs entirely
+            on your own machine.</p>
         </div>
 
         <div class="term">
@@ -89,6 +91,19 @@ written to curbcut-report/</code></pre>
         broken page it scans is public</a> — run the command yourself and you will get the same five
         clauses. If you want the long version of the argument, read
         <a href="/blog/scanner-output-is-not-a-conformance-claim">why scanner output is not a conformance claim</a>.</p>
+
+      <div class="callout" style="margin-top:2.5rem">
+        <p><strong>You do not have to be a developer to use this.</strong> Most
+          accessibility tooling assumes you can run a terminal. The people who
+          actually get asked what their organisation has done about the European
+          Accessibility Act are usually not the people who can. So the same engine
+          runs at <a href="/scan">curbcut.org/scan</a>: paste an address, read the
+          answer, print it or send it to whoever asked.</p>
+        <p>Same clause mapping, same exposure ranking, same list of what could not
+          be checked. The command line version adds whole-site crawling, PDF reports
+          and baseline comparison — but you do not need any of that to find out
+          where you stand.</p>
+      </div>
     </div>
   </section>
 
