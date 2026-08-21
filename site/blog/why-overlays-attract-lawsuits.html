@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The people an accessibility overlay is for rate it worse than everybody else — Curbcut</title>
+<meta name="description" content="The people an accessibility overlay is for rate it worse than everybody else">
+<link rel="stylesheet" href="../style.css">
+<link rel="canonical" href="https://curbcut.org/blog/why-overlays-attract-lawsuits">
+<meta property="og:title" content="The people an accessibility overlay is for rate it worse than everybody else">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://curbcut.org/blog/why-overlays-attract-lawsuits">
+<meta property="og:image" content="https://curbcut.org/blog/covers/overlays.png">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="/">
+      <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true" focusable="false">
+        <path d="M1 15h20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".35"/>
+        <path d="M1 11h6l4-9h10" fill="none" stroke="#f5c344" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      </svg>
+      Curbcut
+    </a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/scan">Scan a page</a></li>
+        <li><a href="/blog/">Writing</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<section>
+<div class="wrap prose">
+
+<article>
+<h1>The people an accessibility overlay is for rate it worse than everybody else</h1>
+<p class="lede">Published 21 August 2026.</p>
+
+<p>The pitch is close to irresistible. One line of JavaScript, no engineering work,
+no audit, and a legal problem becomes a subscription line item. If it worked, it
+would be the best value in software.</p>
+
+<p>There is a lot of argument about whether it works. There is less argument among
+the people it is supposedly for, and that is the part worth starting with.</p>
+
+<h2>One number</h2>
+
+<p>The WebAIM survey of web accessibility practitioners asked how effective overlays
+are. Of 758 valid responses, <strong>67%</strong> rated them &ldquo;not at all&rdquo; or &ldquo;not very&rdquo;
+effective.</p>
+
+<p>Among <strong>respondents who themselves have disabilities</strong>, that rose to <strong>72%</strong>.
+Only <strong>2.4%</strong> of them called overlays very effective.</p>
+
+<p>That survey is from January 2021, so treat the exact figures as of their date. I
+am not aware of a later practitioner survey that reverses the finding, and if one
+exists I would genuinely like to see it.</p>
+
+<p>The shape of the result is the part that matters: the group with the most direct
+experience of using these tools rates them <strong>worse</strong> than the general population
+of practitioners does.</p>
+
+<p>For any other product that finding would end the discussion. A wheelchair ramp
+that wheelchair users rate worse than non-users do is not a ramp.</p>
+
+<h2>What the FTC order actually says</h2>
+
+<p>In January 2025 the US Federal Trade Commission brought a case against accessiBe
+and <a href="https://www.ftc.gov/legal-library/browse/cases-proceedings/2223156-accessibe-inc">approved the final order in April</a>.
+One million dollars.</p>
+
+<p>The interesting part is not the money. It is the prohibition. The order <strong>bars
+accessiBe from representing that its automated products can make any website
+WCAG-compliant, or can ensure continued compliance over time, unless it has
+evidence to support the claim.</strong></p>
+
+<p>Read that as a statement about the category rather than about one company. A
+regulator looked at &ldquo;automated tool makes your site compliant&rdquo; and concluded it
+could not be said without evidence &mdash; evidence that, in that case, did not exist.</p>
+
+<p>The same complaint also covered third-party articles and reviews formatted to look
+like independent opinions, where the company&rsquo;s connection to the reviewer was not
+disclosed. If you evaluated overlays by reading reviews a few years ago, some of
+what you read was not what it appeared to be.</p>
+
+<h2>Why it cannot work, mechanically</h2>
+
+<p>An overlay is JavaScript that runs in the visitor&rsquo;s browser and modifies the page
+after it arrives. That single fact produces most of the limitations.</p>
+
+<p><strong>It has to guess.</strong> No script can know that an image of a chart is decorative in
+one place and load-bearing in another, or that your heading structure is wrong
+rather than unusual, or which of four inputs is the one labelled &ldquo;Name&rdquo; in the
+visual layout. Automated remediation guesses, and a confident wrong label is worse
+than a missing one: a missing label is a barrier somebody can work around, and a
+wrong label sends them somewhere else entirely.</p>
+
+<p><strong>It fixes nothing at the source.</strong> The changes exist in the rendered page while
+the script is running. They are not in your markup, not in your templates, and not
+in the next page your team ships. Turn the subscription off and every fix leaves
+with it.</p>
+
+<p><strong>It depends on somebody else&rsquo;s infrastructure.</strong> The script is served from a
+vendor CDN. If that CDN is slow, blocked by a corporate proxy, or down, the
+remediation is simply absent &mdash; and absent precisely for the users least able to
+compensate.</p>
+
+<p><strong>Some things are structural.</strong> Focus order, keyboard traps, whether a multi-step
+checkout can be completed without a mouse, whether error messages are announced at
+all. Those are properties of how the application is built. A layer painted over
+the top does not change them.</p>
+
+<h2>The litigation data</h2>
+
+<p><a href="https://blog.usablenet.com/2025-midyear-accessibility-lawsuit-report-key-legal-trends">UsableNet&rsquo;s 2025 midyear report</a>
+counted <strong>456 US accessibility lawsuits &mdash; 22.6% of the total &mdash; filed against sites
+that already had an overlay installed.</strong></p>
+
+<p>That number does not prove overlays cause lawsuits. Sites that install one are
+plausibly sites already worried about being sued, which is a selection effect and
+should be said out loud rather than glossed over.</p>
+
+<p>What it does refute is the marketing claim. Roughly one in five of these cases
+landed on a site that had bought protection. Whatever the widget is, it is not a
+shield &mdash; and its presence is trivially detectable by anybody looking for
+defendants.</p>
+
+<h2>Where the overlay vendors are not wrong</h2>
+
+<p>A fair argument has to include this part.</p>
+
+<p><strong>User preference controls are genuinely useful.</strong> Being able to raise text size,
+increase contrast or reduce motion helps real people, and some users like having
+those controls in one place rather than hunting through browser settings. That is
+a legitimate feature and it is a pity it arrives bundled with a legal claim.</p>
+
+<p><strong>Some organisations have nothing at all.</strong> For a site with no accessibility work
+whatsoever, a widget that adds a few keyboard shortcuts is not worse than nothing
+in every respect.</p>
+
+<p><strong>The underlying problem is real and hard.</strong> Vendors did not invent the demand.
+Companies genuinely are being asked to fix years of accumulated markup with no
+budget and no expertise, and &ldquo;one line of JavaScript&rdquo; answers a real question,
+just not truthfully.</p>
+
+<p>The objection is not that the software exists. It is the compliance claim attached
+to it, and that claim is now the subject of a regulator&rsquo;s order.</p>
+
+<h2>What to do instead, in order</h2>
+
+<p><strong>Find out where you actually stand.</strong> Not a score out of a hundred: a list of
+which clauses of the harmonised standard are failing, and how badly.</p>
+
+<pre class="cmd"><code>npx curbcut https://example.com --crawl</code></pre>
+
+<p>Or <a href="https://curbcut.org/scan">check a page in your browser</a> with nothing
+installed.</p>
+
+<p><strong>Fix the task-blockers first.</strong> An unlabelled password field in your checkout
+outranks four hundred low-contrast footer links, however your tool sorts them by
+default.</p>
+
+<p><strong>Get a person to test what automation cannot reach.</strong> Automated testing gets you
+roughly a third of the way. The rest &mdash; keyboard journeys, focus order, whether alt
+text says anything useful &mdash; needs a human, and some of it needs a human who uses
+assistive technology every day.</p>
+
+<p><strong>Write a statement you can defend.</strong> <a href="https://curbcut.org/blog/accessibility-statement-that-survives-scrutiny">The template most people copy is for a
+different law</a>,
+and an unsupported conformance claim is the first document anybody investigating
+you will read.</p>
+
+<h2>The part where I declare my interest</h2>
+
+<p>I build an accessibility tool, so read all of the above knowing that.</p>
+
+<p>Here is what mine does not do: it does not fix anything. It finds what automation
+can find, maps it onto EN 301 549 clauses, ranks it by regulatory exposure, and
+prints the clauses it could not evaluate rather than staying quiet about them. The
+fixing is engineering work somebody has to do, and no product I could build would
+change that.</p>
+
+<p>More than 600 accessibility practitioners &mdash; including contributors to the WCAG,
+ARIA and HTML specifications, and accessibility staff at Google, Microsoft, Apple,
+Shopify, eBay and Target &mdash; have signed the
+<a href="https://overlayfactsheet.com/en/">Overlay Fact Sheet</a>, which sets out the
+technical case in more detail than I have here. Read it before you buy anything,
+including mine.</p>
+</article>
+
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/scan">Scan a page</a></li>
+      <li><a href="/blog/">Writing</a></li>
+      <li><a href="/terms">Terms</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+      <li><a href="/accessibility">Accessibility statement</a></li>
+      <li><!--email_off--><a href="mailto:hello@curbcut.org">hello@curbcut.org</a><!--email_on--></li>
+    </ul>
+    <p>Nothing on this site is legal advice.</p>
+  </div>
+</footer>
+
+</body>
+</html>
