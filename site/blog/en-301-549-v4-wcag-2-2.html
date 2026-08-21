@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EN 301 549 is about to move to WCAG 2.2 — Curbcut</title>
+<meta name="description" content="EN 301 549 V4.1.1 adopts WCAG 2.2 and is scheduled for citation in the Official Journal on 30 November 2026. The six new criteria, the one requirement that disappears, and what to do before then.">
+<link rel="stylesheet" href="../style.css">
+<link rel="canonical" href="https://curbcut.org/blog/en-301-549-v4-wcag-2-2">
+<meta property="og:title" content="EN 301 549 is about to move to WCAG 2.2">
+<meta property="og:description" content="Six new criteria, one date, and one requirement that disappears. What changes when V4.1.1 is cited in the Official Journal.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://curbcut.org/blog/en-301-549-v4-wcag-2-2">
+<meta property="og:image" content="https://curbcut.org/blog/covers/en-301-549-v4.png">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="/">
+      <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true" focusable="false">
+        <path d="M1 15h20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".35"/>
+        <path d="M1 11h6l4-9h10" fill="none" stroke="#f5c344" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      </svg>
+      Curbcut
+    </a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog/">Writing</a></li>
+        <li><a href="https://github.com/JagheterAlex/curbcut">GitHub</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<section>
+<div class="wrap prose">
+
+<article>
+<h1>EN 301 549 is about to move to WCAG 2.2. Six criteria, one date, and one requirement that disappears.</h1>
+<p class="lede">Published 21 August 2026.</p>
+
+<p>If you are working to the European Accessibility Act, the standard you are
+working to is <strong>EN 301 549 V3.2.1 (2021-03)</strong>, and it adopts
+<strong>WCAG 2.1</strong>. That is true today. It is scheduled to stop being true
+on <strong>30 November 2026</strong>.</p>
+
+<p>Here is what changes, what does not, and the one thing worth doing about it
+now.</p>
+
+<h2>The date, and why it is the only date that matters</h2>
+
+<p>A standard becomes a legal obligation in the EU when it is <strong>cited in the
+Official Journal</strong>, not when the body that wrote it publishes it. That
+distinction is the whole story here.</p>
+
+<div class="tablewrap">
+<table>
+  <caption>Scheduled milestones, per ETSI's published work programme.</caption>
+  <thead>
+    <tr><th scope="col">Milestone</th><th scope="col">Scheduled</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>V4.1.0 draft, public enquiry</td><td>November 2025 — done</td></tr>
+    <tr><td>V4.1.1 published by ETSI</td><td>August 2026</td></tr>
+    <tr><td><strong>Cited in the Official Journal, replacing V3.2.1</strong></td><td><strong>30 November 2026</strong></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>These are scheduled milestones, not guarantees. Citation depends on votes and
+reviews that have moved timelines by weeks or months before and can again.</p>
+
+<p>Until that citation happens, <strong>V3.2.1 is the yardstick</strong> and WCAG
+2.2 criteria are good practice rather than obligations. Anyone selling you WCAG
+2.2 remediation as a legal requirement today is ahead of the law. Anyone telling
+you to ignore 2.2 is setting you up to do the work twice.</p>
+
+<h2>What actually changes</h2>
+
+<p>Clauses 9, 10 and 11 — web, non-web documents and software — move from WCAG 2.1
+to <strong>WCAG 2.2 Level AA</strong>. For clause 9, that is six new success
+criteria at A and AA.</p>
+
+<h3>3.2.6 Consistent Help (Level A)</h3>
+<p>If you offer a help mechanism — contact details, a chat widget, a help link —
+it has to appear in the same relative order across pages. In practice this is a
+layout consistency rule, and most sites with a stable header already pass it. The
+ones that fail are the ones where help moves into a hamburger on some templates
+and not others.</p>
+
+<h3>3.3.7 Redundant Entry (Level A)</h3>
+<p>Do not ask for the same information twice in one process. If the user typed
+their address at step two, step four either pre-fills it or offers it for
+selection. Checkout flows and multi-step onboarding are where this bites.</p>
+
+<h3>2.4.11 Focus Not Obscured, Minimum (Level AA)</h3>
+<p>When something receives keyboard focus, it must not be entirely hidden behind
+sticky headers, cookie bars or floating chat bubbles. This is the criterion most
+likely to fail on a modern site, because sticky elements are everywhere and almost
+nobody tabs through their own page to check.</p>
+
+<h3>2.5.7 Dragging Movements (Level AA)</h3>
+<p>Anything you can do by dragging must also be doable with a single pointer action
+that is not a drag. Sliders, kanban boards, reorderable lists, map panning. Add a
+click alternative or a set of buttons.</p>
+
+<h3>2.5.8 Target Size, Minimum (Level AA)</h3>
+<p>Interactive targets must be at least <strong>24 by 24 CSS pixels</strong>, with
+exceptions for inline links in text and for targets with enough spacing around
+them.</p>
+
+<p>This is the one people get wrong when they read old advice. WCAG 2.1 had a
+target size criterion — 2.5.5 — but it was <strong>Level AAA at 44 pixels</strong>,
+so it was never in scope for EAA conformance. WCAG 2.2 adds a <em>different,
+smaller</em> criterion at AA. If your design system standardised on 44px because a
+consultant said so, you were never obliged to and you still are not. Twenty-four is
+the number that is about to matter.</p>
+
+<h3>3.3.8 Accessible Authentication, Minimum (Level AA)</h3>
+<p>No cognitive function test in your login unless there is an alternative. That
+means: do not require the user to solve a puzzle, transcribe a code from an image,
+or remember something, without offering another route. Copy and paste must work in
+one-time-code fields. Password managers must not be blocked.</p>
+
+<p>This one has teeth, because a lot of authentication is deliberately hostile to
+automation, and hostility to automation is usually hostility to assistive
+technology as well.</p>
+
+<h2>The requirement that disappears</h2>
+
+<p><strong>4.1.1 Parsing is obsolete in WCAG 2.2.</strong> Duplicate <code>id</code>
+attributes and unclosed tags are no longer a conformance failure on their own —
+browsers recover from them predictably and the criterion no longer described a real
+barrier.</p>
+
+<p>But it is still in force right now, because V3.2.1 adopts WCAG 2.1, and 2.1
+still contains it. So a duplicate <code>id</code> is a failure of the currently
+harmonised standard today and will quietly stop being one after citation.</p>
+
+<p>This is the only place where the new version makes your life easier, and it is
+worth knowing about mostly so that you do not spend an afternoon in November fixing
+something that no longer counts.</p>
+
+<h2>Two changes nobody mentions</h2>
+
+<p><strong>Clause 6 gets much bigger.</strong> Real-time communication requirements
+broaden from two-way voice to real-time bidirectional communication, formally
+taking in Total Conversation — voice, real-time text and video together — with
+substantially revised RTT requirements. If your product includes calling, messaging
+or support chat, clause 6 deserves a read on its own, separately from anything WCAG
+says.</p>
+
+<p><strong>Annexes ZA and ZB are new, and they matter more than they sound.</strong>
+They map the technical clauses onto the actual articles of the European
+Accessibility Act. V3.2.1 had no such mapping, which is why demonstrating a
+presumption of conformity against the EAA has been awkward: you were citing a
+technical standard at a legal instrument and hoping the join was obvious. V4.1.1
+makes the join explicit.</p>
+
+<p>For anyone who has had to assemble a conformance argument by hand, that is the
+most useful thing in the release.</p>
+
+<h2>What to do before November</h2>
+
+<p><strong>Do not remediate WCAG 2.2 as though it were law today.</strong> It is
+not, and you will have spent budget ahead of the obligation.</p>
+
+<p><strong>Do not ignore it either.</strong> Six new criteria with a fixed date is
+a plannable piece of work, and the two that usually require real design changes —
+focus not obscured, and dragging movements — are cheaper to fix while you are
+already touching a component than as an emergency in Q4.</p>
+
+<p><strong>Measure the gap now, separately.</strong> You want two numbers: what
+fails against the standard that binds you today, and what would additionally fail
+after citation. One is a compliance obligation. The other is a roadmap item.
+Reporting them as a single red total is how tools inflate a problem into a
+panic.</p>
+
+<p>That separation is why <a href="/">Curbcut</a> is built the way it is. It
+reports findings as EN 301 549 clauses, and it keeps WCAG 2.2 criteria in their own
+band — visible, counted, and explicitly marked as not currently obligatory.</p>
+
+<pre class="cmd"><code>npx curbcut https://example.com --crawl</code></pre>
+
+<p>It is MIT licensed, runs on your machine, and uploads nothing. When the citation
+lands, the mapping updates and the same criteria move bands, which is exactly the
+event I would rather have handled in software than in a spreadsheet.</p>
+
+<h2>The honest caveat</h2>
+
+<p>Automated testing finds roughly a third of accessibility barriers, and several
+of these new criteria are barely testable by machine at all. Consistent Help and
+Redundant Entry are judgements about a flow. Accessible Authentication needs
+somebody to actually try logging in with a password manager and a screen reader.</p>
+
+<p>Curbcut prints the clauses it could not evaluate rather than omitting them,
+because a silent pass is the most expensive kind of wrong answer in this field. A
+scanner is where this work starts. It is not where it finishes.</p>
+
+<p>If you want the longer argument about why rule identifiers are not a conformance
+claim, that is <a href="/blog/scanner-output-is-not-a-conformance-claim">the other
+piece</a>.</p>
+
+<hr style="border:0;border-top:1px solid var(--line-soft);margin:2.5rem 0 1.5rem">
+<p><small>Dates and scope in this article reflect ETSI's published schedule as of
+August 2026 and may move. Nothing here is legal advice.</small></p>
+</article>
+
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/blog/">Writing</a></li>
+      <li><a href="/terms">Terms</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+      <li><a href="/accessibility">Accessibility statement</a></li>
+      <li><a href="mailto:hello@curbcut.org">hello@curbcut.org</a></li>
+    </ul>
+    <p>Nothing on this site is legal advice.</p>
+  </div>
+</footer>
+
+</body>
+</html>
