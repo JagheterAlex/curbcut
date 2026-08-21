@@ -41,9 +41,9 @@ const measured = data.meta?.lastRun
 // of 971 against 0 teaches nobody anything they cannot read from the digits.
 const funnel = [
   {
-    label: 'Arrived',
+    label: 'Arrived (upper bound)',
     value: totals.readerViews,
-    note: 'Page views from real browsers. Our own machine and headless runs are already removed.',
+    note: 'Page views whose user agent claims to be a browser. Headless Chrome, curl and unidentified agents are removed. Read the caveats: this over-counts.',
   },
   {
     label: 'Opened the scanner',
@@ -177,8 +177,10 @@ const html = `<title>Curbcut Vital Signs</title>
   <section>
     <h2>The only question that matters yet</h2>
     <p class="lead">People arrive. The question is whether anything happens next.
-      <strong>${n(totals.readerViews)}</strong> page views from real browsers so far,
-      and <strong>${n(totals.leads)}</strong> addresses left.</p>
+      At most <strong>${n(totals.readerViews)}</strong> page views came from something
+      claiming to be a browser &mdash; the true figure is nearer two thirds of that, for
+      reasons set out below &mdash; and <strong>${n(totals.leads)}</strong> addresses
+      have been left.</p>
     <ol class="funnel">${funnelRows}</ol>
   </section>
 
@@ -218,10 +220,25 @@ const html = `<title>Curbcut Vital Signs</title>
       <p><strong>Two days is not a trend.</strong> Both days follow articles going out,
       so this is a spike and not a baseline. There is no chart on this page because
       two points cannot make one honestly.</p>
-      <p><strong>Reader views is an estimate.</strong> It counts page views from browser
-      families that look like people, and drops headless Chrome, curl and unidentified
-      agents. Some bots pass as browsers; some people get dropped. The raw figure is
-      higher and means less.</p>
+      <p><strong>The arrival figure over-counts, and here is the measurement that
+      shows it.</strong> A user agent is a string any script can set to whatever it
+      likes, so a filter built on it lets through every bot polite enough to lie.
+      Cloudflare had quietly injected its own analytics beacon into our pages, which
+      only fires in a browser that executes JavaScript &mdash; something most crawlers
+      do not do. Over the same 23 hours it recorded <strong>383</strong> page views
+      where the user-agent method claimed 631. Treat the real figure as roughly
+      <strong>two thirds</strong> of the number above. The beacon is being switched
+      off because we told people this site carries no scripts, so this cross-check
+      was available exactly once.</p>
+      <p><strong>Some of the traffic is people looking for something to break into.</strong>
+      Requests in the last day included <code>/.env</code> 36 times,
+      <code>/public/.env</code> 30, <code>/.ssh/config</code> 21 and
+      <code>/storage/logs/laravel.log</code> 21. That is a credential sweep, not an
+      audience, and it hits every domain on the internet.</p>
+      <p><strong>The shape looks like crawling, not reading.</strong> Requests spread
+      evenly across every page rather than concentrating on one article, which is what
+      a systematic crawler does and not what a person arriving from a link does. Our
+      own site crawls, run several times a day while testing, are part of that.</p>
       <p><strong>Bulgaria is probably one script.</strong> It ranks high on both days
       with no plausible audience behind it, which is what a single crawler looks like
       from here.</p>
