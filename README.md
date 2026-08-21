@@ -117,6 +117,13 @@ whether the failure blocks task completion outright, and only then how many
 elements are affected — logarithmically, because four hundred instances of one
 problem is usually one fix in one shared component.
 
+**Refuses to invent failures.** If a stylesheet or script fails to load while a
+page is being assessed, the page renders unstyled and fails layout-dependent
+rules — target size above all — that the real page passes. Curbcut records what
+did not load and prints a warning above the findings rather than reporting the
+artefacts as problems. This was found the hard way, scanning our own site
+mid-deploy.
+
 **Says what it did not check.** Automated testing detects roughly 30 to 40
 percent of WCAG failures. Curbcut prints the clauses it structurally cannot
 evaluate, so a clean run reads as a starting point instead of an all-clear.

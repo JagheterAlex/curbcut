@@ -34,6 +34,32 @@ export function browserMissingError(err) {
   );
 }
 
+// A page whose stylesheet failed to arrive renders as unstyled text, and an
+// unstyled page fails layout-dependent rules — target size above all — that the
+// real page passes. Reporting those as findings would be inventing failures,
+// which is the precise thing this tool exists to argue against. So the scanner
+// watches what did not load and says so.
+export function watchAssets(page) {
+  const problems = [];
+  const note = (url, reason) => {
+    if (!/\.(css|js|mjs)(\?|$)/i.test(url)) return;
+    if (problems.some((p) => p.url === url)) return;
+    problems.push({ url, reason });
+  };
+  page.on('requestfailed', (req) => {
+    const type = req.resourceType?.();
+    if (type === 'stylesheet' || type === 'script') {
+      note(req.url(), req.failure?.()?.errorText ?? 'request failed');
+    } else {
+      note(req.url(), 'request failed');
+    }
+  });
+  page.on('response', (res) => {
+    if (res.status() >= 400) note(res.url(), 'HTTP ' + res.status());
+  });
+  return problems;
+}
+
 // Runs axe inside an already-loaded page. Exported so the crawler can reuse the
 // exact same rule set rather than keeping a second copy that drifts.
 export async function runAxe(page) {
@@ -72,6 +98,7 @@ export async function scanUrls(urls, options = {}) {
     for (const url of urls) {
       onProgress(url);
       const page = await context.newPage();
+      const assetProblems = watchAssets(page);
       try {
         await page.goto(url, { waitUntil, timeout });
         const results = await runAxe(page);
@@ -80,6 +107,7 @@ export async function scanUrls(urls, options = {}) {
           title: await page.title(),
           violations: results.violations,
           incomplete: results.incomplete,
+          assetProblems,
           scannedAt: new Date().toISOString(),
         });
       } catch (err) {

@@ -193,6 +193,19 @@ if (opts.statement) {
   );
 }
 
+if (analysis.assetWarnings.length) {
+  console.error('');
+  console.error('WARNING: stylesheets or scripts failed to load on ' +
+    analysis.assetWarnings.length + ' page(s). An unstyled page fails');
+  console.error('layout rules the real page passes, so some findings may be');
+  console.error('artefacts. Re-run before acting on this report.');
+  for (const w of analysis.assetWarnings) {
+    console.error('  ' + w.url);
+    for (const p of w.problems) console.error('    ' + p.url + ' — ' + p.reason);
+  }
+  console.error('');
+}
+
 const s = analysis.summary;
 console.log(
   s.clausesFailingHarmonised + ' clause(s) of the harmonised standard failing · ' +

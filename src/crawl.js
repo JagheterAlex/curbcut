@@ -1,5 +1,5 @@
 import { chromium } from 'playwright';
-import { runAxe, browserMissingError } from './scan.js';
+import { runAxe, browserMissingError, watchAssets } from './scan.js';
 import { parseRobots } from './robots.js';
 
 // Whole-site crawling.
@@ -103,6 +103,7 @@ export async function crawlAndScan(startUrl, options = {}) {
       onProgress(url, pages.length + 1);
 
       const page = await context.newPage();
+      const assetProblems = watchAssets(page);
       try {
         await page.goto(url, { waitUntil, timeout });
         const results = await runAxe(page);
@@ -115,6 +116,7 @@ export async function crawlAndScan(startUrl, options = {}) {
           title: await page.title(),
           violations: results.violations,
           incomplete: results.incomplete,
+          assetProblems,
           scannedAt: new Date().toISOString(),
         });
 

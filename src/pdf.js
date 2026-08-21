@@ -99,6 +99,21 @@ export function pdfHtml(analysis, meta = {}) {
        <ol class="urls">${scannedUrls.map((u) => `<li>${esc(u)}</li>`).join('')}</ol>`
     : '';
 
+  const assetWarn = analysis.assetWarnings?.length
+    ? `<div class="caveat" style="border-left-color:#a11b06">
+         <p><strong>This scan may not be trustworthy.</strong> Stylesheets or
+         scripts failed to load while these pages were being assessed. An
+         unstyled page fails layout-dependent rules that the real page passes, so
+         some findings below may be artefacts of the failed load. Re-run before
+         acting on this report.</p>
+         <ul>${analysis.assetWarnings
+           .map((w) => `<li>${esc(w.url)}<ul>${w.problems
+             .map((p) => `<li>${esc(p.url)} &mdash; ${esc(p.reason)}</li>`)
+             .join('')}</ul></li>`)
+           .join('')}</ul>
+       </div>`
+    : '';
+
   const errors = analysis.errors.length
     ? `<h2>Pages that could not be scanned</h2>
        <p class="quiet">These are reported rather than dropped. A page that failed to
@@ -173,6 +188,8 @@ export function pdfHtml(analysis, meta = {}) {
   not legal advice.</p>
   <p><strong>What it cannot be.</strong> ${esc(analysis.coverageNote)}</p>
 </div>
+
+${assetWarn}
 
 <h2>How to read the priority bands</h2>
 <ul class="bands">

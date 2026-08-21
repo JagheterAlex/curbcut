@@ -11,6 +11,11 @@ import { scoreFinding, priorityBand } from './risk.js';
 export function analyze(pages) {
   const byClause = new Map();
   const errors = [];
+  // Pages whose stylesheet or script did not arrive. Layout-dependent rules —
+  // target size especially — fail on an unstyled page that the real page
+  // passes, so a scan with missing assets can invent failures. Better to say so
+  // than to hand somebody a report full of problems they do not have.
+  const assetWarnings = [];
   let scannedPages = 0;
 
   for (const page of pages) {
@@ -19,6 +24,10 @@ export function analyze(pages) {
       continue;
     }
     scannedPages++;
+
+    if (page.assetProblems?.length) {
+      assetWarnings.push({ url: page.url, problems: page.assetProblems });
+    }
 
     for (const violation of page.violations ?? []) {
       const criteria = criteriaFromAxeTags(violation.tags);
@@ -95,6 +104,7 @@ export function analyze(pages) {
     standard: HARMONISED,
     scannedPages,
     errors,
+    assetWarnings,
     findings,
     summary: summarise(findings),
     manualOnly: MANUAL_ONLY_CLAUSES,

@@ -31,6 +31,23 @@ export function markdownReport(analysis, meta = {}) {
     s.byPriority.P3 + ' / ' + s.byPriority.P4 + ' |');
   out.push('');
 
+  if (analysis.assetWarnings?.length) {
+    out.push('## Warning: this scan may not be trustworthy');
+    out.push('');
+    out.push('Stylesheets or scripts failed to load on the pages below. An unstyled');
+    out.push('page fails layout-dependent rules — target size above all — that the real');
+    out.push('page passes, so some findings here may be artefacts of the failed load');
+    out.push('rather than problems with the site.');
+    out.push('');
+    out.push('**Re-run the scan before acting on this report.**');
+    out.push('');
+    for (const w of analysis.assetWarnings) {
+      out.push('- ' + w.url);
+      for (const p of w.problems) out.push('  - ' + p.url + ' — ' + p.reason);
+    }
+    out.push('');
+  }
+
   if (analysis.errors.length) {
     out.push('### Pages that could not be scanned');
     out.push('');
