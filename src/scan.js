@@ -85,6 +85,24 @@ export async function runAxe(page) {
   );
 }
 
+/**
+ * What actually ran, taken from axe's own account of the run.
+ *
+ * Not from RULE_TAGS, and not from the version constant in en301549.js. Those
+ * describe the source on disk; this describes the execution. They agree right
+ * up until somebody edits one of them, and a report whose provenance line was
+ * read off a constant will keep claiming the old configuration without a word.
+ */
+export function provenanceOf(results) {
+  const engine = results?.testEngine ?? {};
+  const runOnly = results?.toolOptions?.runOnly ?? {};
+  return {
+    engine: engine.name ?? 'unknown',
+    engineVersion: engine.version ?? 'unknown',
+    ruleTags: Array.isArray(runOnly.values) ? [...runOnly.values].sort() : [],
+  };
+}
+
 export { RULE_TAGS };
 
 export async function scanUrls(urls, options = {}) {
@@ -117,6 +135,7 @@ export async function scanUrls(urls, options = {}) {
         pages.push({
           url,
           title: await page.title(),
+          provenance: provenanceOf(results),
           violations: results.violations,
           incomplete: results.incomplete,
           assetProblems,

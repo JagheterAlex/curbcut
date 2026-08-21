@@ -12,7 +12,34 @@ export function markdownReport(analysis, meta = {}) {
     ' (adopts WCAG ' + analysis.standard.adoptsWcag + ')  ');
   out.push('**Pages scanned:** ' + analysis.scannedPages + '  ');
   out.push('**Generated:** ' + generatedAt);
+
+  // Directly under the version line, because that line is the conformance claim
+  // and this is the only evidence that it describes the run rather than a
+  // constant in our source.
+  const prov = analysis.provenance;
+  if (prov) {
+    out.push('**Evaluated by:** ' + prov.engine + '  ');
+    out.push('**Rule tags executed:** `' + prov.ruleTags.join('`, `') + '`');
+  }
   out.push('');
+
+  if (prov && !prov.consistent) {
+    out.push('> **These pages were not all assessed the same way.** More than one');
+    out.push('> engine version or rule set appears across this run, which means the');
+    out.push('> single version line above describes no single assessment. Re-run');
+    out.push('> before treating any of it as a conformance claim.');
+    out.push('');
+  }
+
+  if (prov && prov.executedBeyondStandard.length) {
+    out.push('> **This run executed rules beyond ' + analysis.standard.version + '.** Tags `' +
+      prov.executedBeyondStandard.join('`, `') + '` cover criteria the harmonised');
+    out.push('> standard does not yet adopt. Their findings appear below marked as not');
+    out.push('> currently required, and they are excluded from the harmonised count. The');
+    out.push('> version line above therefore describes what conformance is claimed');
+    out.push('> against, not the full set of rules that ran.');
+    out.push('');
+  }
 
   out.push('> ' + analysis.coverageNote);
   out.push('>');

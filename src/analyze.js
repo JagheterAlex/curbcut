@@ -107,6 +107,7 @@ export function analyze(pages) {
   return {
     standard: HARMONISED,
     incoming: INCOMING,
+    provenance: provenanceFor(pages),
     scannedPages,
     errors,
     assetWarnings,
@@ -115,6 +116,49 @@ export function analyze(pages) {
     transition: transitionFor(findings),
     manualOnly: MANUAL_ONLY_CLAUSES,
     coverageNote: AUTOMATED_COVERAGE_NOTE,
+  };
+}
+
+/**
+ * What actually executed, as opposed to what the source says should have.
+ *
+ * `standard` above is a constant. It states the version a conformance claim is
+ * written against, and it is correct until somebody edits the rule set without
+ * touching it — at which point every report keeps printing a version line that
+ * no run produced. The line is the conformance claim; being wrong there is
+ * worse than being wrong in a finding, because a reader checks findings.
+ *
+ * So this is built from axe's own record of each run. It reports the engine
+ * version, the rule tags the run actually asked for, and two things worth
+ * saying out loud: whether every page was assessed the same way, and whether
+ * rules were executed for criteria outside the version named in the header.
+ */
+function provenanceFor(pages) {
+  const seen = pages.map((p) => p.provenance).filter(Boolean);
+  if (seen.length === 0) return null;
+
+  const engines = [...new Set(seen.map((p) => p.engine + ' ' + p.engineVersion))];
+  const tagSets = [...new Set(seen.map((p) => p.ruleTags.join(',')))];
+  const ruleTags = seen[0].ruleTags;
+
+  // Tags naming a WCAG version later than the one the harmonised standard
+  // adopts. Their findings are demoted and labelled, but the fact that they ran
+  // at all belongs next to the version line rather than inferred from the
+  // findings that happen to appear.
+  const adopted = HARMONISED.adoptsWcag.replace('.', '');
+  const beyond = ruleTags.filter((t) => {
+    const m = /^wcag(\d)(\d)a{1,3}$/.exec(t);
+    return m && Number(m[1] + m[2]) > Number(adopted);
+  });
+
+  return {
+    engine: engines.length === 1 ? engines[0] : engines.join(' + '),
+    ruleTags,
+    // False means pages were not all assessed the same way, which makes the
+    // single version line at the top of the report a fiction. Louder than a
+    // finding, because it invalidates the frame the findings sit in.
+    consistent: engines.length === 1 && tagSets.length === 1,
+    executedBeyondStandard: beyond,
   };
 }
 

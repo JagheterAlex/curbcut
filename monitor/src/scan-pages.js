@@ -165,6 +165,15 @@ export function scanResult(analysis, meta) {
        </table>
      </div>
 
+     ${analysis.provenance ? `<p class="micro" style="margin-top:1rem">
+       Evaluated by ${esc(analysis.provenance.engine)}, rule tags
+       <code>${esc(analysis.provenance.ruleTags.join(' '))}</code>. Recorded from the
+       run itself rather than read off a constant, so this line cannot outlive the
+       configuration it describes.${analysis.provenance.executedBeyondStandard?.length
+         ? ` Tags ${esc(analysis.provenance.executedBeyondStandard.join(', '))} cover
+           criteria ${esc(analysis.standard.version)} does not adopt; their findings are
+           marked below and left out of the count above.` : ''}</p>` : ''}
+
      <div class="callout" style="margin-top:1.5rem">
        <p><strong>What this is.</strong> Evidence toward a conformance claim,
        expressed as clauses of EN 301 549. It is not the claim, it is not a

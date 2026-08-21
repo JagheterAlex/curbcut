@@ -111,6 +111,11 @@ export function compareAnalyses(before, after) {
       after: coverageAfter,
       shrank: coverageShrank,
     },
+    // Two runs assessed by different tooling are not comparable, and the diff
+    // cannot tell the difference between a site that changed and a rule set
+    // that did. Upgrading the engine can retire a rule or add one, and the
+    // comparison would report that as a fix or a regression somebody caused.
+    tooling: toolingDrift(before, after),
     // Worth waking somebody up for.
     alarming: introduced.concat(regressed).some((e) => e.priority === 'P1' || e.priority === 'P2'),
     changed:
@@ -121,9 +126,57 @@ export function compareAnalyses(before, after) {
   };
 }
 
+/**
+ * Whether the two runs were produced by the same tooling.
+ *
+ * Compares what each run recorded about itself rather than what the current
+ * source says, because a baseline read off disk months later carries the
+ * configuration of the day it was written and nothing in the file forces that
+ * to still be true.
+ */
+function toolingDrift(before, after) {
+  const a = before?.provenance;
+  const b = after?.provenance;
+  // Not knowing is a weaker statement than knowing they differ, and deserves a
+  // weaker warning. A baseline written before this existed is the ordinary case
+  // for anybody upgrading, and shouting at them every time would train them to
+  // scroll past the shout that matters.
+  if (!a || !b) return { comparable: true, unknown: true };
+  const engineChanged = a.engine !== b.engine;
+  const tagsChanged = a.ruleTags.join(',') !== b.ruleTags.join(',');
+  if (!engineChanged && !tagsChanged) return { comparable: true };
+
+  const parts = [];
+  if (engineChanged) parts.push(a.engine + ' became ' + b.engine);
+  if (tagsChanged) {
+    const added = b.ruleTags.filter((t) => !a.ruleTags.includes(t));
+    const removed = a.ruleTags.filter((t) => !b.ruleTags.includes(t));
+    if (added.length) parts.push('rule tags added: ' + added.join(', '));
+    if (removed.length) parts.push('rule tags removed: ' + removed.join(', '));
+  }
+  return { comparable: false, reason: parts.join('; ') + '.' };
+}
+
 /** A short human summary, used in the CLI and in alert emails. */
 export function describeComparison(diff) {
   const lines = [];
+
+  // Before coverage, and before any finding. If the two runs were not produced
+  // the same way, everything underneath describes the tooling as much as the
+  // site, and reading it as progress or regression is the mistake this whole
+  // comparison exists to prevent.
+  if (diff.tooling && !diff.tooling.comparable) {
+    lines.push(
+      'These two runs were not assessed the same way. ' + diff.tooling.reason + ' ' +
+        'A difference below may be the rule set changing rather than the site, ' +
+        'and the two cannot be separated from here.'
+    );
+    lines.push('');
+  } else if (diff.tooling?.unknown && diff.changed) {
+    lines.push('Note: one of these runs recorded no engine version, so a change ' +
+      'below could be the tooling rather than the site.');
+    lines.push('');
+  }
 
   if (diff.coverage.shrank) {
     lines.push(

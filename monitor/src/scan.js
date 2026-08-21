@@ -162,6 +162,11 @@ export async function scanOnePage(env, targetUrl) {
       {
         url: targetUrl,
         title,
+        provenance: {
+          engine: results.testEngine?.name ?? 'unknown',
+          engineVersion: results.testEngine?.version ?? 'unknown',
+          ruleTags: [...(results.toolOptions?.runOnly?.values ?? [])].sort(),
+        },
         violations: results.violations,
         incomplete: results.incomplete,
         scannedAt: new Date().toISOString(),

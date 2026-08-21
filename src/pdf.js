@@ -208,6 +208,8 @@ export function pdfHtml(analysis, meta = {}) {
     <tr><td>Success criteria adopted</td><td>WCAG ${esc(st.adoptsWcag)}</td></tr>
     <tr><td>Pages assessed</td><td>${analysis.scannedPages}</td></tr>
     <tr><td>Report date</td><td>${esc(date)}</td></tr>
+    ${analysis.provenance ? `<tr><td>Evaluated by</td><td>${esc(analysis.provenance.engine)}</td></tr>
+    <tr><td>Rule tags executed</td><td>${esc(analysis.provenance.ruleTags.join(', '))}</td></tr>` : ''}
     ${summaryRows(analysis)
       .map(([k, v]) => `<tr><td>${esc(k)}</td><td>${v}</td></tr>`)
       .join('')}
@@ -223,6 +225,21 @@ export function pdfHtml(analysis, meta = {}) {
 </div>
 
 ${assetWarn}
+
+${analysis.provenance && !analysis.provenance.consistent
+  ? `<div class="caveat" style="border-left-color:#a11b06"><p><strong>These pages were
+     not all assessed the same way.</strong> More than one engine version or rule set
+     appears in this run, so the single version stated above describes no single
+     assessment. Re-run before treating any of this as a conformance claim.</p></div>`
+  : ''}
+${analysis.provenance?.executedBeyondStandard?.length
+  ? `<div class="caveat"><p><strong>This run executed rules beyond
+     ${esc(analysis.standard.version)}.</strong> The tags
+     ${esc(analysis.provenance.executedBeyondStandard.join(', '))} cover criteria the
+     harmonised standard does not yet adopt. Findings from them are marked below as not
+     currently required and are excluded from the harmonised count, so the version above
+     states what conformance is claimed against &mdash; not everything that ran.</p></div>`
+  : ''}
 
 ${transition}
 
