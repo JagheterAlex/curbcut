@@ -300,3 +300,26 @@ footer p { max-width: 44rem; margin-top: .85rem; }
 .prose ul { padding-left: 1.2rem; }
 .prose li { margin-bottom: .5rem; }
 .prose > p + p, .prose h2 + p, .prose h3 + p, .prose p + ul { margin-top: .85rem; }
+
+/* ─────────────── article code blocks ─────────────── */
+
+.prose .cmd {
+  /* Same fixed dark ground as the terminal, for the same reason: an amber
+     highlight on a near-white background fails contrast in the light theme. */
+  background: #0d0f13;
+  color: #e8e7e4;
+  border: 1px solid #262b34;
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  padding: .9rem 1.1rem;
+  margin: 1.25rem 0;
+  overflow-x: auto;
+  font: 400 .85rem/1.6 ui-monospace, SFMono-Regular, "Cascadia Code", Consolas, monospace;
+  max-width: none;
+}
+.prose .cmd code { color: inherit; font-size: inherit; }
+
+article { max-width: none; }
+.prose article h2 { margin-top: 2.75rem; }
+.prose article h3 { margin-top: 2rem; font-size: 1.02rem; }
+.prose .lede { color: var(--faint); font-size: .95rem; }

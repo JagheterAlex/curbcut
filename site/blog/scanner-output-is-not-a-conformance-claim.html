@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your scanner found 47 issues. A regulator will ask about clause 9.1.4.3. — Curbcut</title>
+<meta name="description" content="Why axe, Lighthouse and Pa11y output is not an EN 301 549 conformance claim, which WCAG version the European Accessibility Act actually binds you to, and when that is about to change.">
+<link rel="stylesheet" href="../style.css">
+<link rel="canonical" href="https://curbcut.org/blog/scanner-output-is-not-a-conformance-claim">
+<meta property="og:title" content="Your scanner found 47 issues. A regulator will ask about clause 9.1.4.3.">
+<meta property="og:description" content="Rule identifiers are not a conformance claim. What the EAA actually requires, and when the harmonised standard moves to WCAG 2.2.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://curbcut.org/blog/scanner-output-is-not-a-conformance-claim">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="/">
+      <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true" focusable="false">
+        <path d="M1 15h20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".35"/>
+        <path d="M1 11h6l4-9h10" fill="none" stroke="#f5c344" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      </svg>
+      Curbcut
+    </a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="https://github.com/JagheterAlex/curbcut">GitHub</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<section>
+<div class="wrap prose">
+
+<article>
+<h1>Your scanner found 47 issues. A regulator will ask about clause 9.1.4.3.</h1>
+<p class="lede">Published 21 August 2026.</p>
+
+<p>Enforcement of the European Accessibility Act started on 28 June 2025, and it
+started for real. French disability organisations issued formal notices to four
+major grocery retailers within days. Sweden opened market surveillance that
+October. The first EAA cases reached a French commercial court in November.</p>
+
+<p>If you sell into the EU and you are not a microenterprise providing services,
+somebody can now ask you what you have done about it.</p>
+
+<p>The awkward part is that the tooling most teams reach for does not produce an
+answer to that question. It produces a different, adjacent answer, and the gap
+between the two is where a lot of otherwise diligent teams are about to get
+caught.</p>
+
+<h2>The mismatch</h2>
+
+<p>You run axe, or Lighthouse, or Pa11y. You get output like this:</p>
+
+<pre class="cmd"><code>color-contrast          10 nodes   serious
+label                    1 node    critical
+image-alt                1 node    critical
+link-name                1 node    serious
+html-has-lang            1 node    serious</code></pre>
+
+<p>Correct, useful, and not a conformance claim.</p>
+
+<p>Conformance under the EAA is claimed against <strong>EN 301 549</strong>, the
+harmonised European standard, clause by clause. Nobody has ever been asked to
+demonstrate conformance with <code>color-contrast</code>. They get asked about
+clause 9.1.4.3.</p>
+
+<p>So the translation has to happen somewhere. Usually it happens in a
+spreadsheet, by hand, by whoever drew the short straw, and it happens again every
+time the site changes.</p>
+
+<h2>Three things that make this worse than a naming problem</h2>
+
+<h3>Not all of WCAG is binding, and the binding part is about to move</h3>
+
+<p>The harmonised standard today is EN 301 549 V3.2.1 (2021-03), which adopts
+<strong>WCAG 2.1</strong>. Criteria introduced in WCAG 2.2 — target size, dragging
+movements, accessible authentication — are good practice, not current EAA
+obligations. Plenty of tools report 2.2 findings with the same red badge as
+everything else, which inflates your problem and burns engineering time on work no
+regulator is asking for yet.</p>
+
+<p>The word doing the work there is <em>yet</em>. <strong>EN 301 549 V4.1.1 adopts
+WCAG 2.2 and is expected to be cited in the Official Journal around the end of
+2026.</strong> An obligation begins when a version is cited there, not when ETSI
+publishes it, so V3.2.1 is still the yardstick as I write this and will not be for
+much longer.</p>
+
+<p>Anyone telling you 2.2 is already mandatory is wrong today. Anyone telling you
+to ignore it is setting you up for a rewrite.</p>
+
+<h3>Severity is not exposure</h3>
+
+<p>Rule engines sort by how confidently they can complain. Ten contrast failures
+in a footer will outrank one unlabelled password field in the checkout, and that
+ordering is exactly backwards from the one that matters. One of those stops a
+person from buying something. The other is real, required, and not an
+emergency.</p>
+
+<h3>A clean automated run is not a pass</h3>
+
+<p>Automated testing detects roughly a third of accessibility barriers. Keyboard
+traps, focus order, whether alt text actually says anything useful, whether a
+screen reader can make sense of your custom component — none of that is decidable
+by a rule engine. The clauses your scanner cannot evaluate do not appear in its
+output at all, which reads as silence, which reads as fine.</p>
+
+<h2>The part where money is being wasted</h2>
+
+<p>Two products are sold to make this go away, and neither does.</p>
+
+<p><strong>Overlay widgets.</strong> One line of JavaScript, a promise of
+compliance, and a subscription around $490 a year.</p>
+
+<p>The US Federal Trade Commission brought a case over exactly that promise in
+January 2025 and
+<a href="https://www.ftc.gov/legal-library/browse/cases-proceedings/2223156-accessibe-inc">approved
+the final order in April</a>, requiring accessiBe to pay <strong>$1,000,000</strong>.
+The complaint also covered third-party articles and reviews formatted to look like
+independent opinions when the company had an undisclosed connection to them.</p>
+
+<p>Separately,
+<a href="https://blog.usablenet.com/2025-midyear-accessibility-lawsuit-report-key-legal-trends">UsableNet's
+2025 midyear report</a> counted <strong>456 US accessibility lawsuits, 22.6% of the
+total</strong>, filed against sites that already had an overlay installed. The
+National Federation of the Blind has been saying this publicly for years. The
+widget is a liability, not a shield.</p>
+
+<p><strong>Free statement generators.</strong> They emit &ldquo;this website is
+fully compliant&rdquo; without testing anything. An accessibility statement is a
+public claim, and it carries your organisation's name, not the generator's. An
+unsupported one is the first document anybody investigating you will read.</p>
+
+<h2>What I built instead</h2>
+
+<p><a href="/">Curbcut</a> is a small MIT-licensed CLI that does the translation
+and nothing else. It runs axe-core in a real headless browser on your machine, then
+reports what it found the way a conformance claim has to be written.</p>
+
+<pre class="cmd"><code>npx curbcut https://example.com --crawl --pdf</code></pre>
+
+<p>Same findings as above, restated:</p>
+
+<pre class="cmd"><code>P1  Clause 9.4.1.2 — Name, Role, Value          3 elements
+P1  Clause 9.1.1.1 — Non-text Content           1 element
+P2  Clause 9.3.1.1 — Language of Page           1 element
+P3  Clause 9.1.4.3 — Contrast (Minimum)        10 elements
+P3  Clause 9.2.4.4 — Link Purpose (In Context)  1 element</code></pre>
+
+<p>Four things are deliberate here.</p>
+
+<p><strong>Bands are exposure, not severity.</strong> P1 means a person cannot
+finish what they came to do and the clause is in the harmonised standard. Ten
+contrast failures sit below one missing form label, because that is the order
+somebody will ask about them in.</p>
+
+<p><strong>WCAG 2.2 is reported separately.</strong> It is in the output, clearly
+marked as not a current obligation, so you can plan for the change rather than be
+alarmed by it or billed for it a year early.</p>
+
+<p><strong>It prints what it did not check.</strong> Every run lists the clauses no
+automated tool can evaluate — 9.2.1.1 keyboard operability across a whole journey,
+9.3.2.3 consistent navigation, and so on — as never assessed, rather than omitting
+them and letting the silence imply a pass.</p>
+
+<p><strong>The statement draft refuses to overclaim.</strong> It will not produce a
+full-conformance claim out of scan data, because scan data cannot support one.
+Everything needing a human decision stays a visible <code>[bracket]</code> until a
+human fills it in.</p>
+
+<p>There is a <code>--pdf</code> flag that writes a dated A4 report you can hand to
+a client or attach to an email. It is deliberately plain: no cover art, no score
+out of ten, no badge. The words &ldquo;not a certificate&rdquo; and &ldquo;not legal
+advice&rdquo; are on the first page, above the findings, because a document that
+looks like a certificate would misrepresent what automated testing can establish.
+That is the accessiBe mistake, and it is not one worth repeating in a smaller
+font.</p>
+
+<h2>Try it against a known answer</h2>
+
+<p>Rather than ask you to trust a screenshot, there is a deliberately broken page
+published for this:</p>
+
+<pre class="cmd"><code>npx curbcut https://curbcut.org/demo/broken.html</code></pre>
+
+<p>It should report five failing clauses across sixteen elements — two P1, one P2,
+two P3. If it reports something else, that is a bug and I would like the issue.</p>
+
+<h2>Proving a fix actually happened</h2>
+
+<p>A single scan is a snapshot. It says nothing about direction, which is the thing
+an auditor, a client or your own manager is actually asking about.</p>
+
+<pre class="cmd"><code>npx curbcut https://example.com --crawl --json
+# ... do the work ...
+npx curbcut https://example.com --crawl --baseline curbcut-report/analysis.json</code></pre>
+
+<p>Findings are matched by clause, not by axe rule, because a clause can start
+failing for a different reason than it did last month. A rule-keyed diff would call
+that one fix plus one new break, which badly describes a page that never stopped
+failing 9.4.1.2.</p>
+
+<p>And if the later scan reached fewer pages than the baseline, the comparison says
+so before anything else. Fewer failures can simply mean fewer pages were assessed,
+and presenting that as progress would be a lie by arithmetic.</p>
+
+<h2>What this does not do</h2>
+
+<p>It does not make you compliant, and you should be suspicious of anything that
+says it will. It finds what automation can find, names the clauses, and shows you
+the gaps it could not test. Closing those gaps is engineering work, and some of it
+needs a person using assistive technology.</p>
+
+<p>I am also not a lawyer, this is not legal advice, and Curbcut is not affiliated
+with ETSI, CEN, CENELEC or the European Commission in any way. It is software that
+references a standard those bodies publish.</p>
+
+<p>Source is on <a href="https://github.com/JagheterAlex/curbcut">GitHub</a>, MIT,
+and the clause mapping is the part worth reading critically. If a mapping is wrong,
+that is the highest-value bug you could file.</p>
+</article>
+
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/terms">Terms</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+      <li><a href="/accessibility">Accessibility statement</a></li>
+      <li><a href="mailto:hello@curbcut.org">hello@curbcut.org</a></li>
+    </ul>
+    <p>Nothing on this site is legal advice.</p>
+  </div>
+</footer>
+
+</body>
+</html>
