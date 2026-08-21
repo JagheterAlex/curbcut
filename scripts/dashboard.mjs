@@ -49,7 +49,7 @@ const funnel = [
   {
     label: 'Arrived (upper bound)',
     value: totals.readerViews,
-    note: 'Page views whose user agent claims to be a browser. That is a string anything can set, so this counts bots that lie. Measured against a real bot filter it was about eight times too high.',
+    note: 'Page views whose user agent claims to be a browser. That is a string anything can set, so this counts every bot polite enough to lie. Treat it as a ceiling, never as an audience.',
   },
   {
     label: 'Opened the scanner',
@@ -184,7 +184,9 @@ const html = `<title>Curbcut Vital Signs</title>
     <h2>The one honest measurement</h2>
     <p class="lead">Cloudflare had quietly injected an analytics beacon into our
       pages. Before removing it &mdash; we tell people this site carries no scripts
-      &mdash; it was read once, with Cloudflare&rsquo;s own bot filter switched on.</p>
+      &mdash; it was read once, with Cloudflare&rsquo;s own bot filter on. It was set
+      to skip EU visitors, so <strong>these figures are non-EU only</strong>, and the
+      EU is the market this is aimed at.</p>
     <ol class="funnel">
       <li>
         <div class="step-head">
@@ -198,7 +200,7 @@ const html = `<title>Curbcut Vital Signs</title>
           <span class="step-label">Page views, same window</span>
           <span class="step-value">${n(truth.pageViews)}</span>
         </div>
-        <p class="step-note">Over the same period the user-agent method below reported 631. It overstates by roughly eight times, and every arrival figure on this page inherits that error.</p>
+        <p class="step-note">The user-agent method below reported 631 over the same period, but it counts everybody including EU visitors, so the two are not the same population and no honest ratio can be taken between them. The overstatement is large; its size is unknown.</p>
       </li>
     </ol>
   </section>` : ''}
@@ -207,7 +209,8 @@ const html = `<title>Curbcut Vital Signs</title>
     <h2>The only question that matters yet</h2>
     <p class="lead">People arrive. The question is whether anything happens next.
       At most <strong>${n(totals.readerViews)}</strong> page views came from something
-      claiming to be a browser, and the real figure is closer to an eighth of that.
+      claiming to be a browser. The real figure is a small fraction of that &mdash; see
+      the measurement above, and the caveats below.
       <strong>${n(totals.leads)}</strong> addresses have been left.</p>
     <ol class="funnel">${funnelRows}</ol>
   </section>
@@ -248,13 +251,13 @@ const html = `<title>Curbcut Vital Signs</title>
       <p><strong>Two days is not a trend.</strong> Both days follow articles going out,
       so this is a spike and not a baseline. There is no chart on this page because
       two points cannot make one honestly.</p>
-      <p><strong>The arrival figures over-count by roughly eight times.</strong> A
-      user agent is a string any script can set, so a filter built on one lets through
-      every bot polite enough to lie. Cloudflare&rsquo;s own bot filter, read once
-      before the beacon was removed, counted <strong>77</strong> page views across
-      <strong>44</strong> visits in the window where the method below reported 631.
-      Every arrival number on this page is an upper bound of that order, and the
-      cross-check was available exactly once.</p>
+      <p><strong>The arrival figures over-count, by an unknown amount.</strong> A user
+      agent is a string any script can set, so a filter built on one lets through every
+      bot polite enough to lie. Cloudflare&rsquo;s own bot filter counted
+      <strong>77</strong> page views across <strong>44</strong> visits where the method
+      here reported 631 &mdash; but it had been set to skip EU visitors, so it measured
+      a different population and the two cannot be divided into a correction factor.
+      Read every arrival number here as an upper bound and nothing more.</p>
       <p><strong>Some of the traffic is people looking for something to break into.</strong>
       Requests in the last day included <code>/.env</code> 36 times,
       <code>/public/.env</code> 30, <code>/.ssh/config</code> 21 and
