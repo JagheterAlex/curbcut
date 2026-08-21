@@ -5,6 +5,7 @@ export { draftStatement } from './statement.js';
 export { clauseForCriterion, HARMONISED, MANUAL_ONLY_CLAUSES } from './en301549.js';
 export { SUCCESS_CRITERIA, criteriaFromAxeTags } from './wcag.js';
 export { scoreFinding, priorityBand } from './risk.js';
-export { crawlAndScan, normaliseUrl, parseRobots } from './crawl.js';
+export { crawlAndScan, normaliseUrl } from './crawl.js';
+export { parseRobots } from './robots.js';
 export { pdfHtml, writePdf } from './pdf.js';
 export { compareAnalyses, describeComparison } from './baseline.js';

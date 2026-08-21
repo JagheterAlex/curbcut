@@ -1,0 +1,16 @@
+{
+  "name": "curbcut-monitor",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "vendor": "node scripts/vendor-axe.js",
+    "predeploy": "npm run vendor",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@cloudflare/puppeteer": "^1.0.4"
+  },
+  "devDependencies": {
+    "axe-core": "^4.10.2"
+  }
+}

@@ -80,6 +80,22 @@ with your question and for a reasonable period afterwards for our own records, a
 delete it on request. We do not add you to any mailing list, because there is no
 mailing list. We never sell or share correspondence.</p>
 
+<h2>If you use the scanner</h2>
+<p>The page checker at <a href="/scan">/scan</a> takes the address you type,
+loads that page in a browser on Cloudflare's network, and shows you the result.</p>
+<p><strong>We do not keep the page or anything on it.</strong> The findings are
+cached for fifteen minutes against the URL, so that reloading or a second person
+checking the same address does not spend the browser budget twice. After fifteen
+minutes it is gone.</p>
+<p>To stop one script exhausting a shared daily allowance, requests are counted
+two ways: a total for everybody, and a per-caller count. The per-caller count is
+keyed on a <strong>salted hash</strong> of your IP address, where the salt changes
+every hour and the counter expires after an hour. Your address itself is never
+written down, and the hash cannot be turned back into it or matched across hours.
+The basis for this is our legitimate interest in keeping a free service usable.</p>
+<p>We obey the target site's robots.txt, and we refuse addresses on private
+networks.</p>
+
 <h2>If you fill in the Monitor form</h2>
 <p>The form on the pricing section is the one place on this site that collects
 anything. It stores <strong>three things</strong>: the email address you typed,
@@ -111,7 +127,9 @@ with the data it collects.</p>
 <h2>Processors we use</h2>
 <ul>
   <li><strong>Cloudflare</strong> &mdash; hosting, DNS, email routing, the D1
-    database behind the Monitor form, and optional cookieless analytics.</li>
+    database behind the Monitor form, the browser that runs the scanner, the
+    short-lived cache and rate-limit counters, and optional cookieless
+    analytics.</li>
   <li><strong>Google</strong> &mdash; the mailbox that receives forwarded email.</li>
   <li><strong>Paddle</strong> &mdash; payments, invoicing and tax, as merchant of
     record.</li>

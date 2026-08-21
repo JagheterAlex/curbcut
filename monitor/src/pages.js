@@ -4,21 +4,27 @@
 // answer has to be a real page. These reuse /style.css from the same origin, so
 // the reply looks like the site rather than like a raw endpoint.
 
-const esc = (s) =>
+export const esc = (s) =>
   String(s ?? '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 
-function shell(title, bodyHtml) {
+export function shell(title, bodyHtml, opts = {}) {
+  // Form responses and one-off results have no business in a search index.
+  // The scanner's own landing page is the opposite: it is the page we most
+  // want somebody searching for an EAA checker to find.
+  const { index = false, description = '', canonical = '' } = opts;
   return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)} — Curbcut</title>
-<meta name="robots" content="noindex">
+${index ? '' : '<meta name="robots" content="noindex">'}
+${description ? `<meta name="description" content="${esc(description)}">` : ''}
+${canonical ? `<link rel="canonical" href="${esc(canonical)}">` : ''}
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -35,6 +41,7 @@ function shell(title, bodyHtml) {
     <nav aria-label="Primary">
       <ul>
         <li><a href="/">Home</a></li>
+        <li><a href="/scan">Scan</a></li>
         <li><a href="/blog/">Writing</a></li>
       </ul>
     </nav>

@@ -3,16 +3,36 @@ main = "src/index.js"
 compatibility_date = "2026-08-01"
 compatibility_flags = ["nodejs_compat"]
 
-# Routed from the main zone so the form posts same-origin and needs no CORS,
+# Routed from the main zone so forms post same-origin and need no CORS,
 # no preflight and no JavaScript.
 [[routes]]
 pattern = "curbcut.org/api/*"
 zone_name = "curbcut.org"
 
+[[routes]]
+pattern = "curbcut.org/scan*"
+zone_name = "curbcut.org"
+
+[browser]
+binding = "BROWSER"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "curbcut"
 database_id = "03bade3a-799a-481c-8eab-1e4978a6ddcc"
+
+# Caches scan results and carries the rate-limit counters. Nothing in here is
+# personal: keys are URLs and a hash of the client address, never the address.
+[[kv_namespaces]]
+binding = "CACHE"
+id = "3d4c567297d54e018dfdfeae22bb096d"
+
+# axe-core is vendored as text because the Worker cannot reach it through
+# createRequire the way the Node CLI does.
+[[rules]]
+type = "Text"
+globs = ["**/*.txt"]
+fallthrough = true
 
 [observability]
 enabled = true

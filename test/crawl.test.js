@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { normaliseUrl, parseRobots } from '../src/crawl.js';
+import { normaliseUrl } from '../src/crawl.js';
+import { parseRobots } from '../src/robots.js';
 
 test('normaliseUrl drops the fragment', () => {
   assert.equal(

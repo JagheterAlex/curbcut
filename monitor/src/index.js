@@ -12,6 +12,9 @@
 // first.
 
 import { page, thanks, errorPage } from './pages.js';
+import { scanForm, scanResult, scanBusy } from './scan-pages.js';
+import { validateTarget, robotsAllows, scanOnePage } from './scan.js';
+import { checkRateLimit, readCachedScan, writeCachedScan } from './limits.js';
 
 const MAX_FIELD = 400;
 
@@ -80,6 +83,90 @@ export default {
       return new Response('ok', {
         headers: { 'content-type': 'text/plain; charset=utf-8' },
       });
+    }
+
+    if (url.pathname === '/scan' || url.pathname === '/scan/') {
+      if (request.method === 'GET') return page(scanForm(), 200);
+      if (request.method !== 'POST') {
+        return new Response('Method not allowed', { status: 405, headers: { allow: 'GET, POST' } });
+      }
+
+      let fields;
+      try {
+        fields = await request.formData();
+      } catch {
+        return page(scanForm('', 'That form submission could not be read.'), 400);
+      }
+
+      const raw = fields.get('url');
+      const checked = validateTarget(typeof raw === 'string' ? raw : '');
+      if (checked.error) {
+        return page(scanForm(typeof raw === 'string' ? raw : '', checked.error), 400);
+      }
+      const target = checked.url;
+
+      const cachedResult = await readCachedScan(env, target);
+      if (cachedResult) {
+        return page(
+          scanResult(cachedResult.analysis, {
+            target,
+            cached: true,
+            scannedAt: cachedResult.scannedAt,
+          }),
+          200
+        );
+      }
+
+      const limit = await checkRateLimit(env, request);
+      if (!limit.ok) {
+        return page(scanBusy(limit.reason, limit.retryAfter), 429);
+      }
+
+      if (!(await robotsAllows(target))) {
+        return page(
+          scanForm(
+            target,
+            'That site’s robots.txt asks crawlers to stay off this path, so we ' +
+              'did not fetch it. The command line tool can scan it from your own ' +
+              'machine, where you are not a stranger.'
+          ),
+          403
+        );
+      }
+
+      let analysis;
+      try {
+        analysis = await scanOnePage(env, target);
+      } catch (err) {
+        if (err && err.code === 'BUSY') {
+          return page(
+            scanBusy(
+              'Every browser we are allowed to run at once is in use.',
+              err.retryAfter
+            ),
+            429
+          );
+        }
+        if (err && err.code === 'TARGET_STATUS') {
+          return page(
+            scanForm(target, 'That page answered with HTTP ' + err.status + ', so there was nothing to check.'),
+            400
+          );
+        }
+        console.error('scan failed', target, err && err.message);
+        return page(
+          scanForm(
+            target,
+            'The page could not be loaded in time. That usually means it is slow, ' +
+              'behind a login, or blocking automated browsers.'
+          ),
+          502
+        );
+      }
+
+      const scannedAt = new Date().toISOString();
+      await writeCachedScan(env, target, { analysis, scannedAt });
+      return page(scanResult(analysis, { target, cached: false, scannedAt }), 200);
     }
 
     if (url.pathname === '/api/interest') {
