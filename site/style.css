@@ -381,3 +381,13 @@ article { max-width: none; }
 .rule { border: 0; border-top: 1px solid var(--line-soft); margin: 2.5rem 0 1.5rem; }
 .ta-c { text-align: center; }
 .ta-r { text-align: right; }
+
+/* The block every article ends with. Set apart from the prose so it reads as
+ * the site talking rather than the article continuing, without shouting. */
+.endblock {
+  margin-top: 3.5rem; padding: 1.75rem;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface);
+}
+.endblock h2 { margin-top: 0; }
+.endblock .actions { margin-top: 1.4rem; }

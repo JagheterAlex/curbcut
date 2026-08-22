@@ -197,6 +197,34 @@ const NAV = `
       </ul>
     </nav>`;
 
+// What every article ends with.
+//
+// Half the published articles had no path out of the prose at all, and the
+// other half had one link at 80–90% of the way down, phrased as an aside. Of
+// 155 arrivals over two measured days, 12 reached the scanner. Articles are
+// where the traffic lands, and three of six were dead ends.
+//
+// Deliberately not a banner, not a popup and not mid-text: it sits after the
+// article is finished, it says what the thing does before asking for anything,
+// and it names the limit in the same block rather than further down.
+const END_BLOCK = `<aside class="endblock" aria-labelledby="next-h">
+<h2 id="next-h">Check a page of your own</h2>
+<p>The scanner this site is built on is free and needs no account. Paste an
+address and you get the failures back as <strong>EN&nbsp;301&nbsp;549 clause
+numbers</strong>, what changes when V4.1.1 is cited on 30&nbsp;November, and a
+list of the clauses no machine looked at &mdash; rather than silence that reads
+as a pass.</p>
+<p class="actions">
+  <a class="btn btn-primary" href="/scan">Check a page</a>
+  <a class="btn btn-ghost" href="/scan/example">Read an example first</a>
+</p>
+<p class="micro">Automated testing reaches roughly a third of accessibility
+barriers, so treat any result as a floor. If you would rather have the whole
+site crawled and written up as a dated report, that is
+<a href="/audit">&euro;290</a> &mdash; the same automation done thoroughly, not
+a manual audit.</p>
+</aside>`;
+
 function page(meta, bodyHtml, published) {
   const slug = meta.canonical_url.replace(/^.*\/blog\//, '');
   return { slug, html: `<!doctype html>
@@ -240,6 +268,8 @@ function page(meta, bodyHtml, published) {
 
 ${bodyHtml}
 </article>
+
+${END_BLOCK}
 
 </div>
 </section>

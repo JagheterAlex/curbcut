@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { writeFileSync, readFileSync, mkdtempSync, rmSync } from 'node:fs';
+import { writeFileSync, readFileSync, readdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -97,4 +97,31 @@ test('inline markup inside a cell is converted', () => {
   const html = build(md);
   assert.match(html, /<code>code<\/code>/);
   assert.match(html, /<strong>bold<\/strong>/);
+});
+
+// Every article has to offer a way on. Half of the first six did not, and the
+// other half buried one link nine tenths of the way down — which is how six
+// published pieces sent twelve people to the scanner out of a hundred and
+// fifty-five arrivals.
+//
+// Two mechanisms produce these pages: the template for new articles, and a
+// one-off pass over the six already published. Both are checked here, because
+// two mechanisms with one job is exactly how a page ends up without it.
+test('a generated article ends with a way on', () => {
+  const html = build('Some prose.');
+  assert.match(html, /class="endblock"/);
+  assert.ok(html.indexOf('endblock') > html.indexOf('</article>'),
+    'the block belongs after the article, not inside it');
+  assert.match(html, /href="\/scan"/);
+  assert.match(html, /href="\/scan\/example"/);
+  // The limit is stated in the same block as the offer, not further down.
+  assert.match(html, /roughly a third of accessibility\s+barriers/);
+});
+
+test('every published article ends with a way on', () => {
+  const dir = new URL('../site/blog/', import.meta.url);
+  const missing = readdirSync(dir)
+    .filter((f) => f.endsWith('.html') && f !== 'index.html')
+    .filter((f) => !readFileSync(new URL(f, dir), 'utf8').includes('class="endblock"'));
+  assert.deepEqual(missing, []);
 });
