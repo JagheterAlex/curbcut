@@ -36,3 +36,11 @@ fallthrough = true
 
 [observability]
 enabled = true
+
+# Notifying a person that somebody left their address. Scoped to one recipient
+# so the binding cannot be used to send anywhere else. hello@curbcut.org is a
+# verified Email Routing destination that forwards to a real inbox; using the
+# role address keeps a personal one out of this public file.
+[[send_email]]
+name = "NOTIFY"
+destination_address = "hello@curbcut.org"

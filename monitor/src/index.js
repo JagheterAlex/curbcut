@@ -20,6 +20,7 @@ import {
   SCAN_VIEWED, SCAN_RAN, SCAN_CACHED, SCAN_REFUSED, SCAN_FAILED, SCAN_LIMITED,
   INTEREST_LEFT,
 } from './usage.js';
+import { notifyInterest } from './notify.js';
 
 const MAX_FIELD = 400;
 
@@ -77,7 +78,7 @@ async function recordInterest(env, fields, sourceUrl) {
     .bind(row.id, row.email, row.site, row.use_case, row.source, row.created_at)
     .run();
 
-  return { ok: true };
+  return { ok: true, row };
 }
 
 export default {
@@ -223,6 +224,9 @@ export default {
       }
 
       countUsage(env, ctx, INTEREST_LEFT);
+      // A row in a database nobody is watching is not a lead. The bot trap
+      // returns ok without a row, so check before announcing anything.
+      if (result.row) notifyInterest(env, ctx, result.row);
       return page(thanks(), 200);
     }
 
