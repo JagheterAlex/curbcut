@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, globSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { parseHeaders } from '../scripts/serve-site.mjs';
 
 // The release gate scans the site through this server. If it stops sending the
@@ -47,14 +47,27 @@ test('the site actually has the policy the gate relies on', () => {
 // shipped: the markup read correctly and the rendered page did not, which no
 // amount of reading the source would have shown. Presentational values belong
 // in style.css.
+// Walked by hand rather than with fs.globSync, which arrived in Node 22. The
+// package supports Node 20 and CI runs Node 20, so a test that needs 22 passes
+// on this machine and fails on the one that matters — which is precisely what
+// it did.
+function walk(dir, match, found = []) {
+  for (const entry of readdirSync(new URL('../' + dir + '/', import.meta.url), { withFileTypes: true })) {
+    const path = dir + '/' + entry.name;
+    if (entry.isDirectory()) walk(path, match, found);
+    else if (match.test(entry.name)) found.push(path);
+  }
+  return found;
+}
+
 test('nothing served carries a style attribute the policy will drop', () => {
-  const roots = [
-    ...globSync('site/**/*.html'),
-    ...globSync('monitor/src/*.js'),
+  const files = [
+    ...walk('site', /\.html$/),
+    ...walk('monitor/src', /\.js$/),
     'site/build-article.mjs',
   ];
   const offenders = [];
-  for (const file of roots) {
+  for (const file of files) {
     // The preview harness is a local scratch page, never linked and never in
     // the sitemap.
     if (file.includes('_preview-all')) continue;
