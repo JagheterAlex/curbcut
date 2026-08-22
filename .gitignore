@@ -10,3 +10,6 @@ curbcut-report/
 
 # wrangler build cache
 monitor/.wrangler/
+
+# Tranco research list, 22MB, re-downloadable by list id
+scripts/tranco.csv
