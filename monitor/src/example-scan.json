@@ -1,0 +1,423 @@
+{
+  "scannedAt": "2026-08-22T12:55:48.558Z",
+  "demoHash": "aff477bf3fabe8ef",
+  "analysis": {
+    "standard": {
+      "standard": "EN 301 549",
+      "version": "V3.2.1 (2021-03)",
+      "adoptsWcag": "2.1",
+      "webClausePrefix": "9"
+    },
+    "incoming": {
+      "standard": "EN 301 549",
+      "version": "V4.1.1",
+      "adoptsWcag": "2.2",
+      "expectedCitation": "2026-11-30",
+      "citationCaveat": "Scheduled for citation in the Official Journal on 30 November 2026 per the ETSI work programme. The obligation begins on citation, not on publication, and the date can move."
+    },
+    "provenance": {
+      "engine": "axe-core 4.13.0",
+      "ruleTags": [
+        "wcag21a",
+        "wcag21aa",
+        "wcag22a",
+        "wcag22aa",
+        "wcag2a",
+        "wcag2aa"
+      ],
+      "consistent": true,
+      "executedBeyondStandard": [
+        "wcag22a",
+        "wcag22aa"
+      ]
+    },
+    "scannedPages": 1,
+    "errors": [],
+    "assetWarnings": [],
+    "findings": [
+      {
+        "clause": "9.4.1.2",
+        "criterion": "4.1.2",
+        "title": "Name, Role, Value",
+        "level": "A",
+        "inHarmonised": true,
+        "inIncoming": true,
+        "notes": [],
+        "impact": "critical",
+        "nodeCount": 4,
+        "pageCount": 1,
+        "rules": [
+          {
+            "id": "aria-required-attr",
+            "help": "Required ARIA attributes must be provided",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-required-attr?application=axeAPI",
+            "impact": "critical",
+            "examples": [
+              {
+                "page": "https://curbcut.org/demo/broken.html",
+                "selector": "span[role=\"checkbox\"]",
+                "html": "<span role=\"checkbox\" tabindex=\"0\">Gift wrap</span>",
+                "summary": "Fix any of the following:\n  Required ARIA attribute not present: aria-checked"
+              }
+            ]
+          },
+          {
+            "id": "button-name",
+            "help": "Buttons must have discernible text",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/button-name?application=axeAPI",
+            "impact": "critical",
+            "examples": [
+              {
+                "page": "https://curbcut.org/demo/broken.html",
+                "selector": ".iconbtn",
+                "html": "<button class=\"iconbtn\" aria-hidden=\"false\"><span aria-hidden=\"true\">☰</span></button>",
+                "summary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              }
+            ]
+          },
+          {
+            "id": "frame-title",
+            "help": "Frames must have an accessible name",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/frame-title?application=axeAPI",
+            "impact": "serious",
+            "examples": [
+              {
+                "page": "https://curbcut.org/demo/broken.html",
+                "selector": "iframe",
+                "html": "<iframe src=\"/demo/frame.html\"></iframe>",
+                "summary": "Fix any of the following:\n  Element has no title attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              }
+            ]
+          },
+          {
+            "id": "link-name",
+            "help": "Links must have discernible text",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/link-name?application=axeAPI",
+            "impact": "serious",
+            "examples": [
+              {
+                "page": "https://curbcut.org/demo/broken.html",
+                "selector": ".icons > a[href$=\"broken.html\"]",
+                "html": "<a href=\"/demo/broken.html\"><img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\" width=\"20\" height=\"20\"></a>",
+                "summary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+              }
+            ]
+          }
+        ],
+        "score": 13.11,
+        "priority": "P1"
+      },
+      {
+        "clause": "9.1.1.1",
+        "criterion": "1.1.1",
+        "title": "Non-text Content",
+        "level": "A",
+        "inHarmonised": true,
+        "inIncoming": true,
+        "notes": [],
+        "impact": "critical",
+        "nodeCount": 1,
+        "pageCount": 1,
+        "rules": [
+          {
+            "id": "image-alt",
+            "help": "Images must have alternative text",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/image-alt?application=axeAPI",
+            "impact": "critical",
+            "examples": [
+              {
+                "page": "https://curbcut.org/demo/broken.html",
+                "selector": "img",
+                "html": "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\" width=\"20\" height=\"20\">",
+                "summary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              }
+            ]
+          }
+        ],
+        "score": 10.08,
+        "priority": "P1"
+      },
+      {
+        "clause": "9.2.4.4",
+        "criterion": "2.4.4",
+        "title": "Link Purpose (In Context)",
+        "level": "A",
+        "inHarmonised": true,
+        "inIncoming": true,
+        "notes": [],
+        "impact": "serious",
+        "nodeCount": 1,
+        "pageCount": 1,
+        "rules": [
+          {
+            "id": "link-name",
+            "help": "Links must have discernible text",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/link-name?application=axeAPI",
+            "impact": "serious",
+            "examples": [
+              {
+                "page": "https://curbcut.org/demo/broken.html",
+                "selector": ".icons > a[href$=\"broken.html\"]",
+                "html": "<a href=\"/demo/broken.html\"><img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\" width=\"20\" height=\"20\"></a>",
+                "summary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+              }
+            ]
+          }
+        ],
+        "score": 4.2,
+        "priority": "P3"
+      },
+      {
+        "clause": "9.1.4.3",
+        "criterion": "1.4.3",
+        "title": "Contrast (Minimum)",
+        "level": "AA",
+        "inHarmonised": true,
+        "inIncoming": true,
+        "notes": [],
+        "impact": "serious",
+        "nodeCount": 5,
+        "pageCount": 1,
+        "rules": [
+          {
+            "id": "color-contrast",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+            "impact": "serious",
+            "examples": [
+              {
+                "page": "https://curbcut.org/demo/broken.html",
+                "selector": ".wrap > p",
+                "html": "<p class=\"muted\">Free delivery on orders over €40. Estimated arrival in\n  two to four working days.</p>",
+                "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.81 (foreground color: #9a9a9a, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "page": "https://curbcut.org/demo/broken.html",
+                "selector": ".row:nth-child(1) > div:nth-child(2) > .muted",
+                "html": "<div class=\"muted\">Ground for filter</div>",
+                "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.81 (foreground color: #9a9a9a, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "page": "https://curbcut.org/demo/broken.html",
+                "selector": ".row:nth-child(2) > div:nth-child(2) > .muted",
+                "html": "<div class=\"muted\">350&nbsp;ml, dishwasher safe</div>",
+                "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.81 (foreground color: #9a9a9a, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ]
+          }
+        ],
+        "score": 4.05,
+        "priority": "P3"
+      },
+      {
+        "clause": "9.2.5.8",
+        "criterion": "2.5.8",
+        "title": "Target Size (Minimum)",
+        "level": "AA",
+        "inHarmonised": false,
+        "inIncoming": true,
+        "notes": [
+          "Introduced in WCAG 2.2. Not part of the harmonised EN 301 549 V3.2.1 (2021-03), which adopts WCAG 2.1. Treat as good practice and future-proofing, not as a current EAA obligation.",
+          "Expected to become required when EN 301 549 V4.1.1 is cited, scheduled for 2026-11-30. Fixing it now is early, not wasted."
+        ],
+        "impact": "serious",
+        "nodeCount": 4,
+        "pageCount": 1,
+        "rules": [
+          {
+            "id": "target-size",
+            "help": "All touch targets must be 24px large, or leave sufficient space",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=axeAPI",
+            "impact": "serious",
+            "examples": [
+              {
+                "page": "https://curbcut.org/demo/broken.html",
+                "selector": "a[aria-label=\"Example Store on Mastodon\"]",
+                "html": "<a href=\"/demo/broken.html\" aria-label=\"Example Store on Mastodon\"></a>",
+                "summary": "Fix any of the following:\n  Target has insufficient size (16px by 16px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 16px instead of at least 24px."
+              },
+              {
+                "page": "https://curbcut.org/demo/broken.html",
+                "selector": "a[aria-label=\"Example Store on Instagram\"]",
+                "html": "<a href=\"/demo/broken.html\" aria-label=\"Example Store on Instagram\"></a>",
+                "summary": "Fix any of the following:\n  Target has insufficient size (16px by 16px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 16px instead of at least 24px."
+              },
+              {
+                "page": "https://curbcut.org/demo/broken.html",
+                "selector": "a[aria-label=\"Example Store on YouTube\"]",
+                "html": "<a href=\"/demo/broken.html\" aria-label=\"Example Store on YouTube\"></a>",
+                "summary": "Fix any of the following:\n  Target has insufficient size (16px by 16px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 16px instead of at least 24px."
+              }
+            ]
+          }
+        ],
+        "score": 1.37,
+        "priority": "P4"
+      }
+    ],
+    "summary": {
+      "clausesFailing": 5,
+      "clausesFailingHarmonised": 4,
+      "totalElements": 15,
+      "byPriority": {
+        "P1": 2,
+        "P2": 0,
+        "P3": 2,
+        "P4": 1
+      }
+    },
+    "transition": {
+      "to": {
+        "standard": "EN 301 549",
+        "version": "V4.1.1",
+        "adoptsWcag": "2.2",
+        "expectedCitation": "2026-11-30",
+        "citationCaveat": "Scheduled for citation in the Official Journal on 30 November 2026 per the ETSI work programme. The obligation begins on citation, not on publication, and the date can move."
+      },
+      "becomingRequired": [
+        {
+          "clause": "9.2.5.8",
+          "criterion": "2.5.8",
+          "title": "Target Size (Minimum)",
+          "level": "AA",
+          "nodeCount": 4
+        }
+      ],
+      "noLongerRequired": [],
+      "failingToday": 4,
+      "failingAtCitation": 5,
+      "arriving": [
+        {
+          "criterion": "2.4.11",
+          "title": "Focus Not Obscured (Minimum)",
+          "level": "AA",
+          "automatable": false,
+          "why": "Requires knowing whether a sticky header or cookie bar covers the focused control at the moment it receives focus."
+        },
+        {
+          "criterion": "2.5.7",
+          "title": "Dragging Movements",
+          "level": "AA",
+          "automatable": false,
+          "why": "Requires finding every drag interaction and confirming a single-pointer alternative exists."
+        },
+        {
+          "criterion": "2.5.8",
+          "title": "Target Size (Minimum)",
+          "level": "AA",
+          "automatable": true,
+          "why": "axe-core measures rendered target geometry directly."
+        },
+        {
+          "criterion": "3.2.6",
+          "title": "Consistent Help",
+          "level": "A",
+          "automatable": false,
+          "why": "Requires comparing where help appears across several pages, and judging whether it is the same help."
+        },
+        {
+          "criterion": "3.3.7",
+          "title": "Redundant Entry",
+          "level": "A",
+          "automatable": false,
+          "why": "Requires walking a multi-step form and noticing information asked for twice."
+        },
+        {
+          "criterion": "3.3.8",
+          "title": "Accessible Authentication (Minimum)",
+          "level": "AA",
+          "automatable": false,
+          "why": "Requires judging whether a login imposes a cognitive function test with no alternative."
+        }
+      ],
+      "leaving": [
+        {
+          "criterion": "4.1.1",
+          "title": "Parsing",
+          "level": "A",
+          "why": "Removed in WCAG 2.2. Duplicate ids and malformed markup stop being a conformance failure in their own right, though they still cause real problems that other criteria catch."
+        }
+      ],
+      "undetectable": [
+        {
+          "criterion": "2.4.11",
+          "title": "Focus Not Obscured (Minimum)",
+          "level": "AA",
+          "automatable": false,
+          "why": "Requires knowing whether a sticky header or cookie bar covers the focused control at the moment it receives focus."
+        },
+        {
+          "criterion": "2.5.7",
+          "title": "Dragging Movements",
+          "level": "AA",
+          "automatable": false,
+          "why": "Requires finding every drag interaction and confirming a single-pointer alternative exists."
+        },
+        {
+          "criterion": "3.2.6",
+          "title": "Consistent Help",
+          "level": "A",
+          "automatable": false,
+          "why": "Requires comparing where help appears across several pages, and judging whether it is the same help."
+        },
+        {
+          "criterion": "3.3.7",
+          "title": "Redundant Entry",
+          "level": "A",
+          "automatable": false,
+          "why": "Requires walking a multi-step form and noticing information asked for twice."
+        },
+        {
+          "criterion": "3.3.8",
+          "title": "Accessible Authentication (Minimum)",
+          "level": "AA",
+          "automatable": false,
+          "why": "Requires judging whether a login imposes a cognitive function test with no alternative."
+        }
+      ]
+    },
+    "manualOnly": [
+      {
+        "clause": "9.2.4.5",
+        "what": "More than one way to locate a page",
+        "why": "Requires judging whether site search, a sitemap or navigation genuinely offer alternative routes."
+      },
+      {
+        "clause": "9.3.2.3",
+        "what": "Consistent navigation",
+        "why": "Requires comparing repeated components across several pages."
+      },
+      {
+        "clause": "9.3.2.4",
+        "what": "Consistent identification",
+        "why": "Requires judging whether the same function is named the same way throughout."
+      },
+      {
+        "clause": "9.3.3.4",
+        "what": "Error prevention on legal, financial and data entry",
+        "why": "Requires walking a real checkout or submission flow to confirm it is reversible, checked or confirmed."
+      },
+      {
+        "clause": "9.1.2.x",
+        "what": "Time-based media alternatives",
+        "why": "Captions, transcripts and audio description have to be watched and read to confirm they are accurate, not merely present."
+      },
+      {
+        "clause": "9.2.1.1",
+        "what": "Keyboard operability of the full journey",
+        "why": "Automation reaches individual controls; only a manual pass proves an entire task can be completed by keyboard alone."
+      },
+      {
+        "clause": "12.1.2",
+        "what": "Accessible product documentation",
+        "why": "The documentation itself must meet the standard, and it usually lives outside the scanned pages."
+      },
+      {
+        "clause": "12.2.2",
+        "what": "Accessible support services",
+        "why": "Support channels must accommodate users with disabilities. Nothing on the page reveals this."
+      }
+    ],
+    "coverageNote": "Automated testing detects roughly 30 to 40 percent of WCAG failures. A clean automated result is a starting point, not a conformance claim."
+  }
+}

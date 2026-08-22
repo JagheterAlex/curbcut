@@ -3,8 +3,10 @@
 User-agent: *
 Allow: /
 
-# The demo page is deliberately inaccessible. It exists to be scanned from the
-# home page, not to be indexed as if it were real content.
+# The demo page is deliberately inaccessible. It exists to be scanned, not to be
+# indexed as if it were real content — and disallowing it is also what stops our
+# own release-gate crawl from failing on a page whose whole job is to fail.
+# The example report *of* it, at /scan/example, is deliberately left indexable.
 Disallow: /demo/
 
 Sitemap: https://curbcut.org/sitemap.xml

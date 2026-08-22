@@ -79,7 +79,9 @@ test('markdown tables become tables, not a paragraph of pipes', () => {
 test('a table column can be right-aligned', () => {
   const md = ['| a | b |', '| --- | ---: |', '| 1 | 2 |'].join('\n');
   const html = build(md);
-  assert.match(html, /<td style="text-align:right">2<\/td>/);
+  // A class, not an inline style. The site sends `style-src 'self'`, which
+  // blocks style attributes, so an inline alignment would render as nothing.
+  assert.match(html, /<td class="ta-r">2<\/td>/);
 });
 
 test('a horizontal rule is still a horizontal rule', () => {

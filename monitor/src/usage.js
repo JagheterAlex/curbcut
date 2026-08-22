@@ -30,6 +30,10 @@ export const AUDIT_ASKED = 'audit_asked';
 // separately so the gap between reaching the offer and taking it is visible,
 // rather than showing up as one more visitor who did nothing.
 export const AUDIT_VIEWED = 'audit_viewed';
+// Reading the example report instead of running one. If this rises while
+// scan_ran stays flat, the example is a destination rather than a doorway and
+// should be changed or removed.
+export const EXAMPLE_VIEWED = 'example_viewed';
 
 /**
  * Add one to today's tally for `event`.

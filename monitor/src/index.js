@@ -12,13 +12,15 @@
 // first.
 
 import { page, thanks, errorPage, auditForm, notFound } from './pages.js';
-import { scanForm, scanResult, scanBusy } from './scan-pages.js';
+import { scanForm, scanResult, scanBusy, exampleResult } from './scan-pages.js';
+import { DEMO_PAGE, DEMO_CSS, DEMO_FRAME } from './demo.js';
+import exampleScan from './example-scan.json';
 import { validateTarget, robotsAllows, scanOnePage } from './scan.js';
 import { checkRateLimit, checkFormLimit, readCachedScan, writeCachedScan } from './limits.js';
 import {
   countUsage,
   SCAN_VIEWED, SCAN_RAN, SCAN_CACHED, SCAN_REFUSED, SCAN_FAILED, SCAN_LIMITED,
-  INTEREST_LEFT, AUDIT_ASKED, AUDIT_VIEWED,
+  INTEREST_LEFT, AUDIT_ASKED, AUDIT_VIEWED, EXAMPLE_VIEWED,
 } from './usage.js';
 import { notifyInterest } from './notify.js';
 
@@ -118,6 +120,58 @@ export default {
       }
       countUsage(env, ctx, AUDIT_VIEWED, request);
       return res;
+    }
+
+    // The page broken on purpose, and the example report of it. Six of every
+    // ten visitors who open the scanner leave without entering a URL, and the
+    // likeliest reason is that the page asks for work before showing what the
+    // work buys. Both are GET-only and neither touches a browser.
+    if (url.pathname.startsWith('/demo/') || url.pathname.startsWith('/scan/example')) {
+      if (request.method !== 'GET' && request.method !== 'HEAD') {
+        return new Response('Method not allowed', {
+          status: 405, headers: { allow: 'GET, HEAD' },
+        });
+      }
+      const body = (html, extra) => {
+        const res = page(html, 200, extra);
+        return request.method === 'HEAD'
+          ? new Response(null, { status: 200, headers: res.headers })
+          : res;
+      };
+
+      if (url.pathname === '/demo/broken.css') {
+        const res = new Response(DEMO_CSS, {
+          headers: {
+            'content-type': 'text/css; charset=utf-8',
+            'cache-control': 'public, max-age=3600',
+            'x-content-type-options': 'nosniff',
+          },
+        });
+        return request.method === 'HEAD'
+          ? new Response(null, { status: 200, headers: res.headers })
+          : res;
+      }
+
+      // Two headers relaxed, on these paths only. The demo embeds an untitled
+      // advert frame, because an untitled advert frame is the second most
+      // common failure on the real web — the site-wide `default-src 'none'`
+      // would stop it loading, and DENY would stop it displaying. Same origin
+      // in both cases.
+      const demoHeaders = {
+        'content-security-policy':
+          "default-src 'none'; style-src 'self'; img-src 'self' data:; " +
+          "frame-src 'self'; form-action 'none'; base-uri 'none'; " +
+          "frame-ancestors 'self'",
+        'x-frame-options': 'SAMEORIGIN',
+      };
+
+      if (url.pathname === '/demo/broken.html') return body(DEMO_PAGE, demoHeaders);
+      if (url.pathname === '/demo/frame.html') return body(DEMO_FRAME, demoHeaders);
+      if (url.pathname === '/scan/example' || url.pathname === '/scan/example/') {
+        if (request.method === 'GET') countUsage(env, ctx, EXAMPLE_VIEWED, request);
+        return body(exampleResult(exampleScan));
+      }
+      return page(notFound(url.pathname), 404);
     }
 
     if (url.pathname === '/scan' || url.pathname === '/scan/') {

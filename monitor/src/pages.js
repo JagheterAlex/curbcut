@@ -90,13 +90,14 @@ const SECURITY_HEADERS = {
   'cross-origin-resource-policy': 'same-origin',
 };
 
-export function page(html, status = 200) {
+export function page(html, status = 200, extra = {}) {
   return new Response(html, {
     status,
     headers: {
       'content-type': 'text/html; charset=utf-8',
       'cache-control': 'no-store',
       ...SECURITY_HEADERS,
+      ...extra,
     },
   });
 }
@@ -211,7 +212,7 @@ export function auditForm({ site = '', clauses = null } = {}) {
        can, which is a real and useful thing to have and is not conformance.</p>
      </div>
 
-     <form method="post" action="/api/audit" class="signup" style="margin-top:1.5rem">
+     <form method="post" action="/api/audit" class="signup mt-15">
        <div class="fields">
          <div class="field">
            <label for="a-site">Site to audit <span class="hint">required</span></label>
@@ -244,7 +245,7 @@ export function auditForm({ site = '', clauses = null } = {}) {
      reporting we will say so rather than pad a document. If the site is well over
      200 pages the higher number is quoted now, not afterwards.</p>
 
-     <p style="margin-top:2rem"><a href="/scan">Check another page first</a> ·
+     <p class="mt-2"><a href="/scan">Check another page first</a> ·
      <a href="/">What this is</a></p>`,
     {
       index: true,

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, globSync } from 'node:fs';
 import { parseHeaders } from '../scripts/serve-site.mjs';
 
 // The release gate scans the site through this server. If it stops sending the
@@ -40,4 +40,26 @@ test('the site actually has the policy the gate relies on', () => {
     Object.keys(headers).length >= 5,
     'the catch-all block lost its headers, so the gate is checking a bare site'
   );
+});
+
+// `style-src 'self'` blocks inline style attributes, not just <style> blocks.
+// Every `style="…"` on this site was doing nothing from the moment the policy
+// shipped: the markup read correctly and the rendered page did not, which no
+// amount of reading the source would have shown. Presentational values belong
+// in style.css.
+test('nothing served carries a style attribute the policy will drop', () => {
+  const roots = [
+    ...globSync('site/**/*.html'),
+    ...globSync('monitor/src/*.js'),
+    'site/build-article.mjs',
+  ];
+  const offenders = [];
+  for (const file of roots) {
+    // The preview harness is a local scratch page, never linked and never in
+    // the sitemap.
+    if (file.includes('_preview-all')) continue;
+    const source = readFileSync(new URL('../' + file, import.meta.url), 'utf8');
+    if (/\sstyle="/.test(source)) offenders.push(file);
+  }
+  assert.deepEqual(offenders, []);
 });

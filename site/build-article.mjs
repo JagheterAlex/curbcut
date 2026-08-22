@@ -94,7 +94,9 @@ function convertBody(md) {
 
     if (/^(-{3,}|\*{3,})\s*$/.test(line)) {
       flushParagraph(para);
-      out.push('<hr style="border:0;border-top:1px solid var(--line-soft);margin:2.5rem 0 1.5rem">');
+      // A class, not an inline style: `style-src 'self'` blocks style
+      // attributes, so anything written inline here renders as nothing.
+      out.push('<hr class="rule">');
       i++;
       continue;
     }
@@ -114,8 +116,8 @@ function convertBody(md) {
 
       const headers = cells(line);
       const aligns = cells(lines[i + 1]).map((spec) => {
-        if (/^:-+:$/.test(spec)) return ' style="text-align:center"';
-        if (/^-+:$/.test(spec)) return ' style="text-align:right"';
+        if (/^:-+:$/.test(spec)) return ' class="ta-c"';
+        if (/^-+:$/.test(spec)) return ' class="ta-r"';
         return '';
       });
       i += 2;

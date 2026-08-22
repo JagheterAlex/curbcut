@@ -92,7 +92,7 @@ written to curbcut-report/</code></pre>
         clauses. If you want the long version of the argument, read
         <a href="/blog/scanner-output-is-not-a-conformance-claim">why scanner output is not a conformance claim</a>.</p>
 
-      <div class="callout" style="margin-top:2.5rem">
+      <div class="callout mt-25">
         <p><strong>You do not have to be a developer to use this.</strong> Most
           accessibility tooling assumes you can run a terminal. The people who
           actually get asked what their organisation has done about the European
@@ -164,7 +164,7 @@ written to curbcut-report/</code></pre>
         </table>
       </div>
 
-      <div class="callout" style="margin-top:1.5rem">
+      <div class="callout mt-15">
         <p><strong>Ten contrast failures do not outrank one missing form label.</strong>
           Severity counts sort by how loudly a rule engine complains. Curbcut sorts by
           whether a person can finish what they came to do, because that is the question
@@ -193,7 +193,7 @@ written to curbcut-report/</code></pre>
           </thead>
           <tbody>
             <tr>
-              <td><strong>Overlay widgets</strong><br><span style="color:var(--faint);font-size:.85em">accessiBe, UserWay</span></td>
+              <td><strong>Overlay widgets</strong><br><span class="faint-xs">accessiBe, UserWay</span></td>
               <td>One line of JavaScript, a promise of compliance, roughly $490 a year.</td>
               <td>The US Federal Trade Commission brought a case over exactly that promise in January 2025, and approved a final order in April requiring accessiBe to pay <strong>$1,000,000</strong>. UsableNet&rsquo;s 2025 midyear report counted <strong>456 lawsuits, 22.6% of the US total</strong>, filed against sites that already had an overlay installed. The widget is a liability, not a shield.</td>
             </tr>
@@ -203,11 +203,11 @@ written to curbcut-report/</code></pre>
               <td>Generated without testing anything. A statement is a public legal claim, and it carries your name, not the generator's.</td>
             </tr>
             <tr>
-              <td><strong>Raw scanners</strong><br><span style="color:var(--faint);font-size:.85em">axe, Lighthouse, Pa11y</span></td>
+              <td><strong>Raw scanners</strong><br><span class="faint-xs">axe, Lighthouse, Pa11y</span></td>
               <td>Accurate findings, free, no nonsense. Curbcut is built on axe-core.</td>
               <td>They stop at rule identifiers. Nobody has ever been asked to demonstrate conformance with <code>color-contrast</code>.</td>
             </tr>
-            <tr style="background:color-mix(in srgb, var(--accent) 7%, transparent)">
+            <tr class="tint">
               <td><strong>Curbcut</strong></td>
               <td>Clause-level findings, exposure ranking, an honest statement draft, and the evidence trail behind it.</td>
               <td>Automated testing still only reaches a third of the problem. We say so on every report instead of hiding it.</td>
@@ -253,7 +253,7 @@ written to curbcut-report/</code></pre>
         </div>
       </div>
 
-      <div class="callout" style="margin-top:1.5rem">
+      <div class="callout mt-15">
         <p><strong>What no tool can do, this one included.</strong> Automated testing
           detects roughly a third of accessibility barriers. Keyboard traps, focus order,
           meaningful alternative text and screen-reader logic all need a human. Curbcut
@@ -364,7 +364,7 @@ written to curbcut-report/</code></pre>
       </div>
 
 
-      <div class="signup" id="audit" style="margin-top:1.5rem">
+      <div class="signup mt-15" id="audit">
         <h3>Or have the audit done for you &mdash; &euro;290</h3>
         <p>Monitor is not built. This is, and it is available today. One site, up to
           200 pages, crawled and mapped onto EN&nbsp;301&nbsp;549 clauses, delivered
@@ -372,7 +372,7 @@ written to curbcut-report/</code></pre>
           statement draft and a fix list ordered by regulatory exposure. Turnaround
           two working days.</p>
 
-        <div class="callout" style="margin-top:1.25rem">
+        <div class="callout mt-125">
           <p><strong>What this is not: a manual audit.</strong> Nobody tests your
             site with a screen reader, tabs your checkout, or watches a person with
             a disability use it. Automated testing reaches roughly a third of
@@ -384,7 +384,7 @@ written to curbcut-report/</code></pre>
             is not the same as conformance.</p>
         </div>
 
-        <form method="post" action="/api/audit" style="margin-top:1.25rem">
+        <form class="mt-125" method="post" action="/api/audit">
           <div class="fields">
             <div class="field">
               <label for="a-site">Site to audit <span class="hint">required</span></label>
@@ -417,7 +417,7 @@ written to curbcut-report/</code></pre>
           <!--email_off--><a href="mailto:hello@curbcut.org?subject=Curbcut%20audit">hello@curbcut.org</a><!--email_on-->.</p>
       </div>
 
-      <div class="callout" style="margin-top:1.5rem">
+      <div class="callout mt-15">
         <p><strong>For comparison, at time of writing.</strong> UserWay lists around
           $490 a year and accessiBe starts near $41 a month for an overlay. AudioEye
           runs $199–799 a month. axe DevTools Pro is roughly $1,250 a year per developer
@@ -425,7 +425,7 @@ written to curbcut-report/</code></pre>
           you bolt onto the page.</p>
       </div>
 
-      <div class="callout" style="margin-top:1rem">
+      <div class="callout mt-1">
         <p><strong>Monitor does not exist yet, and is not taking money.</strong> Both
           paid tiers describe a hosted service that is still being built. Announcing it
           as though it were finished, on a site whose whole argument is against
