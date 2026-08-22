@@ -99,6 +99,49 @@ function convertBody(md) {
       continue;
     }
 
+    // Tables. Claimed before lists because a row starts with a pipe and nothing
+    // else in this converter wants that character, but after the horizontal
+    // rule, whose `---` would otherwise swallow a separator row.
+    //
+    // Added late: the first six articles had no tables, so markdown pipes were
+    // falling through into a paragraph and rendering as literal bars of
+    // punctuation on a published page. Escaped pipes inside a cell are not
+    // supported and would split it; nothing has needed them yet.
+    if (line.startsWith('|') && /^\s*\|[\s:|-]+\|\s*$/.test(lines[i + 1] ?? '')) {
+      flushParagraph(para);
+      const cells = (row) =>
+        row.replace(/^\||\|$/g, '').split('|').map((c) => c.trim());
+
+      const headers = cells(line);
+      const aligns = cells(lines[i + 1]).map((spec) => {
+        if (/^:-+:$/.test(spec)) return ' style="text-align:center"';
+        if (/^-+:$/.test(spec)) return ' style="text-align:right"';
+        return '';
+      });
+      i += 2;
+
+      const body = [];
+      while (i < lines.length && lines[i].startsWith('|')) {
+        body.push(cells(lines[i]));
+        i++;
+      }
+
+      const head = headers
+        .map((h, n) => `<th scope="col"${aligns[n] ?? ''}>${inline(h)}</th>`)
+        .join('');
+      const rows = body
+        .map((r) => '<tr>' + r.map((c, n) => `<td${aligns[n] ?? ''}>${inline(c)}</td>`).join('') + '</tr>')
+        .join('\n      ');
+
+      out.push(
+        '<div class="tablewrap">\n  <table>\n' +
+        `    <thead><tr>${head}</tr></thead>\n` +
+        `    <tbody>\n      ${rows}\n    </tbody>\n` +
+        '  </table>\n</div>'
+      );
+      continue;
+    }
+
     if (/^\s*[-*]\s+/.test(line) || /^\s*\d+\.\s+/.test(line)) {
       flushParagraph(para);
       const ordered = /^\s*\d+\.\s+/.test(line);

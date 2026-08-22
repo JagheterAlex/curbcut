@@ -55,3 +55,44 @@ test('no markdown syntax survives into the page', () => {
   assert.ok(!html.includes('**'), 'no leftover asterisks');
   assert.ok(!html.includes(']('), 'no leftover link syntax');
 });
+
+test('markdown tables become tables, not a paragraph of pipes', () => {
+  // Six articles had no tables, so pipe rows fell through into a paragraph and
+  // published as literal bars of punctuation. Caught by a reader looking at the
+  // live page, which is the check that was missing.
+  const md = [
+    '| Clause | Level | Sites failing |',
+    '| --- | --- | ---: |',
+    '| 9.4.1.2 | A | 96 of 149 (64%) |',
+    '| 9.1.4.3 | AA | 66 of 149 (44%) |',
+  ].join('\n');
+
+  const html = build(md);
+  assert.match(html, /<table>/);
+  assert.match(html, /<th scope="col">Clause<\/th>/);
+  assert.match(html, /<td>9\.4\.1\.2<\/td>/);
+  assert.equal((html.match(/<tr>/g) ?? []).length, 3, 'one header row and two body rows');
+  assert.ok(!html.includes('<p>|'), 'no pipe row survives as a paragraph');
+  assert.match(html, /class="tablewrap"/, 'wide tables scroll rather than break the page');
+});
+
+test('a table column can be right-aligned', () => {
+  const md = ['| a | b |', '| --- | ---: |', '| 1 | 2 |'].join('\n');
+  const html = build(md);
+  assert.match(html, /<td style="text-align:right">2<\/td>/);
+});
+
+test('a horizontal rule is still a horizontal rule', () => {
+  // The table separator and the thematic break are both dashes; the rule has to
+  // keep winning when there are no pipes around it.
+  const rule = build('---');
+  assert.match(rule, /<hr/);
+  assert.ok(!rule.includes('<table>'));
+});
+
+test('inline markup inside a cell is converted', () => {
+  const md = ['| what | how |', '| --- | --- |', '| `code` | **bold** |'].join('\n');
+  const html = build(md);
+  assert.match(html, /<code>code<\/code>/);
+  assert.match(html, /<strong>bold<\/strong>/);
+});
