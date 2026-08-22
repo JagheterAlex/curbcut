@@ -14,7 +14,7 @@
 import { page, thanks, errorPage } from './pages.js';
 import { scanForm, scanResult, scanBusy } from './scan-pages.js';
 import { validateTarget, robotsAllows, scanOnePage } from './scan.js';
-import { checkRateLimit, readCachedScan, writeCachedScan } from './limits.js';
+import { checkRateLimit, checkFormLimit, readCachedScan, writeCachedScan } from './limits.js';
 import {
   countUsage,
   SCAN_VIEWED, SCAN_RAN, SCAN_CACHED, SCAN_REFUSED, SCAN_FAILED, SCAN_LIMITED,
@@ -198,10 +198,21 @@ export default {
         return new Response('Method not allowed', { status: 405, headers: { allow: 'POST' } });
       }
 
-      // Same-origin only. The form lives on our page; nothing else should post here.
+      // Same-origin only, and the header has to be there. The previous version
+      // accepted a request with no Origin at all, which every browser sends on a
+      // cross-origin POST but a script can simply omit. Absent is not the same
+      // as matching.
       const origin = request.headers.get('origin');
-      if (origin && new URL(origin).hostname !== url.hostname) {
+      if (!origin || new URL(origin).hostname !== url.hostname) {
         return new Response('Cross-origin form posts are not accepted', { status: 403 });
+      }
+
+      // These endpoints send email to a person. Without a limit the form is a
+      // convenient way to flood that inbox and to get our own domain treated as
+      // a spam source.
+      const formLimit = await checkFormLimit(env, request);
+      if (!formLimit.ok) {
+        return page(errorPage(formLimit.reason), 429);
       }
 
       let fields;

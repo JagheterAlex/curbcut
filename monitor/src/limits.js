@@ -11,6 +11,7 @@
 // enough to stop abuse and not enough to follow anybody around.
 
 const HOUR = 60 * 60;
+const DAY = 24 * 60 * 60;
 
 const PER_CALLER_PER_HOUR = 10;
 const PER_DAY_TOTAL = 120;      // guards the account-wide browser budget
@@ -101,3 +102,49 @@ export async function writeCachedScan(env, url, payload) {
 }
 
 export const CACHE_MINUTES = CACHE_TTL_SECONDS / 60;
+
+// Submissions per caller per hour, and per day for everybody.
+//
+// Added after the enquiry form was given the ability to send email. Until then
+// an abusive submitter could only write rows to a database nobody read; now
+// each POST reaches a person's inbox, which turns an unlimited form into a
+// convenient way to flood it and to get our own domain treated as a spam
+// source. The endpoint that can wake somebody up needs a tighter limit than
+// the one that cannot.
+//
+// Deliberately generous for a human. Nobody legitimately asks for five audits
+// in an hour, and a person who mistypes their address twice is unaffected.
+const FORMS_PER_CALLER_PER_HOUR = 5;
+const FORMS_PER_DAY_TOTAL = 200;
+
+export async function checkFormLimit(env, request) {
+  const now = new Date();
+  const hourWindow = now.toISOString().slice(0, 13);
+  const dayWindow = now.toISOString().slice(0, 10);
+
+  const callerKey = 'fl:' + hourWindow + ':' + (await hashCaller(request, hourWindow));
+  const dayKey = 'fl:day:' + dayWindow;
+
+  const [callerRaw, dayRaw] = await Promise.all([
+    env.CACHE.get(callerKey),
+    env.CACHE.get(dayKey),
+  ]);
+  const caller = Number(callerRaw ?? 0);
+  const day = Number(dayRaw ?? 0);
+
+  if (caller >= FORMS_PER_CALLER_PER_HOUR || day >= FORMS_PER_DAY_TOTAL) {
+    return {
+      ok: false,
+      reason:
+        'That is more form submissions than this page accepts in an hour. If ' +
+        'you are trying to reach a person rather than a rate limiter, write to ' +
+        'hello@curbcut.org and one will answer.',
+    };
+  }
+
+  await Promise.all([
+    env.CACHE.put(callerKey, String(caller + 1), { expirationTtl: HOUR }),
+    env.CACHE.put(dayKey, String(day + 1), { expirationTtl: DAY }),
+  ]);
+  return { ok: true };
+}

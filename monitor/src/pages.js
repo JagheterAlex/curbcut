@@ -70,14 +70,33 @@ ${bodyHtml}
 </html>`;
 }
 
+// The same policy the static site serves, kept here because a Worker response
+// does not inherit the _headers file. These pages carry no script either, and
+// the scanner result page renders markup taken from somebody else's website:
+// everything is escaped on the way in, and this is the second line if that ever
+// fails.
+const SECURITY_HEADERS = {
+  'content-security-policy':
+    "default-src 'none'; style-src 'self'; img-src 'self' data:; " +
+    "form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
+  'x-frame-options': 'DENY',
+  'x-content-type-options': 'nosniff',
+  'referrer-policy': 'strict-origin-when-cross-origin',
+  'strict-transport-security': 'max-age=31536000; includeSubDomains',
+  'permissions-policy':
+    'accelerometer=(), camera=(), geolocation=(), gyroscope=(), ' +
+    'magnetometer=(), microphone=(), payment=(), usb=()',
+  'cross-origin-opener-policy': 'same-origin',
+  'cross-origin-resource-policy': 'same-origin',
+};
+
 export function page(html, status = 200) {
   return new Response(html, {
     status,
     headers: {
       'content-type': 'text/html; charset=utf-8',
       'cache-control': 'no-store',
-      'referrer-policy': 'strict-origin-when-cross-origin',
-      'x-content-type-options': 'nosniff',
+      ...SECURITY_HEADERS,
     },
   });
 }

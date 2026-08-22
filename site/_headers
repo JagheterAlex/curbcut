@@ -1,0 +1,24 @@
+# Response headers for every page Cloudflare Pages serves.
+#
+# The policy below is unusually strict because this site is unusually simple:
+# one stylesheet, no scripts, no fonts, no images loaded from anywhere, no
+# embeds, no analytics. Everything external on this site is a link, and a link
+# is navigation rather than a fetch.
+#
+# script-src is absent, so `default-src 'none'` blocks every script. That turns
+# the claim on our accessibility statement — that this site runs no JavaScript
+# at all — from a promise into something the browser enforces. If anything ever
+# tries to inject a script here, including a well-meaning platform feature, the
+# page breaks loudly instead of quietly becoming a different page. That has
+# already happened once: Cloudflare was injecting its own analytics beacon and
+# we did not notice for weeks, because a command line tool cannot see it.
+
+/*
+  Content-Security-Policy: default-src 'none'; style-src 'self'; img-src 'self' data:; form-action 'self'; base-uri 'none'; frame-ancestors 'none'
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
