@@ -24,3 +24,32 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: npm ci
       - run: npm test
+
+  # The site deploys to Cloudflare Pages on every push to main, but the check
+  # that it passes its own scanner lived only in the release workflow, which
+  # runs on version tags. So between two tags the site could ship a page that
+  # fails the standard we sell reports about, and nothing would say so. This is
+  # that gate, moved to where the site actually ships from.
+  #
+  # One Node version: this checks the site, not the runtime.
+  site:
+    runs-on: ubuntu-latest
+    name: the site passes its own scanner
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      # Served by scripts/serve-site.mjs, not a generic static server: that one
+      # ignored _headers, so the gate tested a site with no Content Security
+      # Policy while the real one had a policy that broke the scanner.
+      - name: Crawl and refuse P4 or worse
+        run: |
+          node scripts/serve-site.mjs site 8799 &
+          for i in $(seq 1 20); do
+            curl -sf http://127.0.0.1:8799/ >/dev/null && break
+            sleep 1
+          done
+          node bin/curbcut.js http://127.0.0.1:8799/ --crawl --fail-on P4
