@@ -45,8 +45,23 @@ function mime({ from, to, subject, body }) {
 export function notifyInterest(env, ctx, row) {
   if (!env?.NOTIFY) return;
 
+  const audit = row.kind === 'audit';
+  const tail = audit
+    ? [
+        'Do not start work yet. The order is in business/AUDIT-RUNBOOK.md:',
+        'confirm the site and page count, quote a fixed price, say plainly what',
+        'the audit does not cover, and only begin once it is paid. If the site is',
+        'well over 200 pages, the higher price is quoted now and not afterwards.',
+      ]
+    : [
+        'Nothing to do. This is a waiting-list signup for a product that does not',
+        'exist yet, and they were promised exactly one email on the day it does.',
+      ];
+
   const body = [
-    'Somebody left their address on curbcut.org.',
+    audit
+      ? 'Somebody is asking for the paid audit. This one can turn into an invoice.'
+      : 'Somebody joined the Monitor waiting list on curbcut.org.',
     '',
     'Email:    ' + oneLine(row.email),
     'Site:     ' + oneLine(row.site),
@@ -54,10 +69,7 @@ export function notifyInterest(env, ctx, row) {
     'Came from: ' + oneLine(row.source),
     'When:     ' + row.created_at,
     '',
-    'Reply from hello@curbcut.org. If this is an audit enquiry, the delivery',
-    'order is in business/AUDIT-RUNBOOK.md: confirm scope and a fixed price',
-    'before any work starts, and say what the audit does not cover in the same',
-    'size type as everything else.',
+    ...tail,
   ].join('\n');
 
   const work = (async () => {
@@ -69,7 +81,8 @@ export function notifyInterest(env, ctx, row) {
           mime({
             from: FROM,
             to: TO,
-            subject: 'Curbcut enquiry from ' + oneLine(row.email, 80),
+            subject: (audit ? 'AUDIT REQUEST from ' : 'Monitor waiting list: ') +
+              oneLine(row.email, 80),
             body,
           })
         )

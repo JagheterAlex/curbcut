@@ -384,12 +384,37 @@ written to curbcut-report/</code></pre>
             is not the same as conformance.</p>
         </div>
 
-        <p style="margin-top:1.25rem"><!--email_off--><a class="btn btn-primary"
-          href="mailto:hello@curbcut.org?subject=Curbcut%20audit&amp;body=Site%20to%20audit%3A%20%0D%0AApproximate%20number%20of%20pages%3A%20%0D%0AAnything%20specific%20you%20have%20been%20asked%20for%3A%20">Ask
-          for an audit</a><!--email_on--></p>
-        <p class="small">Tell us the site and roughly how many pages. You get a fixed
+        <form method="post" action="/api/audit" style="margin-top:1.25rem">
+          <div class="fields">
+            <div class="field">
+              <label for="a-site">Site to audit <span class="hint">required</span></label>
+              <input type="text" id="a-site" name="site" required autocomplete="url"
+                     placeholder="example.com">
+            </div>
+            <div class="field">
+              <label for="a-email">Where to send the price <span class="hint">required</span></label>
+              <input type="email" id="a-email" name="email" required autocomplete="email"
+                     placeholder="you@company.com">
+            </div>
+            <div class="field wide">
+              <label for="a-notes">Roughly how many pages, and what you have been asked for
+                <span class="hint">optional, and it changes the price</span></label>
+              <textarea id="a-notes" name="use_case" rows="3"
+                        placeholder="About 150 pages. Our largest customer asked for an accessibility statement before renewing."></textarea>
+            </div>
+          </div>
+
+          <div class="trap" aria-hidden="true">
+            <label for="a-cw">Leave this field empty</label>
+            <input type="text" id="a-cw" name="company_website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <p class="actions"><button class="btn btn-primary" type="submit">Ask for a fixed price</button></p>
+        </form>
+        <p class="small">Nothing is charged and nothing starts here. You get a fixed
           price back before anything is invoiced, and if the tool finds nothing worth
-          reporting we will say so rather than pad a document.</p>
+          reporting we will say so rather than pad a document. Prefer email? Write to
+          <!--email_off--><a href="mailto:hello@curbcut.org?subject=Curbcut%20audit">hello@curbcut.org</a><!--email_on-->.</p>
       </div>
 
       <div class="callout" style="margin-top:1.5rem">

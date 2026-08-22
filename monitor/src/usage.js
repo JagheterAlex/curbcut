@@ -23,6 +23,9 @@ export const SCAN_REFUSED = 'scan_refused';
 export const SCAN_FAILED = 'scan_failed';
 export const SCAN_LIMITED = 'scan_limited';
 export const INTEREST_LEFT = 'interest_left';
+// Counted apart from the waiting list on purpose: this one can turn into an
+// invoice this week, and averaging it into a mailing list would hide it.
+export const AUDIT_ASKED = 'audit_asked';
 
 /**
  * Add one to today's tally for `event`.

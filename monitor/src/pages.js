@@ -82,7 +82,40 @@ export function page(html, status = 200) {
   });
 }
 
-export function thanks() {
+export function thanks(kind = 'monitor') {
+  if (kind === 'audit') {
+    return shell(
+      'Asked',
+      `<h1>Asked. You will hear from a person.</h1>
+       <p class="lede">Nothing is charged and nothing is started yet. The next
+       message you get is a fixed price and a scope, and you decide from there.</p>
+
+       <p>What happens now, in order:</p>
+       <ol>
+         <li>We confirm the address of the site and roughly how many pages it has.</li>
+         <li>You get a <strong>fixed price</strong> before any work begins. If the
+           site is much larger than 200 pages, the higher number is quoted then and
+           not after.</li>
+         <li>You pay, and the report arrives within <strong>two working days</strong>.</li>
+       </ol>
+
+       <p><strong>What the &euro;290 does not buy</strong>, in the same size type as
+       the rest: nobody tests your site with a screen reader, tabs your checkout, or
+       watches a person with a disability use it. Automated testing reaches roughly
+       a third of accessibility barriers, and the report says so on its first page
+       and lists the clauses that were never assessed. If you need the other
+       two thirds, you need a manual audit, and it costs more than this from people
+       who do it properly.</p>
+
+       <p>We stored the address of the site, your email, and whatever you typed.
+       Nothing else. Not your IP, not your browser, not a cookie.</p>
+
+       <p><a href="/">Back to the home page</a>, or write to
+       <!--email_off--><a href="mailto:hello@curbcut.org">hello@curbcut.org</a><!--email_on-->
+       if you would rather add something.</p>`
+    );
+  }
+
   return shell(
     'Noted',
     `<h1>Noted.</h1>

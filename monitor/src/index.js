@@ -18,7 +18,7 @@ import { checkRateLimit, readCachedScan, writeCachedScan } from './limits.js';
 import {
   countUsage,
   SCAN_VIEWED, SCAN_RAN, SCAN_CACHED, SCAN_REFUSED, SCAN_FAILED, SCAN_LIMITED,
-  INTEREST_LEFT,
+  INTEREST_LEFT, AUDIT_ASKED,
 } from './usage.js';
 import { notifyInterest } from './notify.js';
 
@@ -46,7 +46,14 @@ function clean(value) {
   return v.slice(0, MAX_FIELD);
 }
 
-async function recordInterest(env, fields, sourceUrl) {
+// Which form this came from. The audit is the only thing on sale today, and a
+// waiting-list signup for a product that does not exist is a different event
+// entirely: one is a person who might pay this week, the other is a person who
+// might pay next year. Counting them in one number would have hidden the first
+// real customer inside a mailing list.
+const KINDS = new Set(['monitor', 'audit']);
+
+async function recordInterest(env, fields, sourceUrl, kind = 'monitor') {
   const email = clean(fields.get('email'));
   if (!looksLikeEmail(email)) {
     return { ok: false, reason: 'email' };
@@ -65,17 +72,18 @@ async function recordInterest(env, fields, sourceUrl) {
     use_case: clean(fields.get('use_case')),
     source: sourceUrl,
     created_at: new Date().toISOString(),
+    kind: KINDS.has(kind) ? kind : 'monitor',
   };
 
   await env.DB.prepare(
-    `INSERT INTO interest (id, email, site, use_case, source, created_at)
-     VALUES (?1, ?2, ?3, ?4, ?5, ?6)
-     ON CONFLICT(email) DO UPDATE SET
+    `INSERT INTO interest (id, email, site, use_case, source, created_at, kind)
+     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)
+     ON CONFLICT(email, kind) DO UPDATE SET
        site       = COALESCE(excluded.site, interest.site),
        use_case   = COALESCE(excluded.use_case, interest.use_case),
        removed_at = NULL`
   )
-    .bind(row.id, row.email, row.site, row.use_case, row.source, row.created_at)
+    .bind(row.id, row.email, row.site, row.use_case, row.source, row.created_at, row.kind)
     .run();
 
   return { ok: true, row };
@@ -184,7 +192,8 @@ export default {
       return page(scanResult(analysis, { target, cached: false, scannedAt }), 200);
     }
 
-    if (url.pathname === '/api/interest') {
+    if (url.pathname === '/api/interest' || url.pathname === '/api/audit') {
+      const kind = url.pathname === '/api/audit' ? 'audit' : 'monitor';
       if (request.method !== 'POST') {
         return new Response('Method not allowed', { status: 405, headers: { allow: 'POST' } });
       }
@@ -204,7 +213,9 @@ export default {
 
       let result;
       try {
-        result = await recordInterest(env, fields, request.headers.get('referer') ?? '');
+        result = await recordInterest(
+          env, fields, request.headers.get('referer') ?? '', kind
+        );
       } catch (err) {
         console.error('interest insert failed', err);
         return page(
@@ -223,11 +234,11 @@ export default {
         );
       }
 
-      countUsage(env, ctx, INTEREST_LEFT);
+      countUsage(env, ctx, kind === 'audit' ? AUDIT_ASKED : INTEREST_LEFT);
       // A row in a database nobody is watching is not a lead. The bot trap
       // returns ok without a row, so check before announcing anything.
       if (result.row) notifyInterest(env, ctx, result.row);
-      return page(thanks(), 200);
+      return page(thanks(kind), 200);
     }
 
     return new Response('Not found', { status: 404 });
