@@ -9,7 +9,9 @@
  * that the specification requires. Crawl-delay and wildcards beyond `*` and
  * `$` are deliberately out of scope, and we fail open rather than guess.
  */
-export function parseRobots(text) {
+export const OUR_AGENTS = ['curbcut', 'curbcutresearch'];
+
+export function parseRobots(text, agents = OUR_AGENTS) {
   const groups = [];
   let current = null;
   let lastLineWasAgent = false;
@@ -42,7 +44,12 @@ export function parseRobots(text) {
   // split rules across several blocks for the same agent — Cloudflare, for one,
   // prepends a managed `User-agent: *` block ahead of the site's own. Reading
   // only the first group silently ignored the site owner's actual rules.
-  const named = groups.filter((g) => g.agents.includes('curbcut'));
+  // Both tokens we answer to. The research crawler introduces itself as
+  // CurbcutResearch and the /research page tells site owners to write exactly
+  // that, so the parser has to honour it: publishing a way to refuse us and
+  // then not implementing it would be worse than never offering one.
+  const wanted = agents.map((a) => a.toLowerCase());
+  const named = groups.filter((g) => g.agents.some((a) => wanted.includes(a)));
   const matching = named.length > 0 ? named : groups.filter((g) => g.agents.includes('*'));
 
   const rules = matching.flatMap((g) => g.rules).filter((r) => r.path !== '');

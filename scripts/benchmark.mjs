@@ -170,6 +170,14 @@ async function measureOnce(context, origin, domain) {
 
     return {
       failing: analysis.findings.map((f) => f.criterion),
+      // Which axe rule produced each clause failure. The clause is the unit a
+      // conformance claim is written in, so it is what gets published, but
+      // saying "64% fail Name, Role, Value" without knowing whether that is
+      // unlabelled buttons or broken ARIA would be describing a number we did
+      // not actually look at.
+      rules: Object.fromEntries(
+        analysis.findings.map((f) => [f.criterion, f.rules.map((r) => r.id).sort()])
+      ),
       harmonised: analysis.summary.clausesFailingHarmonised,
       elements: analysis.summary.totalElements,
       consent,
@@ -240,6 +248,10 @@ async function main() {
         // it means what a regulator sees depends on when they look.
         unstable,
         consent: first.consent,
+        // Rules from the first load, restricted to clauses that failed twice.
+        rules: Object.fromEntries(
+          Object.entries(first.rules).filter(([c]) => agreed.includes(c))
+        ),
         engine: first.engine,
       });
 
@@ -296,7 +308,11 @@ async function main() {
   };
 
   mkdirSync(OUT_DIR, { recursive: true });
-  const file = join(OUT_DIR, 'run-' + new Date().toISOString().slice(0, 10) + '.json');
+  // Stamped to the second, not the day. Two runs in one afternoon is the
+  // normal case while a method is being worked out, and the first one nearly
+  // got overwritten by the second.
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+  const file = join(OUT_DIR, 'run-' + stamp + '-n' + sites.length + '.json');
   writeFileSync(file, JSON.stringify(payload, null, 2) + '\n', 'utf8');
 
   console.error('\n--- measured ' + measured.length + ' of ' + sites.length + ' ---');

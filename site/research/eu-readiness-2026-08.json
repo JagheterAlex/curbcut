@@ -1,0 +1,2960 @@
+{
+  "study": "Readiness of the most-visited EU-domain websites for EN 301 549 V4.1.1",
+  "publisher": "Curbcut (curbcut.org)",
+  "method": {
+    "list": "Tranco 74V8X",
+    "selection": "Domains with an EU member state TLD, in Tranco rank order",
+    "loadsPerSite": 2,
+    "countedWhen": "the criterion failed on both loads",
+    "sampled": 300,
+    "measured": 149,
+    "excluded": 151,
+    "runAt": "2026-08-22T07:22:41.232Z",
+    "engine": "axe-core 4.13.0"
+  },
+  "namingPolicy": "Per-site rows carry a rank bucket and TLD, never the domain. The sample can be reconstructed exactly from the Tranco list id and the selection rule, so anyone can rebuild it and re-run; we decline to publish the list of names ourselves, because a vendor that sells the remedy naming the sites turns a measurement into an accusation.",
+  "consent": {
+    "withBanner": 47,
+    "blockingThePage": 30,
+    "note": "Consent dialogs were never dismissed. Sites showing one were measured as an uninvited visitor sees them, which is also how a regulator arrives."
+  },
+  "instability": {
+    "sitesDisagreeingBetweenLoads": 9,
+    "note": "Two loads of the same page, seconds apart, produced different findings on these sites. Nothing was fixed in between. It is the reason a dated one-off audit describes a moment rather than a site."
+  },
+  "arriving": [
+    {
+      "criterion": "2.4.11",
+      "title": "Focus Not Obscured (Minimum)",
+      "level": "AA",
+      "automatable": false,
+      "failing": null
+    },
+    {
+      "criterion": "2.5.7",
+      "title": "Dragging Movements",
+      "level": "AA",
+      "automatable": false,
+      "failing": null
+    },
+    {
+      "criterion": "2.5.8",
+      "title": "Target Size (Minimum)",
+      "level": "AA",
+      "automatable": true,
+      "failing": 51
+    },
+    {
+      "criterion": "3.2.6",
+      "title": "Consistent Help",
+      "level": "A",
+      "automatable": false,
+      "failing": null
+    },
+    {
+      "criterion": "3.3.7",
+      "title": "Redundant Entry",
+      "level": "A",
+      "automatable": false,
+      "failing": null
+    },
+    {
+      "criterion": "3.3.8",
+      "title": "Accessible Authentication (Minimum)",
+      "level": "AA",
+      "automatable": false,
+      "failing": null
+    }
+  ],
+  "sites": [
+    {
+      "rankBucket": "<=500",
+      "tld": "be",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=500",
+      "tld": "dk",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=500",
+      "tld": "eu",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=500",
+      "tld": "it",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=500",
+      "tld": "de",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=500",
+      "tld": "de",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=500",
+      "tld": "ee",
+      "measured": false,
+      "excluded": "robots.txt disallows it"
+    },
+    {
+      "rankBucket": "<=500",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "2.4.4"
+      ],
+      "unstable": [
+        "2.5.8"
+      ],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=500",
+      "tld": "eu",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=500",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "eu",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2",
+        "2.5.8"
+      ],
+      "unstable": [
+        "1.1.1"
+      ],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 5,
+      "failing": [
+        "1.3.1",
+        "4.1.2",
+        "1.1.1",
+        "2.4.4",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2",
+        "2.5.8"
+      ],
+      "unstable": [
+        "1.1.1"
+      ],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "cz",
+      "measured": true,
+      "clausesFailing": 5,
+      "failing": [
+        "4.1.2",
+        "1.3.1",
+        "2.4.4",
+        "2.1.1",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [
+        "1.1.1"
+      ],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "es",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "pl",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "pl",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "1.1.1",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "2.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "1.3.1",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "1.1.1",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "2.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "1.1.1",
+        "4.1.2",
+        "2.4.4",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "pl",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=1000",
+      "tld": "es",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "pl",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "1.3.1",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "page.goto: net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "1.3.1",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "gr",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "bg",
+      "measured": true,
+      "clausesFailing": 5,
+      "failing": [
+        "1.3.1",
+        "4.1.2",
+        "1.4.3",
+        "2.4.4",
+        "1.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "blocked the test script (CSP)"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "1.3.1",
+        "4.1.2",
+        "1.1.1"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "cz",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "eu",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "pl",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "3.1.1",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "se",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "1.3.1",
+        "4.1.2"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "nl",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "nl",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "robots.txt disallows it"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "nl",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "bg",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "1.1.1",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "1.1.1",
+        "4.1.2",
+        "1.4.3",
+        "2.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "be",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "4.1.2",
+        "1.1.1",
+        "2.4.4",
+        "1.4.3"
+      ],
+      "unstable": [
+        "2.1.1"
+      ],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "pt",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "4.1.2",
+        "1.3.1",
+        "2.4.4",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "ro",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "2.1.1",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "eu",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "pl",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "es",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "4.1.2",
+        "1.1.1",
+        "1.3.1",
+        "2.4.4",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "it",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "cz",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "4.1.2",
+        "1.1.1",
+        "2.4.4",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "it",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "fi",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [
+        "1.4.3"
+      ],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "pl",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "1.3.1",
+        "4.1.2",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "gr",
+      "measured": true,
+      "clausesFailing": 5,
+      "failing": [
+        "1.1.1",
+        "4.1.2",
+        "2.4.4",
+        "1.4.3",
+        "2.2.1"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "hr",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "1.3.1",
+        "1.1.1",
+        "4.1.2",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "hr",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "se",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "dk",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "it",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "es",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "es",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "1.1.1",
+        "4.1.2"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "es",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "2.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "2.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "dk",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "HTTP 404"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "eu",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "fi",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "1.3.1",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "robots.txt disallows it"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "ro",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "4.1.2",
+        "1.3.1",
+        "1.4.3",
+        "2.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "lt",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "1.1.1",
+        "4.1.2",
+        "1.4.3",
+        "2.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "pl",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "es",
+      "measured": false,
+      "excluded": "page.goto: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - navig"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "lt",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "1.1.1",
+        "4.1.2",
+        "1.4.3",
+        "2.4.4",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "1.4.3",
+        "2.4.4",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "cz",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "1.4.12",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "1.1.1",
+        "4.1.2",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "it",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "es",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "nl",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=2000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "1.3.1"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "sk",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "4.1.2",
+        "1.3.1",
+        "1.4.3",
+        "2.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "es",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "robots.txt disallows it"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "se",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "be",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "be",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "ee",
+      "measured": false,
+      "excluded": "HTTP 404"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "at",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fi",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "3.1.1",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "eu",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "2.4.4",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "blocked the test script (CSP)"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "es",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "2.4.2",
+        "3.1.1",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "1.4.3",
+        "2.4.4",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "4.1.2",
+        "2.4.4",
+        "1.4.3",
+        "1.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "es",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "nl",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "2.4.4",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "pl",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "2.4.4",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "pl",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "1.1.1",
+        "4.1.2",
+        "2.4.4",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fi",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "2.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "1.3.1",
+        "4.1.2"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "2.4.4",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "pl",
+      "measured": true,
+      "clausesFailing": 5,
+      "failing": [
+        "4.1.2",
+        "1.1.1",
+        "1.3.1",
+        "2.4.4",
+        "1.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "pt",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "2.4.4",
+        "1.4.4",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "se",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "nl",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "1.1.1"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "at",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 6,
+      "failing": [
+        "4.1.2",
+        "1.1.1",
+        "3.1.1",
+        "1.4.1",
+        "2.4.4",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "nl",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "se",
+      "measured": false,
+      "excluded": "blocked the test script (CSP)"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "at",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "eu",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "be",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "eu",
+      "measured": true,
+      "clausesFailing": 5,
+      "failing": [
+        "4.1.2",
+        "3.1.1",
+        "1.3.1",
+        "2.4.4",
+        "1.4.4",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "1.4.3",
+        "2.4.4",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "4.1.2",
+        "1.3.1",
+        "1.1.1",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "lt",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "se",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "page.goto: net::ERR_CERT_COMMON_NAME_INVALID"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "eu",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "se",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2"
+      ],
+      "unstable": [
+        "2.5.8"
+      ],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [
+        "2.5.8"
+      ],
+      "unstable": [
+        "1.4.3"
+      ],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "1.4.3",
+        "2.4.4",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "1.3.1",
+        "4.1.2",
+        "2.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "at",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 5,
+      "failing": [
+        "4.1.2",
+        "1.1.1",
+        "1.3.1",
+        "2.4.4",
+        "1.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "es",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "2.4.4",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "eu",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "2.4.4",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "nl",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "cz",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "2.1.1"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "gr",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "eu",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "at",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "3.1.1",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "HTTP 401"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "2.4.4",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "eu",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "1.3.1",
+        "4.1.2",
+        "1.4.1",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fi",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "pt",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "blocked the test script (CSP)"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "1.1.1",
+        "4.1.2",
+        "2.4.4",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "dk",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "nl",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "ie",
+      "measured": true,
+      "clausesFailing": 5,
+      "failing": [
+        "1.3.1",
+        "4.1.2",
+        "1.1.1",
+        "2.4.4",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "pl",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fi",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "nl",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "pl",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "page.goto: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - navig"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "es",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "1.1.1",
+        "4.1.2",
+        "2.4.4"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "pl",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "pl",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "1.1.1",
+        "2.1.1",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "eu",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "pt",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "nl",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "hu",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "4.1.2",
+        "1.1.1",
+        "2.4.4",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "pl",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "nl",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "at",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "se",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "page.goto: net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "bg",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "2.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "es",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "1.1.1",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "page.goto: net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "es",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "pl",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "es",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "2.4.4",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "nl",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "sk",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "ie",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "4.1.2",
+        "1.1.1",
+        "2.4.4",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "1.1.1",
+        "4.1.2",
+        "1.3.1",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "es",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "eu",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "be",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [
+        "2.1.1"
+      ],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "hu",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "be",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "4.1.2"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "2.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "eu",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "eu",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "nl",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "dk",
+      "measured": true,
+      "clausesFailing": 5,
+      "failing": [
+        "1.3.1",
+        "4.1.2",
+        "1.1.1",
+        "2.1.1",
+        "1.4.3"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=5000",
+      "tld": "ie",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "ro",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "es",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "nl",
+      "measured": false,
+      "excluded": "page.goto: net::ERR_CERT_AUTHORITY_INVALID"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "eu",
+      "measured": false,
+      "excluded": "domain does not resolve"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "it",
+      "measured": false,
+      "excluded": "page.goto: net::ERR_SOCKET_NOT_CONNECTED"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "fi",
+      "measured": false,
+      "excluded": "robots.txt disallows it"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "at",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "pl",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "cz",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "1.1.1",
+        "4.1.2",
+        "2.4.4",
+        "1.4.3",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "be",
+      "measured": true,
+      "clausesFailing": 2,
+      "failing": [
+        "4.1.2",
+        "2.4.4"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "it",
+      "measured": true,
+      "clausesFailing": 5,
+      "failing": [
+        "1.1.1",
+        "4.1.2",
+        "2.4.4",
+        "1.4.3",
+        "1.4.4",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "pt",
+      "measured": true,
+      "clausesFailing": 4,
+      "failing": [
+        "4.1.2",
+        "1.3.1",
+        "1.1.1",
+        "2.4.4"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "cz",
+      "measured": false,
+      "excluded": "HTTP 401"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "be",
+      "measured": false,
+      "excluded": "redirects to another domain"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "robots.txt disallows it"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "fr",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "es",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 0,
+      "failing": [
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": false,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "es",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "1.1.1",
+        "2.4.4",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "fr",
+      "measured": true,
+      "clausesFailing": 3,
+      "failing": [
+        "4.1.2",
+        "2.4.4",
+        "1.4.4",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": true
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "ro",
+      "measured": true,
+      "clausesFailing": 1,
+      "failing": [
+        "3.1.1",
+        "2.5.8"
+      ],
+      "unstable": [],
+      "consent": true,
+      "consentBlocking": false
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "de",
+      "measured": false,
+      "excluded": "blocked the request (403)"
+    },
+    {
+      "rankBucket": "<=10000",
+      "tld": "cz",
+      "measured": false,
+      "excluded": "stylesheet failed to load"
+    }
+  ]
+}

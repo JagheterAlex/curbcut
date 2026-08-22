@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research and the Curbcut crawler — Curbcut</title>
+<meta name="description" content="What the CurbcutResearch crawler is, what it requests, how to block it, and the data from our study of EU website readiness for EN 301 549 V4.1.1.">
+<link rel="stylesheet" href="/style.css">
+<link rel="canonical" href="https://curbcut.org/research">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="/">
+      <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true" focusable="false">
+        <path d="M1 15h20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".35"/>
+        <path d="M1 11h6l4-9h10" fill="none" stroke="#f5c344" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      </svg>
+      Curbcut
+    </a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/scan">Scan a page</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/accessibility">Accessibility</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<section>
+<div class="wrap prose">
+
+<p class="eyebrow"><span class="dot"></span> Research</p>
+<h1>The Curbcut research crawler</h1>
+<p class="lede">If you found this address in your server logs, this page is why.
+It explains exactly what was requested, how to stop it, and what the data was
+used for.</p>
+
+<h2>What it does</h2>
+<p>The crawler identifies itself as:</p>
+<pre class="cmd"><code>Mozilla/5.0 (compatible; CurbcutResearch/1.0; +https://curbcut.org/research)</code></pre>
+
+<ul>
+<li>It requests <strong>one page per site</strong>: your apex URL. It never
+follows links and never crawls a second page.</li>
+<li>It loads that page <strong>twice</strong>, about a second apart, because a
+single load of a commercial page is a sample of one.</li>
+<li>It reads <code>/robots.txt</code> first and does not fetch the page if you
+disallow it.</li>
+<li>It runs an accessibility test in a headless browser and keeps the resulting
+clause list. <strong>Your page content is not stored</strong>, republished, or
+passed to anyone.</li>
+</ul>
+
+<h2>How to stop it</h2>
+<p>Add this to your <code>robots.txt</code> and it will skip you on every future
+run:</p>
+<pre class="cmd"><code>User-agent: CurbcutResearch
+Disallow: /</code></pre>
+<p>You do not need to explain why, and nothing is recorded about you except that
+you were excluded and the reason was robots.txt. If you would rather write to a
+person, <!--email_off--><a href="mailto:hello@curbcut.org?subject=Research%20crawler">hello@curbcut.org</a><!--email_on-->
+reaches one.</p>
+
+<h2>Study: EU website readiness for EN 301 549 V4.1.1</h2>
+<p>Run 22 August 2026. The 300 most-visited domains on EU member state TLDs,
+taken from the <a href="https://tranco-list.eu/">Tranco</a> research list
+(id 74V8X, generated 21 August 2026), measured against the clauses of
+EN&nbsp;301&nbsp;549 that are in force today and the criteria arriving with
+V4.1.1.</p>
+
+<p>149 of the 300 could be measured. The other 151 are published with the reason
+each one was excluded, because a study that hides what it discarded is reporting
+its own rounding.</p>
+
+<p class="actions">
+  <a class="btn btn-primary" href="/research/eu-readiness-2026-08.json">Download the data (JSON)</a>
+  <a class="btn btn-ghost" href="/blog/european-web-readiness-2026">Read the findings</a>
+</p>
+
+<h3>No site is named</h3>
+<p>Each row carries a rank bucket and a country TLD, never the domain. The sample
+can be rebuilt exactly from the Tranco list id and the selection rule, so anyone
+who wants to check this can reconstruct it and re-run the scan themselves. We
+decline to publish the list of names, because a vendor that sells the remedy
+naming the sites turns a measurement into an accusation.</p>
+
+<h3>What the data cannot support</h3>
+<ul>
+<li>Automated testing detects roughly 30 to 40 percent of WCAG failures. Every
+count here is a floor, and a site with no findings has not passed an
+accessibility audit.</li>
+<li>One page per site. A conformance claim covers a service; this measured a
+front door.</li>
+<li>Failing a criterion is not the same as breaking the law. The harmonised
+standard gives a presumption of conformance, and missing it removes the
+presumption rather than establishing a breach.</li>
+<li>The exclusions are not random. Sites with bot protection blocked the request,
+and they are plausibly a different kind of organisation from those that did
+not.</li>
+<li>Nothing here is legal advice.</li>
+</ul>
+
+<h2>Reproducing it</h2>
+<p>The scanner is <a href="https://github.com/JagheterAlex/curbcut">MIT licensed</a>
+and the script that produced this study is in the repository at
+<code>scripts/benchmark.mjs</code>. Disagreeing with the method is easier when
+you can run it.</p>
+
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+      <li><a href="/accessibility">Accessibility statement</a></li>
+      <li><!--email_off--><a href="mailto:hello@curbcut.org">hello@curbcut.org</a><!--email_on--></li>
+    </ul>
+    <p>Nothing on this site is legal advice.</p>
+  </div>
+</footer>
+
+</body>
+</html>

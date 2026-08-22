@@ -122,3 +122,22 @@ test('a curbcut group still overrides every wildcard group', () => {
   ].join('\n'));
   assert.equal(r.isAllowed('/terms'), true);
 });
+
+test('both of our user-agent tokens can refuse the crawler', () => {
+  // The research crawler introduces itself as CurbcutResearch and the /research
+  // page tells site owners to write that exact token. Honouring only "curbcut"
+  // would have made a published promise false.
+  const deny = 'User-agent: CurbcutResearch\nDisallow: /\n';
+  assert.equal(parseRobots(deny).isAllowed('/'), false);
+
+  const denyShort = 'User-agent: curbcut\nDisallow: /\n';
+  assert.equal(parseRobots(denyShort).isAllowed('/'), false);
+
+  // A rule aimed at somebody else still does not apply to us.
+  const other = 'User-agent: SomeOtherBot\nDisallow: /\n';
+  assert.equal(parseRobots(other).isAllowed('/'), true);
+
+  // A named group beats the wildcard, as it should.
+  const mixed = 'User-agent: *\nDisallow: /\n\nUser-agent: CurbcutResearch\nAllow: /\n';
+  assert.equal(parseRobots(mixed).isAllowed('/'), true);
+});
