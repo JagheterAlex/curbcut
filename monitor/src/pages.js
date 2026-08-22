@@ -167,6 +167,109 @@ export function thanks(kind = 'monitor') {
   );
 }
 
+/**
+ * The audit request form on a page of its own.
+ *
+ * It exists because the scan result page used to end in a `mailto:` link. That
+ * is the exact failure we already watched happen in person: the button opens a
+ * desktop mail client nobody has configured, and the enquiry evaporates. This
+ * is the highest-intent moment in the whole funnel — somebody has just been
+ * shown their own failing clauses — and it was the one place that asked them to
+ * leave the browser.
+ *
+ * `site` is prefilled from the scan so they do not retype the address they just
+ * typed, and `clauses` lets the page name what was found instead of pitching in
+ * the abstract.
+ */
+export function auditForm({ site = '', clauses = null } = {}) {
+  const found =
+    Number.isFinite(clauses) && clauses > 0
+      ? `<p class="lede">The scan you just ran found <strong>${clauses} failing
+         clause${clauses === 1 ? '' : 's'}</strong> on one page. This covers the
+         rest of the site.</p>`
+      : `<p class="lede">One site, up to 200 pages, mapped onto EN&nbsp;301&nbsp;549
+         clauses and delivered as a dated PDF. Two working days.</p>`;
+
+  return shell(
+    'Ask for a fixed price',
+    `<h1>Have the audit done for you &mdash; &euro;290</h1>
+     ${found}
+
+     <p>What arrives: the whole site crawled, every finding mapped onto a clause
+     of EN&nbsp;301&nbsp;549, ranked by regulatory exposure, as a dated PDF you can
+     forward to whoever asked for it. With it, a draft accessibility statement and
+     a fix list in the order a regulator would care about.</p>
+
+     <div class="callout">
+       <p><strong>What this is not: a manual audit.</strong> Nobody tests your site
+       with a screen reader, tabs your checkout, or watches a person with a
+       disability use it. Automated testing reaches roughly a third of accessibility
+       barriers. The report says so on its first page and lists the clauses that
+       were never assessed, rather than letting the silence read as a pass.</p>
+       <p>Anyone selling a &euro;290 &ldquo;full accessibility audit&rdquo; is selling
+       you something automation cannot deliver. This is the honest version of what it
+       can, which is a real and useful thing to have and is not conformance.</p>
+     </div>
+
+     <form method="post" action="/api/audit" class="signup" style="margin-top:1.5rem">
+       <div class="fields">
+         <div class="field">
+           <label for="a-site">Site to audit <span class="hint">required</span></label>
+           <input type="text" id="a-site" name="site" required autocomplete="url"
+                  placeholder="example.com" value="${esc(site)}">
+         </div>
+         <div class="field">
+           <label for="a-email">Where to send the price <span class="hint">required</span></label>
+           <input type="email" id="a-email" name="email" required autocomplete="email"
+                  placeholder="you@company.com">
+         </div>
+         <div class="field wide">
+           <label for="a-notes">Roughly how many pages, and what you have been asked for
+             <span class="hint">optional, and it changes the price</span></label>
+           <textarea id="a-notes" name="use_case" rows="3"
+                     placeholder="About 150 pages. Our largest customer asked for an accessibility statement before renewing."></textarea>
+         </div>
+       </div>
+
+       <div class="trap" aria-hidden="true">
+         <label for="a-cw">Leave this field empty</label>
+         <input type="text" id="a-cw" name="company_website" tabindex="-1" autocomplete="off">
+       </div>
+
+       <p class="actions"><button class="btn btn-primary" type="submit">Ask for a fixed price</button></p>
+     </form>
+
+     <p class="small">Nothing is charged and nothing starts here. You get a fixed
+     price back before anything is invoiced, and if the tool finds nothing worth
+     reporting we will say so rather than pad a document. If the site is well over
+     200 pages the higher number is quoted now, not afterwards.</p>
+
+     <p style="margin-top:2rem"><a href="/scan">Check another page first</a> ·
+     <a href="/">What this is</a></p>`,
+    {
+      index: true,
+      canonical: 'https://curbcut.org/audit',
+      description:
+        'A dated EN 301 549 audit of one site up to 200 pages, delivered as a PDF ' +
+        'with a statement draft and a fix list ordered by regulatory exposure. ' +
+        '€290, two working days, automated testing only and it says so.',
+    }
+  );
+}
+
+export function notFound(pathname = '') {
+  return shell(
+    'Page not found',
+    `<h1>There is nothing at this address.</h1>
+     <p class="lede"><code>${esc(pathname)}</code> does not exist.</p>
+     <ul>
+       <li><a href="/scan">Check a page</a> against EN&nbsp;301&nbsp;549 in the browser.</li>
+       <li><a href="/audit">Have the whole site audited</a> for &euro;290.</li>
+       <li><a href="/">What this is</a> · <a href="/blog/">Writing</a></li>
+     </ul>`
+  );
+}
+
 export function errorPage(message) {
   return shell(
     'That did not work',

@@ -49,19 +49,22 @@ jobs:
       - name: Run tests
         run: npm test
 
+      # Served by scripts/serve-site.mjs rather than a generic static server,
+      # because that one ignored _headers and so tested a version of the site
+      # with no Content Security Policy. The real site has one, and it broke the
+      # scanner without failing this gate. Now the gate sees what a visitor sees.
+      #
+      # --crawl rather than four named URLs: the named list silently stopped
+      # covering the site as pages were added, so every blog article sat outside
+      # the check.
       - name: Refuse to ship a site that fails its own scanner
         run: |
-          npx -y http-server site -p 8799 --silent &
+          node scripts/serve-site.mjs site 8799 &
           for i in $(seq 1 20); do
             curl -sf http://127.0.0.1:8799/ >/dev/null && break
             sleep 1
           done
-          node bin/curbcut.js \
-            http://127.0.0.1:8799/ \
-            http://127.0.0.1:8799/terms.html \
-            http://127.0.0.1:8799/privacy.html \
-            http://127.0.0.1:8799/accessibility.html \
-            --fail-on P4
+          node bin/curbcut.js http://127.0.0.1:8799/ --crawl --fail-on P4
 
       - name: Check the tag matches package.json
         if: startsWith(github.ref, 'refs/tags/')

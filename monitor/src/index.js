@@ -11,14 +11,14 @@
 // fingerprint, no analytics beacon. If that ever changes, the policy changes
 // first.
 
-import { page, thanks, errorPage } from './pages.js';
+import { page, thanks, errorPage, auditForm, notFound } from './pages.js';
 import { scanForm, scanResult, scanBusy } from './scan-pages.js';
 import { validateTarget, robotsAllows, scanOnePage } from './scan.js';
 import { checkRateLimit, checkFormLimit, readCachedScan, writeCachedScan } from './limits.js';
 import {
   countUsage,
   SCAN_VIEWED, SCAN_RAN, SCAN_CACHED, SCAN_REFUSED, SCAN_FAILED, SCAN_LIMITED,
-  INTEREST_LEFT, AUDIT_ASKED,
+  INTEREST_LEFT, AUDIT_ASKED, AUDIT_VIEWED,
 } from './usage.js';
 import { notifyInterest } from './notify.js';
 
@@ -97,6 +97,27 @@ export default {
       return new Response('ok', {
         headers: { 'content-type': 'text/plain; charset=utf-8' },
       });
+    }
+
+    if (url.pathname === '/audit' || url.pathname === '/audit/') {
+      // A GET-only page. The form on it posts to /api/audit like every other.
+      if (request.method !== 'GET' && request.method !== 'HEAD') {
+        return new Response('Method not allowed', {
+          status: 405,
+          headers: { allow: 'GET, HEAD' },
+        });
+      }
+      const clauses = Number(url.searchParams.get('clauses'));
+      const html = auditForm({
+        site: (url.searchParams.get('site') ?? '').slice(0, 200),
+        clauses: Number.isFinite(clauses) ? clauses : null,
+      });
+      const res = page(html, 200);
+      if (request.method === 'HEAD') {
+        return new Response(null, { status: 200, headers: res.headers });
+      }
+      countUsage(env, ctx, AUDIT_VIEWED);
+      return res;
     }
 
     if (url.pathname === '/scan' || url.pathname === '/scan/') {
@@ -261,6 +282,10 @@ export default {
       return page(thanks(kind), 200);
     }
 
-    return new Response('Not found', { status: 404 });
+    // The Worker owns /scan* and /audit*, so a typo under either prefix never
+    // reaches the static site and never sees site/404.html. A bare text 404 in
+    // the middle of a styled site reads like an outage, so this is the same
+    // answer in the site's own clothes.
+    return page(notFound(url.pathname), 404);
   },
 };

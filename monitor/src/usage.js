@@ -26,6 +26,10 @@ export const INTEREST_LEFT = 'interest_left';
 // Counted apart from the waiting list on purpose: this one can turn into an
 // invoice this week, and averaging it into a mailing list would hide it.
 export const AUDIT_ASKED = 'audit_asked';
+// The page between seeing your own failures and asking for a price. Counted
+// separately so the gap between reaching the offer and taking it is visible,
+// rather than showing up as one more visitor who did nothing.
+export const AUDIT_VIEWED = 'audit_viewed';
 
 /**
  * Add one to today's tally for `event`.

@@ -13,6 +13,15 @@ zone_name = "curbcut.org"
 pattern = "curbcut.org/scan*"
 zone_name = "curbcut.org"
 
+# The audit request page. It lives in the Worker rather than in the static site
+# so the scan result can hand it the address that was just scanned, prefilled,
+# with no JavaScript to do it. The wildcard is not decoration: a route pattern
+# with no wildcard matches only the bare path, so "/audit?site=..." fell through
+# to a 404 while "/audit" answered fine.
+[[routes]]
+pattern = "curbcut.org/audit*"
+zone_name = "curbcut.org"
+
 [browser]
 binding = "BROWSER"
 

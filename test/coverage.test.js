@@ -59,6 +59,23 @@ test('the web scanner and the command line tool run the same rules', () => {
   assert.deepEqual([...workerTags].sort(), [...RULE_TAGS].sort());
 });
 
+test('neither scanner loads its rule engine in a way a strict CSP can refuse', () => {
+  // addScriptTag appends a <script> element to the document, so a site with
+  // `default-src 'none'` refuses to run it and the page cannot be scanned at
+  // all. Four sites in the August study were excluded for exactly this, and
+  // then our own site became the fifth the day it got a CSP. The fix is to
+  // evaluate through the debugging protocol instead; this stops it coming back
+  // in either scanner, since a fix in one and not the other would mean the web
+  // and the command line disagree about which sites are scannable.
+  for (const file of ['../src/scan.js', '../monitor/src/scan.js']) {
+    const source = readFileSync(new URL(file, import.meta.url), 'utf8');
+    const uses = source
+      .split('\n')
+      .filter((line) => line.includes('addScriptTag') && !line.trim().startsWith('//'));
+    assert.deepEqual(uses, [], file + ' injects axe in a way CSP can block');
+  }
+});
+
 test('best-practice rules stay out of a conformance report', () => {
   const opinions = axe.getRules().filter((r) => (r.tags ?? []).includes('best-practice'));
   assert.ok(opinions.length > 0, 'axe should have best-practice rules to exclude');

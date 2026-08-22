@@ -180,7 +180,7 @@
 
 <p><strong>Eleven per cent of the sample blocked us outright.</strong> Bot protection does not distinguish between a scraper and an accessibility audit. If you are wondering why third-party research on this subject is thin, that is part of the answer.</p>
 
-<p><strong>Four sites blocked the audit script through Content Security Policy.</strong> Strict CSP is good security practice and it also prevents anybody from auditing your accessibility from outside. Both things are true at once.</p>
+<p><strong>Four sites were excluded because our scanner obeyed their Content Security Policy &mdash; and that turned out to be our bug, not their barrier.</strong> This paragraph originally said that a strict CSP prevents anybody from auditing your accessibility from outside. That was wrong, and it is corrected here on 22 August. A strict policy refuses to execute a <code>&lt;script&gt;</code> element appended to the document, which is exactly how this tool was loading its rule engine. Auditors built as browser extensions never had the problem, because they run outside the document. Neither do we any more: the loader was changed the same day to go through the debugging protocol instead, which is one line. Read those four as a limitation of the tool on the day, not as a property of the sites, and expect the category to be absent from the next dated run.</p>
 
 <p>The exclusions are not random. A site with sophisticated bot protection is probably a different kind of organisation from one without. <strong>The 149 sites I could measure are the ones that let me in</strong>, and if anything I would expect that group to skew toward the simpler end.</p>
 

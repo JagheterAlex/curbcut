@@ -202,9 +202,8 @@ export function scanResult(analysis, meta) {
        <p><strong>Or have it done for you, &euro;290.</strong> The whole site up to
        200 pages, delivered as a dated PDF you can forward to whoever asked, with a
        statement draft and a fix list ordered by regulatory exposure. Two working
-       days. Ask at
-       <a href="mailto:hello@curbcut.org?subject=Curbcut%20audit&amp;body=Site%20to%20audit%3A%20${esc(new URL(target).origin)}%0D%0AApproximate%20number%20of%20pages%3A%20">hello@curbcut.org</a>
-       and you get a fixed price back before anything is invoiced.</p>
+       days, fixed price quoted before anything is invoiced.</p>
+       <p class="actions"><a class="btn btn-primary" href="/audit?site=${encodeURIComponent(new URL(target).origin)}&amp;clauses=${s.clausesFailingHarmonised}">Ask for a fixed price</a></p>
        <p>It is the same automation you just ran, done thoroughly and written up &mdash;
        <strong>not a manual audit</strong>. Nobody tests your site with a screen reader
        or tabs your checkout. Anyone selling a &euro;290 &ldquo;full audit&rdquo; is

@@ -146,7 +146,12 @@ export async function scanOnePage(env, targetUrl) {
       throw e;
     }
 
-    await page.addScriptTag({ content: axeSource });
+    // Injected through the debugging protocol, not by appending a <script> to
+    // the document, so a site with a strict Content Security Policy can still
+    // be checked. See the longer note in src/scan.js — this must match it, or
+    // the web scanner and the command line tool would disagree about which
+    // sites are scannable at all.
+    await page.evaluate(axeSource);
     const results = await page.evaluate(
       (tags) =>
         window.axe.run(document, {

@@ -75,7 +75,19 @@ export function watchAssets(page) {
 // Runs axe inside an already-loaded page. Exported so the crawler can reuse the
 // exact same rule set rather than keeping a second copy that drifts.
 export async function runAxe(page) {
-  await page.addScriptTag({ content: axeSource });
+  // Not addScriptTag. That appends a <script> element to the document, which a
+  // page with `default-src 'none'` refuses to execute — so a site with a strict
+  // Content Security Policy could not be scanned at all. Our own site is one of
+  // those sites, which is how this was found: the scanner stopped being able to
+  // check curbcut.org the day curbcut.org got a CSP.
+  //
+  // page.evaluate goes through the debugging protocol instead of the document,
+  // so the policy does not apply. That is what every browser extension auditor
+  // already does. It is not a way around anybody's refusal: CSP tells a browser
+  // what code may run for the person visiting, it is not addressed to auditors,
+  // nothing injected here is served to anyone, and the instruction that IS
+  // addressed to crawlers — robots.txt — is still obeyed.
+  await page.evaluate(axeSource);
   return page.evaluate(
     (tags) => window.axe.run(document, {
       runOnly: { type: 'tag', values: tags },
