@@ -76,3 +76,26 @@ test('nothing served carries a style attribute the policy will drop', () => {
   }
   assert.deepEqual(offenders, []);
 });
+
+// A description is what a search result and a shared link actually show. Four
+// pages had none of their own and fell back to repeating the title, which
+// wastes the only two lines we get; three others ran to 265 characters, of
+// which Google shows about 155. Both are silent failures — the page looks
+// perfect and the listing does not.
+test('every indexable page has a description that fits and says something new', () => {
+  const problems = [];
+  for (const file of walk('site', /\.html$/)) {
+    if (file.includes('_preview-all')) continue;
+    const html = readFileSync(new URL('../' + file, import.meta.url), 'utf8');
+    if (/<meta name="robots" content="noindex/.test(html)) continue;
+
+    const desc = html.match(/<meta name="description" content="([^"]*)"/)?.[1];
+    const title = html.match(/<title>([^<]*)<\/title>/)?.[1]?.replace(/ — Curbcut$/, '');
+    if (!desc) { problems.push(file + ': no description'); continue; }
+    if (desc.length > 160) problems.push(file + ': ' + desc.length + ' characters');
+    if (title && desc.startsWith(title.slice(0, 40))) {
+      problems.push(file + ': description just repeats the title');
+    }
+  }
+  assert.deepEqual(problems, []);
+});
