@@ -38,16 +38,20 @@ function formBlock(prefill = '', error = '') {
 
 export function scanForm(prefill = '', error = '') {
   return shell(
-    'Check a page',
+    'Check a page against EN 301 549',
     `<h1>Check a page against EN&nbsp;301&nbsp;549</h1>
-     <p class="lede">Most scanners hand you rule names. This one hands you clause
-     numbers, which is the form a conformance claim has to take &mdash; plus what
-     changes when V4.1.1 is cited, and a list of what no machine checked.</p>
+     <p class="lede">Somebody has asked whether your site meets the European
+     standard &mdash; a customer's procurement form, a tender, your own legal
+     team. This answers that for one page, in <strong>clause numbers</strong>,
+     which is the form the answer has to be given in.</p>
+     <p>It also says what changes on 30&nbsp;November, when the standard moves to
+     WCAG&nbsp;2.2, and it lists the clauses no machine can check &mdash; including
+     five of the six arriving that day.</p>
 
      <p class="actions"><a class="btn btn-ghost" href="/scan/example">Read a
      complete example first</a></p>
      <p class="small">A full report on a page we broke on purpose, with the faults
-     our study found most often across 149 EU-domain sites. No address to type,
+     our study found most often across 149 EU-domain sites. Nothing to type,
      nothing installed, nobody else's website named.</p>
 
      ${formBlock(prefill, error)}
@@ -63,10 +67,10 @@ export function scanForm(prefill = '', error = '') {
       index: true,
       canonical: 'https://curbcut.org/scan',
       description:
-        'Free EN 301 549 accessibility checker. Enter a URL and get findings ' +
-        'mapped onto clauses of the harmonised European standard, ranked by ' +
-        'regulatory exposure, with the clauses no automated tool can check ' +
-        'listed rather than omitted.',
+        'Free EN 301 549 checker. Paste a URL, get the failures as clause ' +
+        'numbers of the harmonised European standard, ranked by regulatory ' +
+        'exposure, with what changes on 30 November and the clauses no tool ' +
+        'can check listed rather than left out.',
     }
   );
 }
