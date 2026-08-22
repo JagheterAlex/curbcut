@@ -168,6 +168,18 @@ async function todayDetail() {
 
 // Downloads of the published tool. Public, unauthenticated, and the one number
 // here that nobody can inflate by pointing a crawler at us.
+/**
+ * npm downloads, and why the weekly total means almost nothing on its own.
+ *
+ * The first week returned 269, every one of them on 20 August, the day the
+ * package first appeared. Zero on the days 0.4.0, 0.5.0 and 0.6.0 went out.
+ * That is registry mirrors and scrapers ingesting a new name, not people
+ * installing a tool: adoption arrives as a trickle across days, never as one
+ * spike on publication day followed by silence.
+ *
+ * So the daily series is fetched alongside the total. Downloads spread over
+ * several days mean something. A week that is one spike means a robot found us.
+ */
 async function npmDownloads() {
   try {
     const res = await fetch('https://api.npmjs.org/downloads/point/last-week/curbcut');
@@ -199,12 +211,32 @@ async function actions() {
 const since = day(13);
 const until = day(0);
 
-const [seen, did, leads, detail, npmWeek] = await Promise.all([
+async function npmDaily() {
+  try {
+    const res = await fetch(
+      `https://api.npmjs.org/downloads/range/${day(13)}:${day(0)}/curbcut`
+    );
+    if (!res.ok) return null;
+    const rows = ((await res.json()).downloads ?? []).filter((r) => r.downloads > 0);
+    if (!rows.length) return null;
+    const total = rows.reduce((n, r) => n + r.downloads, 0);
+    return {
+      total,
+      daysWithAny: rows.length,
+      // One day carrying nearly the whole total is a mirror, not an audience.
+      looksLikeMirrors: Math.max(...rows.map((r) => r.downloads)) / total > 0.9,
+      byDay: Object.fromEntries(rows.map((r) => [r.day, r.downloads])),
+    };
+  } catch { return null; }
+}
+
+const [seen, did, leads, detail, npmWeek, npm14] = await Promise.all([
   arrivals(since, until),
   actions(),
   sql('SELECT COUNT(*) AS n FROM interest;').then((r) => r[0].n),
   todayDetail(),
   npmDownloads(),
+  npmDaily(),
 ]);
 
 mkdirSync(dirname(OUT), { recursive: true });
@@ -220,6 +252,7 @@ history.meta = {
   lastRun: new Date().toISOString(),
   interestTotal: leads,
   npmDownloadsLastWeek: npmWeek,
+  npm: npm14,
 };
 
 writeFileSync(OUT, JSON.stringify(history, null, 2) + '\n', 'utf8');
@@ -242,5 +275,13 @@ console.log('\n* stylesheet fetches: the closest thing to a real browser we can'
 console.log('  count without putting a script on the page. Under-counts repeat');
 console.log('  visitors, whose browser already has it cached.');
 if (npmWeek !== null) console.log('\nnpm downloads, last week: ' + npmWeek);
+if (npm14) {
+  console.log('  spread over ' + npm14.daysWithAny + ' day(s) of the last 14: ' +
+    Object.entries(npm14.byDay).map(([d, n]) => d.slice(5) + '=' + n).join(' '));
+  if (npm14.looksLikeMirrors) {
+    console.log('  NOT ADOPTION. One day carries over 90 per cent of the total,');
+    console.log('  which is what registry mirrors ingesting a new name look like.');
+  }
+}
 console.log('\nAddresses left, all time: ' + leads);
 console.log('Written to ' + OUT);
