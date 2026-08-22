@@ -38,8 +38,16 @@ export const AUDIT_VIEWED = 'audit_viewed';
  * scanner is worse than no counter, and measurement is not worth one failed
  * scan for one real visitor.
  */
-export function countUsage(env, ctx, event) {
+export function countUsage(env, ctx, event, request = null) {
   if (!env || !env.DB) return;
+
+  // Our own checks against production are the largest single source of traffic
+  // to this site, and they were landing in the same counters as real people. On
+  // 22 August eight of eight audit page views were mine. The number that decides
+  // whether this business continues in September cannot be mostly me, so every
+  // self-test sends this header and is not counted. It grants nothing: the worst
+  // an outsider can do with it is fail to be counted.
+  if (request && request.headers.get('x-curbcut-selftest') === '1') return;
 
   const day = new Date().toISOString().slice(0, 10);
   const work = env.DB.prepare(

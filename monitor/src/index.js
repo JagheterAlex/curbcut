@@ -116,7 +116,7 @@ export default {
       if (request.method === 'HEAD') {
         return new Response(null, { status: 200, headers: res.headers });
       }
-      countUsage(env, ctx, AUDIT_VIEWED);
+      countUsage(env, ctx, AUDIT_VIEWED, request);
       return res;
     }
 
@@ -129,7 +129,7 @@ export default {
         return new Response(null, { status: 200, headers: res.headers });
       }
       if (request.method === 'GET') {
-        countUsage(env, ctx, SCAN_VIEWED);
+        countUsage(env, ctx, SCAN_VIEWED, request);
         return page(scanForm(), 200);
       }
       if (request.method !== 'POST') {
@@ -148,14 +148,14 @@ export default {
       const raw = fields.get('url');
       const checked = validateTarget(typeof raw === 'string' ? raw : '');
       if (checked.error) {
-        countUsage(env, ctx, SCAN_REFUSED);
+        countUsage(env, ctx, SCAN_REFUSED, request);
         return page(scanForm(typeof raw === 'string' ? raw : '', checked.error), 400);
       }
       const target = checked.url;
 
       const cachedResult = await readCachedScan(env, target);
       if (cachedResult) {
-        countUsage(env, ctx, SCAN_CACHED);
+        countUsage(env, ctx, SCAN_CACHED, request);
         return page(
           scanResult(cachedResult.analysis, {
             target,
@@ -168,12 +168,12 @@ export default {
 
       const limit = await checkRateLimit(env, request);
       if (!limit.ok) {
-        countUsage(env, ctx, SCAN_LIMITED);
+        countUsage(env, ctx, SCAN_LIMITED, request);
         return page(scanBusy(limit.reason, limit.retryAfter), 429);
       }
 
       if (!(await robotsAllows(target))) {
-        countUsage(env, ctx, SCAN_REFUSED);
+        countUsage(env, ctx, SCAN_REFUSED, request);
         return page(
           scanForm(
             target,
@@ -189,7 +189,7 @@ export default {
       try {
         analysis = await scanOnePage(env, target);
       } catch (err) {
-        countUsage(env, ctx, err && err.code === 'BUSY' ? SCAN_LIMITED : SCAN_FAILED);
+        countUsage(env, ctx, err && err.code === 'BUSY' ? SCAN_LIMITED : SCAN_FAILED, request);
         if (err && err.code === 'BUSY') {
           return page(
             scanBusy(
@@ -217,7 +217,7 @@ export default {
       }
 
       const scannedAt = new Date().toISOString();
-      countUsage(env, ctx, SCAN_RAN);
+      countUsage(env, ctx, SCAN_RAN, request);
       await writeCachedScan(env, target, { analysis, scannedAt });
       return page(scanResult(analysis, { target, cached: false, scannedAt }), 200);
     }
@@ -275,7 +275,7 @@ export default {
         );
       }
 
-      countUsage(env, ctx, kind === 'audit' ? AUDIT_ASKED : INTEREST_LEFT);
+      countUsage(env, ctx, kind === 'audit' ? AUDIT_ASKED : INTEREST_LEFT, request);
       // A row in a database nobody is watching is not a lead. The bot trap
       // returns ok without a row, so check before announcing anything.
       if (result.row) notifyInterest(env, ctx, result.row);

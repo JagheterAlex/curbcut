@@ -198,12 +198,23 @@ async function sql(statement) {
   return body.result[0].results;
 }
 
+// Hits we know were ours, before self-tests started sending a header that keeps
+// them out of the counters. Subtracted here rather than deleted from the
+// database: the raw table stays a faithful record of what the Worker saw, and
+// the correction stays visible instead of being quietly disappeared.
+//
+// This list must not grow. If it does, something is calling production without
+// the x-curbcut-selftest header — fix that instead of adding a row.
+const SELF_TESTS = {
+  '2026-08-22': { audit_viewed: 8, scan_ran: 1 },
+};
+
 async function actions() {
   const rows = await sql('SELECT day, event, hits FROM usage_daily ORDER BY day ASC;');
   const out = {};
   for (const r of rows) {
     out[r.day] ??= {};
-    out[r.day][r.event] = r.hits;
+    out[r.day][r.event] = Math.max(0, r.hits - (SELF_TESTS[r.day]?.[r.event] ?? 0));
   }
   return out;
 }
