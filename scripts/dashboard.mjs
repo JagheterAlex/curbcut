@@ -26,7 +26,10 @@ const totals = {
   searchBots: sum((r) => r.searchBotViews),
   ours: sum((r) => r.ourRequests),
   scanViewed: sum((r) => r.actions.scan_viewed),
+  exampleViewed: sum((r) => r.actions.example_viewed),
   scanRan: sum((r) => r.actions.scan_ran),
+  auditViewed: sum((r) => r.actions.audit_viewed),
+  auditAsked: sum((r) => r.actions.audit_asked),
   leads: data.meta?.interestTotal ?? 0,
   stylesheets: sum((r) => r.stylesheetFetches),
   probes: sum((r) => r.probeRequests),
@@ -63,14 +66,25 @@ const funnel = [
     note: 'Reached the one page that asks them to do something.',
   },
   {
+    label: 'Read the example instead',
+    value: totals.exampleViewed,
+    note: 'Added 22 August. Not a step down the funnel but a branch off it: a complete report, read without typing anything. If this climbs while the row below stays flat, the example is a destination rather than a doorway.',
+    aside: true,
+  },
+  {
     label: 'Ran a scan',
     value: totals.scanRan,
     note: 'Typed an address and pressed the button.',
   },
   {
+    label: 'Reached the price',
+    value: totals.auditViewed,
+    note: 'Added 22 August. The audit page, which is the only thing on this site anybody can buy today.',
+  },
+  {
     label: 'Left an address',
     value: totals.leads,
-    note: 'The only step that can turn into money.',
+    note: 'The only step that can turn into money. Of these, ' + totals.auditAsked + ' asked for a price rather than joining the waiting list.',
   },
 ];
 
@@ -82,7 +96,9 @@ const dayRows = rows.map((r) => `
     <td class="dim">${typeof r.probeRequests === 'number' ? n(r.probeRequests) : '&mdash;'}</td>
     <td class="dim">${n(r.searchBotViews)}</td>
     <td>${n(r.actions.scan_viewed)}</td>
+    <td class="dim">${n(r.actions.example_viewed)}</td>
     <td>${n(r.actions.scan_ran)}</td>
+    <td class="dim">${n(r.actions.audit_viewed)}</td>
     <td class="${r.actions.interest_left ? 'good' : 'zero'}">${n(r.actions.interest_left)}</td>
   </tr>`).join('');
 
@@ -93,8 +109,13 @@ const countries = countryRow.map((c) => {
 }).join('');
 
 const funnelRows = funnel.map((step, i) => {
-  const prev = i === 0 ? null : funnel[i - 1].value;
-  const drop = prev && prev > 0 ? Math.round((1 - step.value / prev) * 1000) / 10 : null;
+  // A branch is not a step, so it gets no drop figure and is not the base for
+  // the step after it. Printing "100% did not get this far" against something
+  // nobody was on their way to would be a number that means nothing.
+  const base = step.aside
+    ? null
+    : funnel.slice(0, i).reverse().find((f) => !f.aside)?.value ?? null;
+  const drop = base && base > 0 ? Math.round((1 - step.value / base) * 1000) / 10 : null;
   return `
     <li class="${step.value === 0 ? 'is-zero' : ''}">
       <div class="step-head">
@@ -217,7 +238,8 @@ const html = `<title>Curbcut Vital Signs</title>
       <strong>${n(totals.stylesheets)}</strong> browser page loads over
       ${measuredDays} measured day${measuredDays === 1 ? '' : 's'}, against
       ${n(totals.readerViews)} requests from clients merely <em>claiming</em> to be
-      browsers. <strong>${n(totals.leads)}</strong> addresses have been left.</p>
+      browsers. <strong>${n(totals.leads)}</strong> address${totals.leads === 1 ? ' has' : 'es have'}
+      been left.</p>
     <ol class="funnel">${funnelRows}</ol>
   </section>
 
@@ -233,7 +255,9 @@ const html = `<title>Curbcut Vital Signs</title>
             <th scope="col">Probes</th>
             <th scope="col">Search bots</th>
             <th scope="col">Scanner seen</th>
+            <th scope="col">Example read</th>
             <th scope="col">Scans run</th>
+            <th scope="col">Price page</th>
             <th scope="col">Addresses</th>
           </tr>
         </thead>
@@ -250,13 +274,20 @@ const html = `<title>Curbcut Vital Signs</title>
   <section>
     <h2>What these numbers are not</h2>
     <div class="caveat">
-      <p><strong>The scanner figures are mine.</strong> Every scan recorded so far was
-      run by me while testing the counter. No stranger has used it yet. When that
-      changes it will show here, and it will be the first real signal this business
-      has produced.</p>
-      <p><strong>Two days is not a trend.</strong> Both days follow articles going out,
-      so this is a spike and not a baseline. There is no chart on this page because
-      two points cannot make one honestly.</p>
+      <p><strong>Our own checks are subtracted, not deleted.</strong> On 22 August
+      most of the day's action counts were mine: nine views of a page I had just
+      built, three of the example, one scan. Self-tests now send a header and are
+      not counted at all; the hits recorded before that are subtracted at display
+      time, with the ledger in <code>scripts/metrics.mjs</code>, so the database
+      stays a faithful record of what the Worker actually saw.</p>
+      <p><strong>The one address did not come through the funnel above.</strong> It
+      was left on the home page's waiting-list form, which sits beside the path
+      shown here rather than at the end of it. Reading it as a conversion of the
+      step above would be arithmetic on two unrelated things.</p>
+      <p><strong>${measuredDays} day${measuredDays === 1 ? '' : 's'} is not a trend.</strong>
+      The record starts when the measuring started, the first days follow articles
+      going out, and the most recent day is still in progress. There is no chart on
+      this page because a handful of points cannot make one honestly.</p>
       <p><strong>The arrival figures over-count, by an unknown amount.</strong> A user
       agent is a string any script can set, so a filter built on one lets through every
       bot polite enough to lie. Cloudflare&rsquo;s own bot filter counted

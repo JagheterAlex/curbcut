@@ -125,6 +125,20 @@ export async function scanUrls(urls, options = {}) {
     onProgress = () => {},
   } = options;
 
+  // Our own checks against curbcut.org would otherwise land in the same usage
+  // counters as real visitors, and on 22 August most of a day's numbers were
+  // mine. Setting CURBCUT_EXTRA_HEADERS keeps them out. It is an environment
+  // variable rather than a flag because nobody scanning their own site needs
+  // it, and a flag would invite somebody to think it did something for them.
+  let extraHTTPHeaders;
+  try {
+    extraHTTPHeaders = process.env.CURBCUT_EXTRA_HEADERS
+      ? JSON.parse(process.env.CURBCUT_EXTRA_HEADERS)
+      : undefined;
+  } catch {
+    throw new Error('CURBCUT_EXTRA_HEADERS is not valid JSON');
+  }
+
   let browser;
   try {
     browser = await chromium.launch();
@@ -135,7 +149,7 @@ export async function scanUrls(urls, options = {}) {
   const pages = [];
 
   try {
-    const context = await browser.newContext({ viewport });
+    const context = await browser.newContext({ viewport, extraHTTPHeaders });
 
     for (const url of urls) {
       onProgress(url);

@@ -152,13 +152,18 @@ async function todayDetail() {
   // run PHP or WordPress; this is the background noise of the internet, and
   // counting it as audience would flatter us every single day.
   const PROBE = /\.(env|ssh|git|sql|bak|ya?ml|log|ini|php|asp|aspx)$|wp-|xmlrpc|actuator|laravel|credential|phpinfo|\/\./i;
-  const PAGE = /^\/($|blog|scan$|privacy$|terms$|accessibility$|wcag-2-2$|demo\/)/;
+  const PAGE =
+    /^\/($|blog|scan$|scan\/example$|audit$|research$|privacy$|terms$|accessibility$|wcag-2-2$|demo\/)/;
 
   let stylesheetFetches = 0, pageRequests = 0, probeRequests = 0;
   for (const r of body.data.viewer.zones[0].httpRequestsAdaptiveGroups) {
     const path = r.dimensions.clientRequestPath;
     const c = r.count;
-    if (/\.css$/i.test(path)) stylesheetFetches += c;
+    // Only the site's own stylesheet. The demo page loads /demo/broken.css, and
+    // its advert frame loads it a second time, so counting every .css would
+    // credit one visitor to the demo with three browsers.
+    if (path === '/style.css') stylesheetFetches += c;
+    else if (/\.css$/i.test(path)) continue;
     else if (path.startsWith('/cdn-cgi/')) continue;
     else if (PROBE.test(path)) probeRequests += c;
     else if (PAGE.test(path) && !path.split('/').pop().includes('.')) pageRequests += c;
@@ -206,7 +211,7 @@ async function sql(statement) {
 // This list must not grow. If it does, something is calling production without
 // the x-curbcut-selftest header — fix that instead of adding a row.
 const SELF_TESTS = {
-  '2026-08-22': { audit_viewed: 8, scan_ran: 1 },
+  '2026-08-22': { audit_viewed: 9, example_viewed: 3, scan_ran: 1, scan_viewed: 2 },
 };
 
 async function actions() {
