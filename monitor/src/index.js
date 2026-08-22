@@ -100,12 +100,21 @@ export default {
     }
 
     if (url.pathname === '/scan' || url.pathname === '/scan/') {
+      // HEAD is a GET without a body, and answering 405 to it breaks link
+      // checkers and monitoring for no reason. Not counted as a view: nothing
+      // looked at the page.
+      if (request.method === 'HEAD') {
+        const res = page(scanForm(), 200);
+        return new Response(null, { status: 200, headers: res.headers });
+      }
       if (request.method === 'GET') {
         countUsage(env, ctx, SCAN_VIEWED);
         return page(scanForm(), 200);
       }
       if (request.method !== 'POST') {
-        return new Response('Method not allowed', { status: 405, headers: { allow: 'GET, POST' } });
+        return new Response('Method not allowed', {
+          status: 405, headers: { allow: 'GET, HEAD, POST' },
+        });
       }
 
       let fields;
