@@ -80,3 +80,23 @@ test('the demo carries no inline style or script for the policy to block', () =>
   }
   assert.ok(DEMO_CSS.includes('.social'), 'the stylesheet carries the layout instead');
 });
+
+// The sample report is the only look a buyer gets at what €290 produces, and it
+// is a file rather than a page — so nothing about the site rendering correctly
+// says anything about whether it still describes the shop it claims to.
+test('the sample report describes the demo as it stands', () => {
+  const meta = JSON.parse(
+    readFileSync(new URL('../scripts/sample-report.meta.json', import.meta.url), 'utf8')
+  );
+  assert.equal(
+    meta.demoHash,
+    demoHash(),
+    'demo.js changed without rerunning `node scripts/build-sample-report.mjs`'
+  );
+  assert.ok(meta.pages >= 3, 'a one-page sample shows nothing a free scan does not');
+  assert.ok(meta.clausesFailingHarmonised >= 3);
+
+  const pdf = readFileSync(new URL('../site/sample-report.pdf', import.meta.url));
+  assert.ok(pdf.length > 20000, 'the published PDF looks truncated');
+  assert.equal(pdf.subarray(0, 5).toString('latin1'), '%PDF-', 'not a PDF');
+});

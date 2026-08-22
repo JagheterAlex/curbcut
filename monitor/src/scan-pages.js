@@ -227,6 +227,8 @@ export function scanResult(analysis, meta) {
        200 pages, delivered as a dated PDF you can forward to whoever asked, with a
        statement draft and a fix list ordered by regulatory exposure. Two working
        days, fixed price quoted before anything is invoiced.</p>
+       <p class="micro"><a href="/sample-report.pdf">Read a sample report</a>
+       first &mdash; a real one, three pages, nothing tidied up.</p>
        <p class="actions"><a class="btn btn-primary" href="/audit?site=${encodeURIComponent(new URL(target).origin)}&amp;clauses=${s.clausesFailingHarmonised}">Ask for a fixed price</a></p>
        <p>It is the same automation you just ran, done thoroughly and written up &mdash;
        <strong>not a manual audit</strong>. Nobody tests your site with a screen reader

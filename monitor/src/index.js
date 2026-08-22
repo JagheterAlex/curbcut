@@ -13,7 +13,9 @@
 
 import { page, thanks, errorPage, auditForm, notFound } from './pages.js';
 import { scanForm, scanResult, scanBusy, exampleResult } from './scan-pages.js';
-import { DEMO_PAGE, DEMO_CSS, DEMO_FRAME } from './demo.js';
+import {
+  DEMO_PAGE, DEMO_CSS, DEMO_FRAME, DEMO_PRODUCTS, DEMO_CONTACT,
+} from './demo.js';
 import exampleScan from './example-scan.json';
 import { validateTarget, robotsAllows, scanOnePage } from './scan.js';
 import { checkRateLimit, checkFormLimit, readCachedScan, writeCachedScan } from './limits.js';
@@ -166,6 +168,8 @@ export default {
       };
 
       if (url.pathname === '/demo/broken.html') return body(DEMO_PAGE, demoHeaders);
+      if (url.pathname === '/demo/products.html') return body(DEMO_PRODUCTS, demoHeaders);
+      if (url.pathname === '/demo/contact.html') return body(DEMO_CONTACT, demoHeaders);
       if (url.pathname === '/demo/frame.html') return body(DEMO_FRAME, demoHeaders);
       if (url.pathname === '/scan/example' || url.pathname === '/scan/example/') {
         if (request.method === 'GET') countUsage(env, ctx, EXAMPLE_VIEWED, request);

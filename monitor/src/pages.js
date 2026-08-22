@@ -202,6 +202,18 @@ export function auditForm({ site = '', clauses = null } = {}) {
      a fix list in the order a regulator would care about.</p>
 
      <div class="callout">
+       <p><strong>Read one before you decide.</strong>
+       <a href="/sample-report.pdf">The sample report</a> is a real run of three
+       pages, produced by the same code a paid report comes out of &mdash; not a
+       mock-up and not a redrawn version of one. It covers the shop we broke on
+       purpose, so no customer of ours is being shown to you, and nothing in it
+       has been tidied up.</p>
+       <p class="micro">Every clause carries the elements that failed, the page
+       each one is on, and the markup, so whoever fixes it does not have to
+       guess what you meant.</p>
+     </div>
+
+     <div class="callout">
        <p><strong>What this is not: a manual audit.</strong> Nobody tests your site
        with a screen reader, tabs your checkout, or watches a person with a
        disability use it. Automated testing reaches roughly a third of accessibility
