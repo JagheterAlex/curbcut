@@ -61,14 +61,15 @@ this by reading the source, which is why the source is public.</p>
 also why you were not shown a consent banner: there is nothing to consent to. There are
 no third-party fonts, embeds or advertising networks on any page, and nothing here
 profiles you.</p>
-<p><strong>One exception we did not choose, found 21 August 2026.</strong> Cloudflare
-injects its own analytics beacon (<code>static.cloudflareinsights.com</code>) into
-pages at the edge. We did not add it, it is not in our source, and it does not appear
-for a command line tool &mdash; which is why we said for a while that this site carried
-no scripts at all. It does, for a real browser. Cloudflare states the beacon is
-cookieless and does not fingerprint. We are switching it off regardless, because a
-page that measures you is not the page we said we were serving. This paragraph stays
-until it is gone.</p>
+<p><strong>This was not always true, and if you visited before 21 August 2026 it did
+not apply to you.</strong> Until that date Cloudflare injected its own analytics beacon
+(<code>static.cloudflareinsights.com</code>) into pages at the edge. We did not add it
+and it was never in our source, which is why we did not notice: it is invisible to a
+command line tool and only appears for a real browser. Cloudflare states the beacon was
+cookieless and did not fingerprint visitors. We removed it on 21 August 2026 anyway,
+because a page that measures you is not the page we said we were serving. It is
+recorded here rather than deleted, because deleting it would quietly unsay something
+that was true for real visitors.</p>
 
 <h3>Server logs</h3>
 <p>The site is hosted on Cloudflare Pages. Cloudflare processes your IP address and
