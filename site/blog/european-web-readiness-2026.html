@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Everyone is getting ready for WCAG 2.2. Two thirds of Europe's biggest sites still fail 2.1 Level A. — Curbcut</title>
+<meta name="description" content="Everyone is getting ready for WCAG 2.2. Two thirds of Europe's biggest sites still fail 2.1 Level A.">
+<link rel="stylesheet" href="../style.css">
+<link rel="canonical" href="https://curbcut.org/blog/european-web-readiness-2026">
+<meta property="og:title" content="Everyone is getting ready for WCAG 2.2. Two thirds of Europe's biggest sites still fail 2.1 Level A.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://curbcut.org/blog/european-web-readiness-2026">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="/">
+      <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true" focusable="false">
+        <path d="M1 15h20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".35"/>
+        <path d="M1 11h6l4-9h10" fill="none" stroke="#f5c344" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      </svg>
+      Curbcut
+    </a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/scan">Scan a page</a></li>
+        <li><a href="/blog/">Writing</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<section>
+<div class="wrap prose">
+
+<article>
+<h1>Everyone is getting ready for WCAG 2.2. Two thirds of Europe&rsquo;s biggest sites still fail 2.1 Level A.</h1>
+<p class="lede">Published 22 August 2026.</p>
+
+<p>The next version of the European accessibility standard is scheduled for citation on 30 November 2026. EN 301 549 V4.1.1 swaps WCAG 2.1 for WCAG 2.2, and six new success criteria arrive at levels A and AA. There is a small industry of readiness checklists for it already.</p>
+
+<p>So I measured what the current version looks like first. The answer is that the deadline people are preparing for is not the one they have missed.</p>
+
+<p>I scanned the most-visited websites on EU country domains and counted which clauses of EN 301 549 they fail today, under the version cited right now. Not the one arriving. The one in force since before the European Accessibility Act deadline passed in June 2025.</p>
+
+<p><strong>Sixty-four per cent fail clause 9.4.1.2, Name, Role, Value.</strong> It is Level A, the lowest bar the standard has, and it has been in every version of WCAG since 2008.</p>
+
+<p>Here is the full picture, and then the reasons to distrust parts of it.</p>
+
+<h2>What was measured</h2>
+
+<p>| Clause | Criterion | Level | Sites failing |
+| --- | --- | --- | --- |
+| 9.4.1.2 | Name, Role, Value | A | 96 of 149 (64%) |
+| 9.1.4.3 | Contrast (Minimum) | AA | 66 of 149 (44%) |
+| 9.2.4.4 | Link Purpose (In Context) | A | 53 of 149 (36%) |
+| 9.2.5.8 | Target Size (Minimum) | AA | 51 of 149 (34%) |
+| 9.1.1.1 | Non-text Content | A | 35 of 149 (23%) |
+| 9.1.3.1 | Info and Relationships | A | 27 of 149 (18%) |</p>
+
+<p>Target size is the odd one out: it is a WCAG 2.2 criterion and <strong>not</strong> currently required. It is in the table because it is the only one of the six arriving in V4.1.1 that the rule engine used here has a check for, which is a point I will come back to.</p>
+
+<p>Thirty-two sites of the 149, about one in five, failed nothing that automated testing can detect. That is not the same as passing.</p>
+
+<p><strong>Two of those rows are not independent.</strong> The rule that most often breaks Name, Role, Value is a link with no accessible name, and the same defect also fails Link Purpose. One missing label lands in two rows of that table. I am pointing this out because a table of six numbers implies six problems, and some of them are the same problem counted twice under different clauses &mdash; which is, incidentally, why conformance is claimed against clauses rather than rule counts.</p>
+
+<h2>What the failures actually are</h2>
+
+<p>Clause names are abstract. On a second pass I recorded which underlying rule produced each failure, so the table above turns into something you can picture. That pass covered the top 120 domains and measured 59 of them.</p>
+
+<p>It is a worse-performing group than the full sample, and predictably so: it is the more-visited end of the list, which the section above already found does worse. Name, Role, Value fails on 73% of it against 64% overall. Read the shares below as proportions within that group, not as headline rates.</p>
+
+<p><strong>What breaks Name, Role, Value</strong>, on the 43 sites of 59 that failed it:</p>
+
+<p>| What is wrong | Share of the sites failing this clause |
+| --- | --- |
+| A link a screen reader announces as nothing | 49% |
+| An <code>&lt;iframe&gt;</code> with no title | 30% |
+| A button with no accessible name | 28% |
+| ARIA attributes that are invalid or not allowed | 16% |</p>
+
+<p>The first one is usually an icon: a magnifier, a basket, a social media glyph, marked up as a link with an image inside and no text anywhere. The second is usually an advert. Neither is an architectural problem. Both are a missing attribute.</p>
+
+<p>The rest are simpler still. In that same group, every single contrast failure came from one rule, every target-size failure from one rule, and every non-text-content failure was an image with no alternative text. Not a long tail of exotic problems. One thing, repeated.</p>
+
+<p>None of this is hard. That is the uncomfortable part: it is not hard, and two thirds of the most-visited sites in Europe have it anyway.</p>
+
+<h2>The finding I did not expect</h2>
+
+<p>I assumed the biggest sites would do best. They have the most money and the most staff.</p>
+
+<p>Splitting the measured sites at the median rank:</p>
+
+<p>| | Failing nothing detectable | Median clauses failing |
+| --- | --- | --- |
+| More-visited half | 11% | 2 |
+| Less-visited half | 32% | 1 |</p>
+
+<p>The more popular half is roughly three times less likely to come back clean. I cannot prove the mechanism from this data, but the plausible one is unglamorous: big sites carry more third-party widgets, more legacy, more teams shipping into the same page, and more of everything that goes wrong. Budget does not appear to be the constraint.</p>
+
+<h2>The one WCAG 2.2 criterion a scanner can reach</h2>
+
+<p>Thirty-four per cent fail target size, and that number needs a caveat before anyone repeats it.</p>
+
+<p>A third of the sites showed a cookie consent dialog to an anonymous visitor, and on one in five the dialog covered more than 40% of the screen. I did not dismiss them. Clicking &ldquo;accept all&rdquo; on somebody else&rsquo;s site, unattended and at scale, is not something a research script should be doing, and it would also have changed what I was measuring.</p>
+
+<p>So the target-size number partly describes consent dialogs. Splitting it:</p>
+
+<ul>
+  <li>Sites showing a consent dialog: <strong>40%</strong> fail target size</li>
+  <li>Sites without one: <strong>31%</strong></li>
+</ul>
+
+<p>The gap is real and the finding survives it. Consent dialogs are worse than the pages behind them, and the pages behind them are not fine.</p>
+
+<p>The other five criteria arriving in November &mdash; focus not obscured, dragging movements, consistent help, redundant entry, accessible authentication &mdash; were not measured here at all. Each is a judgement about behaviour that the page source does not contain: whether a sticky header covers the control that just took focus, whether every drag has a single-pointer alternative, whether a login demands something a person cannot be expected to do. axe-core has no rule for any of them, and I am not aware of a scanner that does.</p>
+
+<p>That is the single most useful thing to know about this transition. <strong>Five of the six need a person.</strong> Any tool advertising a WCAG 2.2 readiness check is checking one criterion in six and staying quiet about the other five.</p>
+
+<h2>Two loads, two answers</h2>
+
+<p>Every page was loaded twice, seconds apart, and only criteria that failed both times were counted.</p>
+
+<p>That rule exists because the pilot caught a large retailer passing target size on one load and failing it on the next, with nothing changed in between. In the full run, nine sites of 149 disagreed with themselves that way. Six per cent.</p>
+
+<p>Six per cent turned out to be the flattering number.</p>
+
+<p>I ran a second, smaller pass over the top of the same list a few hours later. On the first 120 domains, the disagreement rate was <strong>10% in the first run and 19% in the second</strong>. And 57 sites were measured in both passes, hours apart: <strong>eight of them, one in seven, produced a different set of failing clauses the second time.</strong></p>
+
+<p>Nobody deployed anything in the seconds between two loads. Rotating promotional content, A/B tests and consent variants move the geometry of a page across a threshold on their own. Over hours, an editorial site simply becomes a different page.</p>
+
+<p>I would rather quote the six per cent. It is the number I found first and it makes the sample look tidiest. The other three come from the same data and they all say the effect is larger.</p>
+
+<p>If you commissioned a dated accessibility audit, you bought a description of one moment. You can test that for nothing, and without believing me, because I sell a scanner and have an obvious stake in the answer: run any free checker over your own homepage twice in a row, then again this afternoon.</p>
+
+<h2>Half the sample never got measured</h2>
+
+<p>Of 300 domains sampled, 151 were excluded. This is where a study either tells you what it threw away or quietly rounds its own numbers up.</p>
+
+<p>| Reason | Count |
+| --- | --- |
+| Redirects to a different domain | 43 |
+| A stylesheet failed to load | 34 |
+| Blocked the request (HTTP 403) | 32 |
+| Domain does not resolve | 20 |
+| robots.txt disallows it | 6 |
+| Connection, certificate or timeout errors | 8 |
+| Blocked our test script via Content Security Policy | 4 |
+| Other HTTP errors | 4 |</p>
+
+<p>Three of these are worth a comment.</p>
+
+<p><strong>The stylesheet exclusions are self-protection.</strong> A page that renders unstyled fails layout rules that the real page passes, and target size is exactly such a rule. I know this because it happened to me in August: a scan caught our own site mid-deploy and reported sixteen violations that vanished on the next run. Reporting invented failures is the same category of error as inventing a passing grade, so any page whose CSS did not arrive is thrown out rather than counted.</p>
+
+<p><strong>Eleven per cent of the sample blocked us outright.</strong> Bot protection does not distinguish between a scraper and an accessibility audit. If you are wondering why third-party research on this subject is thin, that is part of the answer.</p>
+
+<p><strong>Four sites blocked the audit script through Content Security Policy.</strong> Strict CSP is good security practice and it also prevents anybody from auditing your accessibility from outside. Both things are true at once.</p>
+
+<p>The exclusions are not random. A site with sophisticated bot protection is probably a different kind of organisation from one without. <strong>The 149 sites I could measure are the ones that let me in</strong>, and if anything I would expect that group to skew toward the simpler end.</p>
+
+<h2>What this is not</h2>
+
+<p><strong>It is not a compliance rate.</strong> The EAA covers e-commerce, banking and payments, electronic communications, transport ticketing and information, audiovisual media services and e-books. It does not cover every website. A news portal is outside scope unless it sells subscriptions &mdash; and nearly every large European newspaper does, which pulls most of them back in, but &ldquo;most&rdquo; is not &ldquo;all&rdquo; and I did not check them one by one. Microenterprises under ten staff are exempt from the service requirements entirely.</p>
+
+<p>So read the numbers as a picture of the European web, not as an audit of the regulated subset of it.</p>
+
+<p><strong>Failing a criterion is not the same as breaking the law.</strong> The harmonised standard gives a presumption of conformance. Missing it means you no longer have that presumption, not that a penalty follows.</p>
+
+<p><strong>Automated testing finds roughly 30 to 40% of WCAG failures.</strong> Every number here is a floor. The 21% that came back clean did not pass an accessibility audit; they passed the third of one that a machine can perform.</p>
+
+<p><strong>One page per site.</strong> The homepage. A conformance claim covers a service, and I measured a front door.</p>
+
+<h2>Method</h2>
+
+<p>Sample: the <a href="https://tranco-list.eu/">Tranco</a> research list, id 74V8X generated 21 August 2026, filtered to domains whose TLD belongs to an EU member state, taken in rank order. Tranco averages five ranking providers over thirty days specifically to resist the manipulation that single-source top-site lists suffer from, and it pins every list to an id so the sample can be reconstructed exactly.</p>
+
+<p>Top 300 such domains. One page each, the apex URL, loaded twice with roughly a second between, and a criterion counted only when it failed both times. Detection by <a href="https://github.com/dequelabs/axe-core">axe-core</a> 4.13.0, with results mapped onto EN 301 549 clauses. robots.txt was respected, the user agent identified the crawler and pointed at a page explaining it, and no site was crawled beyond its front page.</p>
+
+<p>A second pass a few hours later repeated the method over the top 120 domains and additionally recorded which rule produced each failure. It measured 59 sites. Every figure above says which pass it comes from; the headline table is the 300-domain run.</p>
+
+<p>No company is named. Naming them would travel further and it would turn a measurement into an accusation from someone who sells the remedy. WebAIM has published <a href="https://webaim.org/projects/million/">the same shape of study</a> annually for years without naming anybody, and that seems like the right precedent.</p>
+
+<p>The <a href="https://curbcut.org/research">data is published</a>: every site as a row, with its rank bucket, its country, the clauses it failed, whether it disagreed with itself between loads, and for the 151 excluded ones, why. The rows carry no domains. That is not a hedge &mdash; the sample is reconstructible from the Tranco id and the selection rule above, so anyone can rebuild the exact list and re-run it, which is the part that matters for checking my work. The tool is <a href="https://github.com/JagheterAlex/curbcut">MIT licensed</a> and the script that produced this is in the repository at <code>scripts/benchmark.mjs</code>.</p>
+
+<p>If this crawler turned up in your logs, <a href="https://curbcut.org/research">the same page</a> says what it requested and how to refuse it in one line of <code>robots.txt</code>.</p>
+
+<h2>The part that matters</h2>
+
+<p>November is a real deadline and the six criteria are real work, five sixths of which no tool will do for you.</p>
+
+<p>But if you are choosing what to fund this quarter, the standard you are already measured against has been sitting there since June 2025, and two thirds of the most-visited sites in Europe do not meet its lowest bar. The unlabelled button is not waiting for a new version of anything.</p>
+</article>
+
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/scan">Scan a page</a></li>
+      <li><a href="/blog/">Writing</a></li>
+      <li><a href="/terms">Terms</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+      <li><a href="/accessibility">Accessibility statement</a></li>
+      <li><!--email_off--><a href="mailto:hello@curbcut.org">hello@curbcut.org</a><!--email_on--></li>
+    </ul>
+    <p>Nothing on this site is legal advice.</p>
+  </div>
+</footer>
+
+</body>
+</html>
