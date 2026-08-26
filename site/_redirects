@@ -1,0 +1,12 @@
+# Short addresses for things that get typed, pasted and read aloud.
+#
+# The study's real path is /blog/european-web-readiness-2026 — right for a
+# permanent archive, too long for a profile field, a newsletter or a talk. The
+# canonical tag on the article still points at the long path, so these do not
+# split the search ranking between two addresses.
+#
+# 301, because these are meant to be permanent.
+
+/study      /blog/european-web-readiness-2026   301
+/sample     /sample-report.pdf                  301
+/example    /scan/example                       301
