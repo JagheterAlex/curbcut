@@ -11,20 +11,26 @@
 // fingerprint, no analytics beacon. If that ever changes, the policy changes
 // first.
 
-import { page, thanks, errorPage, auditForm, notFound } from './pages.js';
+import {
+  page, thanks, errorPage, auditForm, notFound, reportExpired,
+} from './pages.js';
 import { scanForm, scanResult, scanBusy, exampleResult } from './scan-pages.js';
 import {
   DEMO_PAGE, DEMO_CSS, DEMO_FRAME, DEMO_PRODUCTS, DEMO_CONTACT,
 } from './demo.js';
 import exampleScan from './example-scan.json';
 import { validateTarget, robotsAllows, scanOnePage } from './scan.js';
-import { checkRateLimit, checkFormLimit, readCachedScan, writeCachedScan } from './limits.js';
+import {
+  checkRateLimit, checkFormLimit, checkPdfLimit, readCachedScan, writeCachedScan,
+} from './limits.js';
 import {
   countUsage,
   SCAN_VIEWED, SCAN_RAN, SCAN_CACHED, SCAN_REFUSED, SCAN_FAILED, SCAN_LIMITED,
   INTEREST_LEFT, AUDIT_ASKED, AUDIT_VIEWED, EXAMPLE_VIEWED, FORM_TRAPPED,
+  PDF_PRINTED, PDF_EXPIRED,
 } from './usage.js';
 import { notifyInterest } from './notify.js';
+import { renderPdf, reportFilename } from './pdf.js';
 
 const MAX_FIELD = 400;
 
@@ -176,6 +182,64 @@ export default {
         return body(exampleResult(exampleScan));
       }
       return page(notFound(url.pathname), 404);
+    }
+
+    // The result as a PDF, for the reader who was previously told to install
+    // Node to get one. Only ever prints what is already cached, so this route
+    // cannot make us fetch anybody's page.
+    if (url.pathname === '/scan/report.pdf') {
+      if (request.method !== 'GET' && request.method !== 'HEAD') {
+        return new Response('Method not allowed', {
+          status: 405, headers: { allow: 'GET, HEAD' },
+        });
+      }
+
+      // Normalised through the same function the scan route uses, because the
+      // cache is keyed on the normalised address. Without this, a request for
+      // `example.com` cannot find the result stored under `https://example.com/`
+      // and every report reads as expired the moment it is asked for.
+      const asked = validateTarget(url.searchParams.get('u') ?? '');
+      const wanted = asked.url ?? '';
+      const cached = wanted ? await readCachedScan(env, wanted) : null;
+      if (!cached) {
+        // Deliberately not a re-scan. The result is fifteen minutes old at most
+        // by design, and quietly running a fresh one would put a different set
+        // of findings under the same date somebody thought they were saving.
+        countUsage(env, ctx, PDF_EXPIRED, request);
+        return page(reportExpired(wanted), 410);
+      }
+
+      const budget = await checkPdfLimit(env, request);
+      if (!budget.ok) return page(errorPage(budget.reason), 429);
+
+      let bytes;
+      try {
+        bytes = await renderPdf(env, cached.analysis, {
+          target: wanted, scannedAt: cached.scannedAt,
+        });
+      } catch (err) {
+        console.error('pdf render failed', err && err.message);
+        return page(
+          errorPage(
+            'The report could not be printed. The result itself is fine — go ' +
+              'back and read it in the browser, or use the command line tool, ' +
+              'which writes the same PDF on your machine.'
+          ),
+          502
+        );
+      }
+
+      countUsage(env, ctx, PDF_PRINTED, request);
+      const headers = {
+        'content-type': 'application/pdf',
+        'content-disposition':
+          'attachment; filename="' + reportFilename(wanted, cached.scannedAt) + '"',
+        'cache-control': 'no-store',
+        'x-content-type-options': 'nosniff',
+      };
+      return request.method === 'HEAD'
+        ? new Response(null, { status: 200, headers })
+        : new Response(bytes, { headers });
     }
 
     if (url.pathname === '/scan' || url.pathname === '/scan/') {

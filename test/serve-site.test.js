@@ -71,6 +71,10 @@ test('nothing served carries a style attribute the policy will drop', () => {
     // The preview harness is a local scratch page, never linked and never in
     // the sitemap.
     if (file.includes('_preview-all')) continue;
+    // The PDF printer's page footer. Chromium's print pipeline renders that
+    // fragment itself and only understands inline styles there — it is never
+    // served to a browser and no Content Security Policy applies to it.
+    if (file === 'monitor/src/pdf.js') continue;
     const source = readFileSync(new URL('../' + file, import.meta.url), 'utf8');
     if (/\sstyle="/.test(source)) offenders.push(file);
   }

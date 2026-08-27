@@ -189,6 +189,12 @@ export function scanResult(analysis, meta) {
        </table>
      </div>
 
+     <p class="actions"><a class="btn btn-ghost" href="/scan/report.pdf?u=${encodeURIComponent(target)}">Download this as a PDF</a></p>
+     <p class="micro">The same dated report the command line tool writes, for
+     forwarding to whoever asked. Available for ${CACHE_MINUTES} minutes after the
+     scan, because the result describes the page as it was at that moment and a
+     later reprint under the same date would not be the same document.</p>
+
      ${analysis.provenance ? `<p class="micro mt-1">
        Evaluated by ${esc(analysis.provenance.engine)}, rule tags
        <code>${esc(analysis.provenance.ruleTags.join(' '))}</code>. Recorded from the
@@ -217,8 +223,8 @@ export function scanResult(analysis, meta) {
 
      <h2 class="mt-25">Taking this further</h2>
      <p>This checked <strong>one page</strong>. A conformance claim covers a
-     service. To crawl the whole site, produce a dated PDF you can hand to a
-     client, and compare against a baseline later to prove a fix happened:</p>
+     service. To crawl the whole site and compare against a baseline later to
+     prove a fix happened:</p>
      <pre class="cmd"><code>npx curbcut ${esc(new URL(target).origin)} --crawl --pdf</code></pre>
      <p>Free, MIT licensed, runs on your machine, uploads nothing.</p>
 

@@ -294,3 +294,37 @@ export function errorPage(message) {
      and a person will sort it out.</p>`
   );
 }
+
+/**
+ * The report was asked for after its result had expired.
+ *
+ * 410 rather than 404: the thing existed and is gone, which is the true answer
+ * and the one that tells a link checker not to keep asking. Re-scanning quietly
+ * would be worse than this page — it would put a different set of findings
+ * under the date somebody thought they were saving.
+ */
+export function reportExpired(target = '') {
+  const again = target
+    ? `<form method="post" action="/scan" class="signup mt-15">
+         <input type="hidden" name="url" value="${esc(target)}">
+         <button type="submit" class="btn btn-primary">Check it again</button>
+       </form>`
+    : '<p class="actions"><a class="btn btn-primary" href="/scan">Check a page</a></p>';
+
+  return shell(
+    'That result has expired',
+    `<h1>That result has expired.</h1>
+     <p class="lede">Scan results are kept for fifteen minutes and then deleted,
+     which is what the privacy policy promises and this is that promise being
+     kept.</p>
+     <p>We could have quietly run the scan again and handed you a PDF anyway. We
+     did not, because the page may have changed in the meantime and you would
+     have received a different set of findings under the date you thought you
+     were saving. A dated report describes one moment or it is worth nothing.</p>
+     ${again}
+     <p class="micro">For reports you can keep, schedule and compare over time,
+     the command line tool writes the same PDF on your own machine and keeps
+     nothing on ours:</p>
+     <pre class="cmd"><code>npx curbcut ${esc(target || 'https://example.com')} --pdf</code></pre>`
+  );
+}

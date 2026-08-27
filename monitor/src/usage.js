@@ -39,6 +39,12 @@ export const EXAMPLE_VIEWED = 'example_viewed';
 // automated noise the forms take, and keeping it out of interest_left keeps the
 // September decision from being made on a number bots can raise.
 export const FORM_TRAPPED = 'form_trapped';
+// The result printed to PDF, and the attempts that arrived after the fifteen
+// minutes were up. The second number is the useful one: if people keep coming
+// back for a report that has expired, the cache is too short for the way it is
+// actually used.
+export const PDF_PRINTED = 'pdf_printed';
+export const PDF_EXPIRED = 'pdf_expired';
 
 /**
  * Add one to today's tally for `event`.

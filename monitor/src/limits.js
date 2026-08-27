@@ -148,3 +148,54 @@ export async function checkFormLimit(env, request) {
   ]);
   return { ok: true };
 }
+
+// Printing a cached result to PDF.
+//
+// A separate, smaller allowance from scanning, and deliberately so. Both draw on
+// the same ten minutes of browser time a day, and if one flood of PDF requests
+// could spend all of it, the person who came to check their site would find the
+// scanner empty. Printing is the nice-to-have; scanning is the point.
+//
+// The route only ever prints something already in the cache, so nobody can use
+// it to make us fetch a page. The worst it can do is re-print a result that
+// already exists.
+const PDFS_PER_CALLER_PER_HOUR = 5;
+const PDFS_PER_DAY_TOTAL = 60;
+
+export async function checkPdfLimit(env, request) {
+  const now = new Date();
+  const hourWindow = now.toISOString().slice(0, 13);
+  const dayWindow = now.toISOString().slice(0, 10);
+
+  const callerKey = 'pl:' + hourWindow + ':' + (await hashCaller(request, hourWindow));
+  const dayKey = 'pl:day:' + dayWindow;
+
+  const [callerRaw, dayRaw] = await Promise.all([
+    env.CACHE.get(callerKey),
+    env.CACHE.get(dayKey),
+  ]);
+
+  if (Number(dayRaw ?? 0) >= PDFS_PER_DAY_TOTAL) {
+    return {
+      ok: false,
+      reason:
+        'The report printer has used up today’s share of the browser budget. ' +
+        'The scanner itself still works, and so does the command line tool, ' +
+        'which writes the same PDF on your own machine with no limit at all.',
+    };
+  }
+  if (Number(callerRaw ?? 0) >= PDFS_PER_CALLER_PER_HOUR) {
+    return {
+      ok: false,
+      reason:
+        'That is several reports in an hour from one place. Try again later, ' +
+        'or use the command line tool, which has no limits.',
+    };
+  }
+
+  await Promise.all([
+    env.CACHE.put(callerKey, String(Number(callerRaw ?? 0) + 1), { expirationTtl: HOUR }),
+    env.CACHE.put(dayKey, String(Number(dayRaw ?? 0) + 1), { expirationTtl: DAY }),
+  ]);
+  return { ok: true };
+}
