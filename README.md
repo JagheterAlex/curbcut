@@ -36,8 +36,32 @@ screenshot:
 npx curbcut https://curbcut.org/demo/broken.html
 ```
 
-It should report five failing clauses across sixteen elements — two P1, one P2
-and two P3. If it reports something else, that is a bug worth an issue.
+It should report **four clauses of the harmonised standard failing across 15
+elements — two P1, two P3** — plus a fifth clause, 9.2.5.8 Target Size, marked
+P4 because WCAG 2.2 is not adopted by the version cited today. If it reports
+something else, that is a bug worth an issue.
+
+The page is not a strawman built to make the tool look busy. Its faults were
+chosen from [a study of the 300 most-visited EU-domain
+sites](https://curbcut.org/study), in the proportions that study measured them:
+a link a screen reader announces as nothing, an untitled advert frame, a button
+with no accessible name, ARIA without the state its role requires.
+
+Two more pages of the same fake shop are at `/demo/products.html` and
+`/demo/contact.html`, with different defects.
+
+## No terminal handy?
+
+The same analysis runs in the browser at **[curbcut.org/scan](https://curbcut.org/scan)**
+— paste a URL, get the clauses back. No account, nothing installed, and no
+JavaScript on the page. It shares these modules rather than reimplementing them,
+so the web version and the command line cannot disagree about what a finding
+means.
+
+- [A complete example report](https://curbcut.org/scan/example), for reading
+  before typing anything.
+- [A sample of the paid audit](https://curbcut.org/sample) — a real run over
+  three pages, out of this same code.
 
 ## Scan a whole site
 
@@ -130,6 +154,14 @@ authentication all need a person. That number is not our opinion: a test in this
 repository checks it against the axe-core build in use and fails if it drifts.
 Anyone selling you an automated WCAG 2.2 readiness check is selling you one
 sixth of one.
+
+**Records what actually ran, not what the source says should have.** Every
+report carries the engine, its version and the rule tags the run really
+executed, read from the run itself rather than from a constant in this
+repository. The two agree right up until somebody edits one of them, and a
+provenance line copied off a constant will keep describing a configuration that
+is no longer in use. Baseline comparisons refuse to call a difference a
+regression when the tooling changed underneath them.
 
 **Ranks by legal exposure, not by rule severity.** One unlabelled checkout
 button outranks four hundred low-contrast footer links. Scoring weights whether

@@ -100,3 +100,26 @@ test('the sample report describes the demo as it stands', () => {
   assert.ok(pdf.length > 20000, 'the published PDF looks truncated');
   assert.equal(pdf.subarray(0, 5).toString('latin1'), '%PDF-', 'not a PDF');
 });
+
+// The README tells a first-time reader exactly what the demo page should
+// report, so they can check the tool against a known answer rather than trust a
+// screenshot. That promise is only worth making if the number is true — and the
+// demo page has already changed once since the number was written, leaving the
+// README claiming five clauses across sixteen elements where the tool says four
+// across fifteen. Somebody arriving from Hacker News would have run the command
+// and caught us being imprecise about the one thing we sell.
+test('the README quotes the figures the demo actually produces', () => {
+  const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
+  const s = fixture.analysis.summary;
+
+  const claim = readme.match(
+    /\*\*(\w+) clauses of the harmonised standard failing across (\d+)\s*\n?elements — two P1, two P3\*\*/
+  );
+  assert.ok(claim, 'the README no longer states the demo figures in the expected form');
+
+  const words = { two: 2, three: 3, four: 4, five: 5, six: 6 };
+  assert.equal(words[claim[1]], s.clausesFailingHarmonised);
+  assert.equal(Number(claim[2]), s.totalElements);
+  assert.equal(s.byPriority.P1, 2);
+  assert.equal(s.byPriority.P3, 2);
+});
