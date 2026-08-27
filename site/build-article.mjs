@@ -295,13 +295,23 @@ ${END_BLOCK}
 ` };
 }
 
-const input = process.argv[2];
+// --out exists for the tests. Without it they wrote a throwaway article into
+// site/blog/ and deleted it a moment later, which put a file that was never
+// meant to be published inside the directory that gets deployed on every push,
+// and made a second test fail whenever the two happened to overlap. A test
+// suite has no business writing into the live site.
+const args = process.argv.slice(2);
+const outFlag = args.indexOf('--out');
+const outDir = outFlag === -1 ? join(here, 'blog') : args[outFlag + 1];
+if (outFlag !== -1) args.splice(outFlag, 2);
+
+const input = args[0];
 if (!input) {
-  console.error('usage: node site/build-article.mjs <article.md> [published date]');
+  console.error('usage: node site/build-article.mjs <article.md> [published date] [--out <dir>]');
   process.exit(2);
 }
 const published =
-  process.argv[3] ??
+  args[1] ??
   new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
 // Normalise line endings: these files are edited on Windows and the
@@ -310,6 +320,6 @@ const CR = String.fromCharCode(13);
 const raw = readFileSync(input, 'utf8').split(CR).join('');
 const { meta, body } = parseFrontmatter(raw);
 const { slug, html } = page(meta, convertBody(body), published);
-const outPath = join(here, 'blog', slug + '.html');
+const outPath = join(outDir, slug + '.html');
 writeFileSync(outPath, html, 'utf8');
 console.log('wrote ' + outPath + ' (' + Math.round(html.length / 1024) + ' KB) from ' + basename(input));

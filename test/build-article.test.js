@@ -15,10 +15,15 @@ function build(body) {
     ['---', 'title: "Test"', 'canonical_url: https://curbcut.org/blog/test-page', '---', '', body].join('\n'),
     'utf8'
   );
-  execFileSync(process.execPath, ['site/build-article.mjs', md, '1 January 2026'], { stdio: 'pipe' });
-  const out = readFileSync('site/blog/test-page.html', 'utf8');
+  // Written into the temp directory, never into site/blog/. The published site
+  // is not scratch space for a test run.
+  execFileSync(
+    process.execPath,
+    ['site/build-article.mjs', md, '1 January 2026', '--out', dir],
+    { stdio: 'pipe' }
+  );
+  const out = readFileSync(join(dir, 'test-page.html'), 'utf8');
   rmSync(dir, { recursive: true, force: true });
-  rmSync('site/blog/test-page.html', { force: true });
   return out;
 }
 

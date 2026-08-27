@@ -30,7 +30,8 @@ import {
   PDF_PRINTED, PDF_EXPIRED,
 } from './usage.js';
 import { notifyInterest } from './notify.js';
-import { renderPdf, reportFilename } from './pdf.js';
+import { renderPdf } from './pdf.js';
+import { reportFilename } from './report-name.js';
 
 const MAX_FIELD = 400;
 

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { reportFilename } from '../monitor/src/pdf.js';
+import { reportFilename } from '../monitor/src/report-name.js';
 import { pdfHtml } from '../src/pdf-html.js';
 import { scanResult } from '../monitor/src/scan-pages.js';
 import { reportExpired } from '../monitor/src/pages.js';

@@ -16,17 +16,7 @@
 
 import puppeteer from '@cloudflare/puppeteer';
 import { pdfHtml } from '../../src/pdf-html.js';
-
-/** A filename somebody can find again in a downloads folder six weeks later. */
-export function reportFilename(target, scannedAt) {
-  let host = 'report';
-  try {
-    host = new URL(target).hostname.replace(/^www\./, '').replace(/[^a-z0-9.-]/gi, '');
-  } catch {
-    // Keep the fallback.
-  }
-  return `curbcut-${host}-${scannedAt.slice(0, 10)}.pdf`;
-}
+export { reportFilename } from './report-name.js';
 
 export async function renderPdf(env, analysis, meta) {
   const html = pdfHtml(analysis, {
