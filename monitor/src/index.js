@@ -22,7 +22,7 @@ import { checkRateLimit, checkFormLimit, readCachedScan, writeCachedScan } from 
 import {
   countUsage,
   SCAN_VIEWED, SCAN_RAN, SCAN_CACHED, SCAN_REFUSED, SCAN_FAILED, SCAN_LIMITED,
-  INTEREST_LEFT, AUDIT_ASKED, AUDIT_VIEWED, EXAMPLE_VIEWED,
+  INTEREST_LEFT, AUDIT_ASKED, AUDIT_VIEWED, EXAMPLE_VIEWED, FORM_TRAPPED,
 } from './usage.js';
 import { notifyInterest } from './notify.js';
 
@@ -333,10 +333,19 @@ export default {
         );
       }
 
+      // The bot trap answers 200 with no row, so that a script has nothing to
+      // tune against. That is right for the response and was wrong for the
+      // counter: this line used to run before the check below, so anything
+      // filling the hidden field raised interest_left — the single number the
+      // September decision rests on. It happened on 26 August, from a headless
+      // browser, and for a day the funnel showed an enquiry that never existed.
+      if (result.spam) {
+        countUsage(env, ctx, FORM_TRAPPED, request);
+        return page(thanks(kind), 200);
+      }
+
       countUsage(env, ctx, kind === 'audit' ? AUDIT_ASKED : INTEREST_LEFT, request);
-      // A row in a database nobody is watching is not a lead. The bot trap
-      // returns ok without a row, so check before announcing anything.
-      if (result.row) notifyInterest(env, ctx, result.row);
+      notifyInterest(env, ctx, result.row);
       return page(thanks(kind), 200);
     }
 

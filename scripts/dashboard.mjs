@@ -19,7 +19,18 @@ const data = JSON.parse(readFileSync(SRC, 'utf8'));
 const days = Object.keys(data).filter((k) => /^\d{4}-\d{2}-\d{2}$/.test(k)).sort();
 const rows = days.map((d) => ({ date: d, ...data[d], actions: data[d].actions ?? {} }));
 
-const sum = (f) => rows.reduce((n, r) => n + (f(r) || 0), 0);
+// Arrivals exist only for days somebody ran the metrics script: Cloudflare's
+// free plan serves that dataset one day at a time, so a day nobody asked about
+// is gone. Action counters, by contrast, accumulate in our own database whether
+// anyone is looking or not.
+//
+// Summing the two over different spans is how this page briefly claimed that
+// more people opened the scanner than arrived at the site, and that -500% of
+// them reached the price. The funnel is computed over the days that have both,
+// and the table below still shows every day.
+const comparable = rows.filter((r) => typeof r.stylesheetFetches === 'number');
+const sum = (f) => comparable.reduce((n, r) => n + (f(r) || 0), 0);
+const sumAll = (f) => rows.reduce((n, r) => n + (f(r) || 0), 0);
 const totals = {
   readerViews: sum((r) => r.readerViews),
   uniques: sum((r) => r.uniques),
@@ -30,14 +41,15 @@ const totals = {
   scanRan: sum((r) => r.actions.scan_ran),
   auditViewed: sum((r) => r.actions.audit_viewed),
   auditAsked: sum((r) => r.actions.audit_asked),
-  leads: data.meta?.interestTotal ?? 0,
+  leads: sum((r) => r.actions.interest_left),
+  leadsAllTime: data.meta?.interestTotal ?? 0,
   stylesheets: sum((r) => r.stylesheetFetches),
   probes: sum((r) => r.probeRequests),
 };
 // Days where the stylesheet method was actually running. Cloudflare only serves
 // the dataset it needs for one day at a time on this plan, so the series starts
 // when we started asking rather than when the site did.
-const measuredDays = rows.filter((r) => typeof r.stylesheetFetches === 'number').length;
+const measuredDays = comparable.length;
 
 // The one bot-excluded measurement this site will ever have, read off the
 // Cloudflare Web Analytics dashboard before the beacon was removed. Kept as a
@@ -84,7 +96,8 @@ const funnel = [
   {
     label: 'Left an address',
     value: totals.leads,
-    note: 'The only step that can turn into money. Of these, ' + totals.auditAsked + ' asked for a price rather than joining the waiting list.',
+    note: 'The only step that can turn into money. ' + totals.leadsAllTime +
+      ' address(es) sit in the database all told, including days the arrival figures above do not cover.',
   },
 ];
 
@@ -115,7 +128,11 @@ const funnelRows = funnel.map((step, i) => {
   const base = step.aside
     ? null
     : funnel.slice(0, i).reverse().find((f) => !f.aside)?.value ?? null;
-  const drop = base && base > 0 ? Math.round((1 - step.value / base) * 1000) / 10 : null;
+  // Never a negative drop. If a later step outnumbers an earlier one, the two
+  // are not measuring the same population and a percentage between them would
+  // be worse than no number at all.
+  const raw = base && base > 0 ? Math.round((1 - step.value / base) * 1000) / 10 : null;
+  const drop = raw !== null && raw >= 0 ? raw : null;
   return `
     <li class="${step.value === 0 ? 'is-zero' : ''}">
       <div class="step-head">
@@ -274,6 +291,13 @@ const html = `<title>Curbcut Vital Signs</title>
   <section>
     <h2>What these numbers are not</h2>
     <div class="caveat">
+      <p><strong>26 August: 188 loads of the scanner page, nothing run.</strong>
+      A person does not open the same page 188 times, so almost certainly this
+      was one automated client. Our counters are aggregate by design — no
+      address, no identifier, nothing that could tell one visitor from another —
+      so this cannot be proven, only recognised by its shape. It is left in the
+      table rather than quietly removed, and it is the reason the row below
+      exists.</p>
       <p><strong>Our own checks are subtracted, not deleted.</strong> On 22 August
       most of the day's action counts were mine: nine views of a page I had just
       built, three of the example, one scan. Self-tests now send a header and are

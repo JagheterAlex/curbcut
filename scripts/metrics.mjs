@@ -212,6 +212,12 @@ async function sql(statement) {
 // the x-curbcut-selftest header — fix that instead of adding a row.
 const SELF_TESTS = {
   '2026-08-22': { audit_viewed: 9, example_viewed: 3, scan_ran: 1, scan_viewed: 2 },
+  // A headless browser filled the hidden bot-trap field on the waiting-list
+  // form. No row was written, but the counter fired anyway, because it ran
+  // before the check. The Worker no longer does that; this subtracts the one
+  // that already happened rather than editing the database, so the record of
+  // what the Worker saw stays truthful and the correction stays visible.
+  '2026-08-26': { interest_left: 1 },
 };
 
 async function actions() {

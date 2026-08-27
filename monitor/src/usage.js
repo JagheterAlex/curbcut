@@ -34,6 +34,11 @@ export const AUDIT_VIEWED = 'audit_viewed';
 // scan_ran stays flat, the example is a destination rather than a doorway and
 // should be changed or removed.
 export const EXAMPLE_VIEWED = 'example_viewed';
+// A form post that filled the hidden field no human can see. Counted apart from
+// real submissions because it is the opposite of one: it tells us how much
+// automated noise the forms take, and keeping it out of interest_left keeps the
+// September decision from being made on a number bots can raise.
+export const FORM_TRAPPED = 'form_trapped';
 
 /**
  * Add one to today's tally for `event`.
