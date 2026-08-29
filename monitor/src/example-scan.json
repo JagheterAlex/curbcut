@@ -1,5 +1,5 @@
 {
-  "scannedAt": "2026-08-22T17:53:44.349Z",
+  "scannedAt": "2026-08-29T20:49:46.349Z",
   "demoHash": "a243eac2dbcdeccf",
   "analysis": {
     "standard": {
@@ -408,6 +408,11 @@
         "why": "Automation reaches individual controls; only a manual pass proves an entire task can be completed by keyboard alone."
       },
       {
+        "clause": "10",
+        "what": "Non-web documents: PDFs, spreadsheets, presentations, e-books",
+        "why": "Clause 10 applies the same success criteria to documents a service delivers rather than renders — the invoice, the ticket, the statement of account, the e-book. This tool reads web pages and never opens them. The commonest catastrophic failure, a PDF with no tag structure at all, is machine-detectable, but not by anything here; and the documents that matter most usually sit behind a login, where nothing scanning from outside can reach them."
+      },
+      {
         "clause": "12.1.2",
         "what": "Accessible product documentation",
         "why": "The documentation itself must meet the standard, and it usually lives outside the scanned pages."
@@ -418,6 +423,6 @@
         "why": "Support channels must accommodate users with disabilities. Nothing on the page reveals this."
       }
     ],
-    "coverageNote": "Automated testing detects roughly 30 to 40 percent of WCAG failures. A clean automated result is a starting point, not a conformance claim."
+    "coverageNote": "Automated testing detects roughly 30 to 40 percent of WCAG failures in web content. This tool reads clause 9, web pages. A service in scope of the European Accessibility Act usually has to satisfy clause 10 as well, non-web documents, which nothing here examines. A clean automated result is a starting point, not a conformance claim."
   }
 }

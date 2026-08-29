@@ -63,3 +63,18 @@ test('an expired result is refused rather than quietly re-scanned', () => {
   assert.match(html, /different set of findings under the date/);
   assert.match(html, /Check it again/);
 });
+
+// The command line's PDF path had no test at all, which is how splitting
+// pdf.js in two left `esc` behind in one half and still called from the other.
+// Nothing caught it: the sample-report script did, by failing to run. This is
+// the cheap version of that — it does not launch a browser, it only proves the
+// printer can still build the document it hands to one.
+test('the printer can assemble its document and its page footer', async () => {
+  const mod = await import('../src/pdf.js');
+  assert.equal(typeof mod.writePdf, 'function');
+  assert.equal(typeof mod.pdfHtml, 'function');
+  // The footer is built from the same escaping helper as the body. When those
+  // were split apart, one half kept it and the other kept calling it.
+  const { esc } = await import('../src/pdf-html.js');
+  assert.equal(esc('a<b&c'), 'a&lt;b&amp;c');
+});

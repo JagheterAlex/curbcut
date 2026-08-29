@@ -14,7 +14,9 @@ import { BAND_MEANING } from './risk.js';
 // European Accessibility Act. Anything that looks like a certificate would be
 // misleading, because it is not one.
 
-const esc = (s) =>
+// Exported because the printer's page footer needs it too, and a second copy
+// of an escaping function is how one of them ends up subtly different.
+export const esc = (s) =>
   String(s ?? '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')

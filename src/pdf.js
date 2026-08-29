@@ -1,6 +1,6 @@
 import { chromium } from 'playwright';
 import { browserMissingError } from './scan.js';
-import { pdfHtml } from './pdf-html.js';
+import { pdfHtml, esc } from './pdf-html.js';
 
 // Printing the report to PDF with Playwright's Chromium — the same browser that
 // does the scanning, so this adds no dependency.

@@ -129,6 +129,11 @@ export const MANUAL_ONLY_CLAUSES = [
   { clause: '9.3.3.4', what: 'Error prevention on legal, financial and data entry', why: 'Requires walking a real checkout or submission flow to confirm it is reversible, checked or confirmed.' },
   { clause: '9.1.2.x', what: 'Time-based media alternatives', why: 'Captions, transcripts and audio description have to be watched and read to confirm they are accurate, not merely present.' },
   { clause: '9.2.1.1', what: 'Keyboard operability of the full journey', why: 'Automation reaches individual controls; only a manual pass proves an entire task can be completed by keyboard alone.' },
+  // Added 27 August after a reader pointed out that this list named clause 12
+  // and skipped clause 10 entirely — the one covering everything a service
+  // hands you rather than renders. He was right, and the omission flattered us.
+  { clause: '10', what: 'Non-web documents: PDFs, spreadsheets, presentations, e-books',
+    why: 'Clause 10 applies the same success criteria to documents a service delivers rather than renders — the invoice, the ticket, the statement of account, the e-book. This tool reads web pages and never opens them. The commonest catastrophic failure, a PDF with no tag structure at all, is machine-detectable, but not by anything here; and the documents that matter most usually sit behind a login, where nothing scanning from outside can reach them.' },
   { clause: '12.1.2', what: 'Accessible product documentation', why: 'The documentation itself must meet the standard, and it usually lives outside the scanned pages.' },
   { clause: '12.2.2', what: 'Accessible support services', why: 'Support channels must accommodate users with disabilities. Nothing on the page reveals this.' },
 ];
@@ -139,5 +144,8 @@ export const MANUAL_ONLY_CLAUSES = [
  * than refusing to let a clean automated run be read as conformance.
  */
 export const AUTOMATED_COVERAGE_NOTE =
-  'Automated testing detects roughly 30 to 40 percent of WCAG failures. ' +
-  'A clean automated result is a starting point, not a conformance claim.';
+  'Automated testing detects roughly 30 to 40 percent of WCAG failures ' +
+  'in web content. This tool reads clause 9, web pages. A service in scope of ' +
+  'the European Accessibility Act usually has to satisfy clause 10 as well, ' +
+  'non-web documents, which nothing here examines. A clean automated result is ' +
+  'a starting point, not a conformance claim.';
