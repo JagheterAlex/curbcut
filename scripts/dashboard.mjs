@@ -109,6 +109,7 @@ const dayRows = rows.map((r) => `
     <td class="dim">${typeof r.probeRequests === 'number' ? n(r.probeRequests) : '&mdash;'}</td>
     <td class="dim">${n(r.searchBotViews)}</td>
     <td>${n(r.actions.scan_viewed)}</td>
+    <td class="dim">${r.actions.scan_viewed_callers === undefined ? '&mdash;' : n(r.actions.scan_viewed_callers)}</td>
     <td class="dim">${n(r.actions.example_viewed)}</td>
     <td>${n(r.actions.scan_ran)}</td>
     <td class="dim">${n(r.actions.audit_viewed)}</td>
@@ -272,6 +273,7 @@ const html = `<title>Curbcut Vital Signs</title>
             <th scope="col">Probes</th>
             <th scope="col">Search bots</th>
             <th scope="col">Scanner seen</th>
+            <th scope="col">Distinct</th>
             <th scope="col">Example read</th>
             <th scope="col">Scans run</th>
             <th scope="col">Price page</th>
@@ -291,6 +293,16 @@ const html = `<title>Curbcut Vital Signs</title>
   <section>
     <h2>What these numbers are not</h2>
     <div class="caveat">
+      <p><strong>The scanner page is being loaded by something automated, and
+      until 31 August nothing here could tell.</strong> Between 21 and 31 August
+      the count of real browsers reaching the site fell about twenty-fold as the
+      launch traffic faded &mdash; from 86 stylesheet fetches to 3 &mdash; while
+      the count of scanner page views stayed flat or rose. Both cannot be true of
+      people. From 31 August the same events are also counted once per caller per
+      hour rather than once per hit, using the salted hourly hash the rate limiter
+      already computes; the first minutes of it recorded 29 hits from 2 callers.
+      The <em>Distinct</em> column is empty before that date because the number
+      did not exist, not because it was zero.</p>
       <p><strong>26 August: 188 loads of the scanner page, nothing run.</strong>
       A person does not open the same page 188 times, so almost certainly this
       was one automated client. Our counters are aggregate by design — no

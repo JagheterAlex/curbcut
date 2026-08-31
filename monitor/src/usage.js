@@ -47,6 +47,23 @@ export const PDF_PRINTED = 'pdf_printed';
 export const PDF_EXPIRED = 'pdf_expired';
 
 /**
+ * The same events, counted once per caller per hour instead of once per hit.
+ *
+ * Between 21 and 31 August the number of real browsers reaching this site fell
+ * roughly twenty-fold as the launch traffic faded, and the count of scanner
+ * page views stayed flat or rose. Both cannot be true of people. Something
+ * automated is loading /scan repeatedly, and a raw hit count cannot tell it
+ * from an audience — which would make the September decision a coin toss
+ * dressed up as a measurement.
+ *
+ * This counts distinct callers, using the same salted hourly hash the rate
+ * limiter already computes: nothing new is stored, the salt rotates every hour,
+ * the marker expires with it, and no address is written down at any point.
+ */
+const DISTINCT = new Set([SCAN_VIEWED, EXAMPLE_VIEWED, AUDIT_VIEWED]);
+const distinctEvent = (event) => event + '_callers';
+
+/**
  * Add one to today's tally for `event`.
  *
  * Never throws and never delays the response. A counter that can break the
@@ -65,6 +82,12 @@ export function countUsage(env, ctx, event, request = null) {
   if (request && request.headers.get('x-curbcut-selftest') === '1') return;
 
   const day = new Date().toISOString().slice(0, 10);
+
+  // Counted before the tally below, and never allowed to break it.
+  if (DISTINCT.has(event) && env.CACHE && request) {
+    ctx?.waitUntil?.(countDistinct(env, event, day, request).catch(() => {}));
+  }
+
   const work = env.DB.prepare(
     `INSERT INTO usage_daily (day, event, hits) VALUES (?1, ?2, 1)
      ON CONFLICT(day, event) DO UPDATE SET hits = usage_daily.hits + 1`
@@ -76,4 +99,38 @@ export function countUsage(env, ctx, event, request = null) {
     });
 
   if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(work);
+}
+
+/**
+ * One tick per caller per hour, not one per request.
+ *
+ * The marker in KV is a salted hash that expires within the hour, so this adds
+ * nothing to what is stored about anybody: the same value the rate limiter
+ * makes and discards. If KV is unavailable the distinct count is simply short
+ * for that hour, which is a better failure than a scanner that stops working.
+ */
+async function countDistinct(env, event, day, request) {
+  const hourWindow = new Date().toISOString().slice(0, 13);
+  const ip =
+    request.headers.get('cf-connecting-ip') ??
+    request.headers.get('x-forwarded-for') ??
+    'unknown';
+  const digest = await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode(hourWindow + ':' + ip)
+  );
+  const hash = [...new Uint8Array(digest).slice(0, 12)]
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+
+  const key = 'seen:' + event + ':' + hourWindow + ':' + hash;
+  if (await env.CACHE.get(key)) return;
+  await env.CACHE.put(key, '1', { expirationTtl: 3600 });
+
+  await env.DB.prepare(
+    `INSERT INTO usage_daily (day, event, hits) VALUES (?1, ?2, 1)
+     ON CONFLICT(day, event) DO UPDATE SET hits = usage_daily.hits + 1`
+  )
+    .bind(day, distinctEvent(event))
+    .run();
 }
