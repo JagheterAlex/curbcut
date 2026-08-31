@@ -135,17 +135,50 @@ async function arrivals(since, until) {
 
 // One day is the widest window the free plan allows on this dataset, so this is
 // a daily snapshot or nothing.
-async function todayDetail() {
-  const since = new Date(Date.now() - 23 * 3600 * 1000).toISOString().slice(0, 19) + 'Z';
-  const query = `query($zone:String!,$since:Time!){
+/**
+ * Per-path detail for one calendar day, UTC.
+ *
+ * A single query may not span more than a day on this plan, but a day-wide
+ * window in the past is allowed and the data is kept for well over a week. The
+ * earlier version asked for "the last 23 hours" and filed the answer under
+ * today's date, which straddled two days and left a dash on every day nobody
+ * ran the script — including three of the four days something was published.
+ * Asking day by day fills those in and makes every row mean the same thing.
+ */
+// Cloudflare keeps this dataset for eight days on the free plan. Older than
+// that and the query is refused outright, which is the whole argument for
+// writing every day down as it happens: 20 to 22 August are gone for good, and
+// two of those were the days the first articles went out.
+const RETAINED_DAYS = 8;
+
+async function dayDetail(date) {
+  const age = (Date.now() - Date.parse(date + 'T12:00:00Z')) / 86400000;
+  if (age > RETAINED_DAYS) return null;
+
+  const query = `query($zone:String!,$since:Time!,$until:Time!){
     viewer{zones(filter:{zoneTag:$zone}){
-      httpRequestsAdaptiveGroups(limit:300,filter:{datetime_geq:$since},orderBy:[count_DESC]){
+      httpRequestsAdaptiveGroups(limit:300,filter:{datetime_geq:$since,datetime_leq:$until},orderBy:[count_DESC]){
         count dimensions{clientRequestPath}
       }}}}`;
-  const body = await cf('https://api.cloudflare.com/client/v4/graphql', {
-    method: 'POST',
-    body: JSON.stringify({ query, variables: { zone: ZONE, since } }),
-  });
+  let body;
+  try {
+    body = await cf('https://api.cloudflare.com/client/v4/graphql', {
+      method: 'POST',
+      body: JSON.stringify({
+        query,
+        variables: {
+          zone: ZONE,
+          since: date + 'T00:00:00Z',
+          until: date + 'T23:59:59Z',
+        },
+      }),
+    });
+  } catch (err) {
+    // A day past retention, or a hiccup. Either way the rest of the series is
+    // worth more than failing the whole run over one row.
+    console.error('  no detail for ' + date + ': ' + String(err.message).slice(0, 80));
+    return null;
+  }
   if (body.errors) return null;
 
   // Anything looking for a config file, a credential or a PHP shell. We do not
@@ -252,11 +285,10 @@ async function npmDaily() {
   } catch { return null; }
 }
 
-const [seen, did, leads, detail, npmWeek, npm14] = await Promise.all([
+const [seen, did, leads, npmWeek, npm14] = await Promise.all([
   arrivals(since, until),
   actions(),
   sql('SELECT COUNT(*) AS n FROM interest;').then((r) => r[0].n),
-  todayDetail(),
   npmDownloads(),
   npmDaily(),
 ]);
@@ -267,8 +299,26 @@ const history = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : {};
 for (const date of new Set([...Object.keys(seen), ...Object.keys(did)])) {
   history[date] = { ...history[date], ...(seen[date] ?? {}), actions: did[date] ?? {} };
 }
-if (detail) {
-  history[until] = { ...history[until], ...detail };
+
+// Every day in the series, not only today. Retention on this dataset runs well
+// past a week even though one query cannot span more than a day, so a gap left
+// by nobody running the script is recoverable — and today is refetched each
+// time because the day is not over yet.
+//
+// `--refetch` recomputes days that already have detail. The first values were
+// taken over a rolling 23-hour window and filed under the date the script ran,
+// which straddled two days; these are calendar days in UTC, so the two are not
+// the same measurement and the older ones are worth replacing.
+const refetch = process.argv.includes('--refetch');
+const today = day(0);
+const wanted = Object.keys(history)
+  .filter((k) => /^\d{4}-\d{2}-\d{2}$/.test(k))
+  .filter((d) => refetch || d === today || typeof history[d].stylesheetFetches !== 'number')
+  .sort();
+
+for (const date of wanted) {
+  const detail = await dayDetail(date);
+  if (detail) history[date] = { ...history[date], ...detail, detailWindow: 'calendar-day-utc' };
 }
 history.meta = {
   lastRun: new Date().toISOString(),

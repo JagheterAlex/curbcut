@@ -73,9 +73,12 @@ const funnel = [
     note: 'Stylesheet fetches. A crawler asks for the HTML and stops; a browser goes back for style.css. Under-counts anyone returning with it cached, so read it as a floor.',
   },
   {
-    label: 'Opened the scanner',
+    label: 'Scanner page loads',
     value: totals.scanViewed,
-    note: 'Reached the one page that asks them to do something.',
+    note:
+      totals.scanViewed > totals.stylesheets
+        ? 'More loads than there were arrivals above, which is impossible for people and is the automated traffic described below. Read this as a hit count, not as a step: from 31 August the Distinct column in the table counts callers instead.'
+        : 'Reached the one page that asks them to do something.',
   },
   {
     label: 'Read the example instead',
@@ -104,7 +107,9 @@ const funnel = [
 const dayRows = rows.map((r) => `
   <tr>
     <td>${esc(r.date)}</td>
-    <td>${typeof r.stylesheetFetches === 'number' ? n(r.stylesheetFetches) : '&mdash;'}</td>
+    <td>${typeof r.stylesheetFetches === 'number'
+      ? n(r.stylesheetFetches) + (r.detailWindow ? '' : '<abbr title="Measured over a rolling 23-hour window ending when the script ran, not over the calendar day. Not directly comparable with the rows below.">*</abbr>')
+      : '&mdash;'}</td>
     <td class="dim">${n(r.readerViews)}</td>
     <td class="dim">${typeof r.probeRequests === 'number' ? n(r.probeRequests) : '&mdash;'}</td>
     <td class="dim">${n(r.searchBotViews)}</td>
@@ -293,6 +298,16 @@ const html = `<title>Curbcut Vital Signs</title>
   <section>
     <h2>What these numbers are not</h2>
     <div class="caveat">
+      <p><strong>Two rows are marked with an asterisk, and three days have no
+      arrival figures at all.</strong> Cloudflare keeps the per-path dataset for
+      eight days on this plan and refuses a query spanning more than one day, so
+      a day nobody asked about is recoverable for about a week and then gone. 24
+      to 30 August were backfilled once that was understood; 20 to 23 August had
+      already expired, and two of those were the days the first articles went
+      out. The asterisked rows were measured over a rolling 23-hour window ending
+      when the script happened to run, which straddles two dates; everything from
+      24 August is a calendar day in UTC. A daily snapshot now runs on a schedule
+      so the gap cannot reopen.</p>
       <p><strong>The scanner page is being loaded by something automated, and
       until 31 August nothing here could tell.</strong> Between 21 and 31 August
       the count of real browsers reaching the site fell about twenty-fold as the
