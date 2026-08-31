@@ -7,8 +7,14 @@
 // It lives in business/secrets/, outside this repository. Nothing here reads it
 // from anywhere a public checkout could reach, and the value is never printed.
 //
-//   node scripts/toot.mjs draft.txt            # shows what would go out
-//   node scripts/toot.mjs draft.txt --post      # actually posts it
+//   node scripts/toot.mjs draft.txt                 # shows what would go out
+//   node scripts/toot.mjs draft.txt --post           # actually posts it
+//   node scripts/toot.mjs draft.txt --post --edit ID # corrects a post already up
+//
+// Editing exists because a correction is worth more than a tidy history.
+// Mastodon marks an edited post as edited and keeps the previous versions
+// readable, so this cannot be used to quietly rewrite what was said — which is
+// exactly why it is safe to use.
 //
 // Text comes from a file rather than the command line: 500 characters of prose
 // with quotes and newlines in it does not survive a shell argument intact, and
@@ -34,12 +40,15 @@ function weigh(text) {
 
 const [fileArg, ...flags] = process.argv.slice(2);
 if (!fileArg) {
-  console.error('usage: node scripts/toot.mjs <file.txt> [--post] [--reply-to <id>]');
+  console.error(
+    'usage: node scripts/toot.mjs <file.txt> [--post] [--reply-to <id>] [--edit <id>]'
+  );
   process.exit(2);
 }
 
 const post = flags.includes('--post');
 const replyTo = flags.includes('--reply-to') ? flags[flags.indexOf('--reply-to') + 1] : null;
+const editId = flags.includes('--edit') ? flags[flags.indexOf('--edit') + 1] : null;
 
 const status = readFileSync(fileArg, 'utf8').trim();
 if (!status) {
@@ -77,8 +86,10 @@ if (!token) {
   process.exit(1);
 }
 
-const res = await fetch(SERVER + '/api/v1/statuses', {
-  method: 'POST',
+const res = await fetch(
+  SERVER + '/api/v1/statuses' + (editId ? '/' + editId : ''),
+  {
+  method: editId ? 'PUT' : 'POST',
   headers: {
     authorization: 'Bearer ' + token,
     'content-type': 'application/json',
@@ -91,10 +102,11 @@ const res = await fetch(SERVER + '/api/v1/statuses', {
   body: JSON.stringify({
     status,
     language: 'en',
-    visibility: 'public',
+    ...(editId ? {} : { visibility: 'public' }),
     ...(replyTo ? { in_reply_to_id: replyTo } : {}),
   }),
-});
+  }
+);
 
 const body = await res.json().catch(() => ({}));
 if (!res.ok) {
@@ -103,5 +115,5 @@ if (!res.ok) {
 }
 
 console.log('');
-console.log('posted: ' + body.url);
+console.log((editId ? 'edited: ' : 'posted: ') + body.url);
 console.log('id:     ' + body.id + '   (use with --reply-to to add to the thread)');
