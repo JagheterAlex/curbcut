@@ -211,7 +211,7 @@ const END_BLOCK = `<aside class="endblock" aria-labelledby="next-h">
 <h2 id="next-h">Check a page of your own</h2>
 <p>The scanner this site is built on is free and needs no account. Paste an
 address and you get the failures back as <strong>EN&nbsp;301&nbsp;549 clause
-numbers</strong>, what changes when V4.1.1 is cited on 30&nbsp;November, and a
+numbers</strong>, what changes when V4.1.1 is cited, and a
 list of the clauses no machine looked at &mdash; rather than silence that reads
 as a pass.</p>
 <p class="actions">
