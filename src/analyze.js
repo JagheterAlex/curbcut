@@ -4,6 +4,7 @@ import {
   INCOMING, INCOMING_CHANGES,
 } from './en301549.js';
 import { scoreFinding, priorityBand } from './risk.js';
+import { TOOL } from './version.js';
 
 /**
  * Fold raw per-page axe output into findings grouped by EN 301 549 clause.
@@ -105,6 +106,7 @@ export function analyze(pages) {
     .sort((a, b) => b.score - a.score);
 
   return {
+    tool: TOOL,
     standard: HARMONISED,
     incoming: INCOMING,
     provenance: provenanceFor(pages),

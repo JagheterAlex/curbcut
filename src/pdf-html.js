@@ -211,6 +211,7 @@ export function pdfHtml(analysis, meta = {}) {
   <tbody>
     <tr><td>Standard</td><td>${esc(st.standard)} ${esc(st.version)}</td></tr>
     <tr><td>Success criteria adopted</td><td>WCAG ${esc(st.adoptsWcag)}</td></tr>
+    ${analysis.tool ? `<tr><td>Produced by</td><td>${esc(analysis.tool.name)} ${esc(analysis.tool.version)}</td></tr>` : ''}
     <tr><td>Pages assessed</td><td>${analysis.scannedPages}</td></tr>
     <tr><td>Report date</td><td>${esc(date)}</td></tr>
     ${analysis.provenance ? `<tr><td>Evaluated by</td><td>${esc(analysis.provenance.engine)}</td></tr>

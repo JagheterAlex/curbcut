@@ -4,6 +4,9 @@ import { analyze } from '../src/analyze.js';
 import { markdownReport } from '../src/report.js';
 import { provenanceOf } from '../src/scan.js';
 import { compareAnalyses, describeComparison } from '../src/baseline.js';
+import { readFileSync } from 'node:fs';
+import { TOOL } from '../src/version.js';
+import { clauseForCriterion } from '../src/en301549.js';
 
 // Raised by a reader of the first article, from experience with e-invoicing
 // rule packs: a helper returned the version declared on disk instead of the one
@@ -98,4 +101,35 @@ test('a baseline predating provenance gets a note, not an alarm', () => {
   const text = describeComparison(diff);
   assert.match(text, /recorded no engine version/);
   assert.doesNotMatch(text, /not assessed the same way/);
+});
+
+// The band a finding lands in is decided by a constant compiled into each
+// release, not by the clock: the same run of the same version produces the same
+// answer on 29 November and on 1 December, and the bands move only when
+// somebody installs the release that moves them. That is what makes a dated
+// report reproducible, and it only works if the report says which release
+// produced it.
+test('the report says which build produced it, and it matches the package', () => {
+  const pkg = JSON.parse(
+    readFileSync(new URL('../package.json', import.meta.url), 'utf8')
+  );
+  assert.equal(TOOL.name, pkg.name);
+  assert.equal(
+    TOOL.version,
+    pkg.version,
+    'src/version.js drifted from package.json — the Worker cannot read package.json, ' +
+      'so the copy is hardcoded and this is what keeps it honest'
+  );
+});
+
+test('nothing in the standard model consults the clock', () => {
+  // A tool that re-banded itself overnight would make two reports from the same
+  // version disagree with no way to tell why, and would flip on a scheduled
+  // date whether or not the Official Journal actually published.
+  const source = readFileSync(new URL('../src/en301549.js', import.meta.url), 'utf8');
+  assert.ok(!/Date\.now\(\)|new Date\(\)/.test(source));
+
+  const before = clauseForCriterion('2.5.8');
+  assert.equal(before.inHarmonised, false);
+  assert.equal(before.inIncoming, true);
 });

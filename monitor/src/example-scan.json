@@ -1,7 +1,11 @@
 {
-  "scannedAt": "2026-08-29T20:49:46.349Z",
+  "scannedAt": "2026-09-12T15:15:53.305Z",
   "demoHash": "a243eac2dbcdeccf",
   "analysis": {
+    "tool": {
+      "name": "curbcut",
+      "version": "0.6.0"
+    },
     "standard": {
       "standard": "EN 301 549",
       "version": "V3.2.1 (2021-03)",

@@ -10,6 +10,13 @@ export function markdownReport(analysis, meta = {}) {
   if (target) out.push('**Target:** ' + target + '  ');
   out.push('**Standard:** ' + analysis.standard.standard + ' ' + analysis.standard.version +
     ' (adopts WCAG ' + analysis.standard.adoptsWcag + ')  ');
+  // Which build said so. The standard version above already tells a reader
+  // which side of the citation this came from, because it is a constant per
+  // release and not something the clock decides. This distinguishes two
+  // releases that name the same standard and map it differently.
+  if (analysis.tool) {
+    out.push('**Produced by:** ' + analysis.tool.name + ' ' + analysis.tool.version + '  ');
+  }
   out.push('**Pages scanned:** ' + analysis.scannedPages + '  ');
   out.push('**Generated:** ' + generatedAt);
 
