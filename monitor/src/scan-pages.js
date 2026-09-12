@@ -195,6 +195,14 @@ export function scanResult(analysis, meta) {
      scan, because the result describes the page as it was at that moment and a
      later reprint under the same date would not be the same document.</p>
 
+     ${analysis.tool ? `<p class="micro mt-1">
+       Produced by ${esc(analysis.tool.name)} ${esc(analysis.tool.version)}, judged
+       against ${esc(analysis.standard.standard)} ${esc(analysis.standard.version)}.
+       Which version of the standard a finding is measured against is fixed by the
+       release, not by today's date, so this page says the same thing before and
+       after the citation on ${esc(analysis.incoming?.expectedCitation ?? '')} until
+       the release that moves it.</p>` : ''}
+
      ${analysis.provenance ? `<p class="micro mt-1">
        Evaluated by ${esc(analysis.provenance.engine)}, rule tags
        <code>${esc(analysis.provenance.ruleTags.join(' '))}</code>. Recorded from the
