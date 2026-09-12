@@ -17,10 +17,17 @@ export const HARMONISED = {
 // The revision that replaces it.
 //
 // An obligation begins when a version is cited in the Official Journal of the
-// EU, not when ETSI publishes it. V4.1.0 went out as a final draft in June 2026
-// and 30 November 2026 is the citation date in ETSI's own work programme. That
-// is a scheduled milestone, and schedules move: this is reported as "expected",
-// and nothing here calls it law until it is.
+// EU, not when ETSI publishes it — and as of September 2026 that distinction
+// stopped being academic. ETSI published V4.1.1 on 2 September 2026. It is out,
+// it is downloadable, and vendors are already selling readiness against it. It
+// is not cited, so it carries no presumption of conformity and the version in
+// force is still V3.2.1.
+//
+// The work programme had 30 November 2026 for the citation and that is still
+// the commonly quoted figure, but it is an estimate that has already been
+// restated more than once, and V3.2.1 itself was cited months later than first
+// planned. So no date is printed as settled anywhere in this tool. Somebody
+// planning a budget around a date we invented would have a fair complaint.
 //
 // It matters because it cuts both ways, which almost nobody says out loud. Six
 // success criteria arrive. One leaves.
@@ -28,11 +35,17 @@ export const INCOMING = {
   standard: 'EN 301 549',
   version: 'V4.1.1',
   adoptsWcag: '2.2',
-  expectedCitation: '2026-11-30',
+  published: '2026-09-02',
+  // Deliberately prose rather than a date. It was a date, it was wrong to be
+  // one, and a field typed as a date invites every caller to format it as if it
+  // were certain.
+  expectedCitation: 'expected late 2026, not yet fixed',
   citationCaveat:
-    'Scheduled for citation in the Official Journal on 30 November 2026 per ' +
-    'the ETSI work programme. The obligation begins on citation, not on ' +
-    'publication, and the date can move.',
+    'Published by ETSI on 2 September 2026 and not yet cited in the Official ' +
+    'Journal. Until it is cited it carries no presumption of conformity, and ' +
+    'the version in force remains V3.2.1. Citation is expected late in 2026, ' +
+    'commonly quoted as 30 November, but that is an estimate and the date can ' +
+    'move. The obligation begins on citation, not on publication.',
 };
 
 // What changes at citation, stated per criterion.
@@ -89,9 +102,10 @@ export function clauseForCriterion(sc) {
       '. Treat as good practice and future-proofing, not as a current EAA obligation.'
     );
     notes.push(
-      'Expected to become required when ' + INCOMING.standard + ' ' +
-      INCOMING.version + ' is cited, scheduled for ' +
-      INCOMING.expectedCitation + '. Fixing it now is early, not wasted.'
+      'Becomes required when ' + INCOMING.standard + ' ' + INCOMING.version +
+      ' is cited in the Official Journal, ' + INCOMING.expectedCitation +
+      '. Published on ' + INCOMING.published + ', which is not the same event. ' +
+      'Fixing it now is early, not wasted.'
     );
   }
   if (meta.obsoletedIn) {

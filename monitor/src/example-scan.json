@@ -1,5 +1,5 @@
 {
-  "scannedAt": "2026-09-12T15:15:53.305Z",
+  "scannedAt": "2026-09-12T15:30:44.608Z",
   "demoHash": "a243eac2dbcdeccf",
   "analysis": {
     "tool": {
@@ -16,8 +16,9 @@
       "standard": "EN 301 549",
       "version": "V4.1.1",
       "adoptsWcag": "2.2",
-      "expectedCitation": "2026-11-30",
-      "citationCaveat": "Scheduled for citation in the Official Journal on 30 November 2026 per the ETSI work programme. The obligation begins on citation, not on publication, and the date can move."
+      "published": "2026-09-02",
+      "expectedCitation": "expected late 2026, not yet fixed",
+      "citationCaveat": "Published by ETSI on 2 September 2026 and not yet cited in the Official Journal. Until it is cited it carries no presumption of conformity, and the version in force remains V3.2.1. Citation is expected late in 2026, commonly quoted as 30 November, but that is an estimate and the date can move. The obligation begins on citation, not on publication."
     },
     "provenance": {
       "engine": "axe-core 4.13.0",
@@ -222,7 +223,7 @@
         "inIncoming": true,
         "notes": [
           "Introduced in WCAG 2.2. Not part of the harmonised EN 301 549 V3.2.1 (2021-03), which adopts WCAG 2.1. Treat as good practice and future-proofing, not as a current EAA obligation.",
-          "Expected to become required when EN 301 549 V4.1.1 is cited, scheduled for 2026-11-30. Fixing it now is early, not wasted."
+          "Becomes required when EN 301 549 V4.1.1 is cited in the Official Journal, expected late 2026, not yet fixed. Published on 2026-09-02, which is not the same event. Fixing it now is early, not wasted."
         ],
         "impact": "serious",
         "nodeCount": 4,
@@ -275,8 +276,9 @@
         "standard": "EN 301 549",
         "version": "V4.1.1",
         "adoptsWcag": "2.2",
-        "expectedCitation": "2026-11-30",
-        "citationCaveat": "Scheduled for citation in the Official Journal on 30 November 2026 per the ETSI work programme. The obligation begins on citation, not on publication, and the date can move."
+        "published": "2026-09-02",
+        "expectedCitation": "expected late 2026, not yet fixed",
+        "citationCaveat": "Published by ETSI on 2 September 2026 and not yet cited in the Official Journal. Until it is cited it carries no presumption of conformity, and the version in force remains V3.2.1. Citation is expected late in 2026, commonly quoted as 30 November, but that is an estimate and the date can move. The obligation begins on citation, not on publication."
       },
       "becomingRequired": [
         {

@@ -17,7 +17,7 @@ test('a WCAG 2.2 criterion is not required today but is at citation', () => {
   const sc = clauseForCriterion('2.5.8');
   assert.equal(sc.inHarmonised, false);
   assert.equal(sc.inIncoming, true);
-  assert.match(sc.notes.join(' '), /scheduled for 2026-11-30/);
+  assert.match(sc.notes.join(' '), /cited in the Official Journal, expected late 2026/);
 });
 
 test('Parsing is required today and stops being required at citation', () => {
@@ -81,8 +81,16 @@ test('the automatable claim is checked against axe-core, not asserted by hand', 
   assert.equal(undetectable.length, 5);
 });
 
-test('the citation date is presented as scheduled, never as settled law', () => {
-  assert.equal(INCOMING.expectedCitation, '2026-11-30');
+test('the citation date is never presented as settled law', () => {
+  // It was a date until 12 September, when V4.1.1 turned out to have been
+  // published on 2 September without being cited. Publication is the event
+  // everybody notices and citation is the one that creates the obligation, so
+  // the field is prose now: a field typed as a date invites every caller to
+  // format it as though it were certain.
+  assert.ok(!/^\d{4}-\d{2}-\d{2}$/.test(INCOMING.expectedCitation));
+  assert.match(INCOMING.expectedCitation, /expected|not yet/i);
+  assert.equal(INCOMING.published, '2026-09-02');
   assert.match(INCOMING.citationCaveat, /obligation begins on citation/i);
   assert.match(INCOMING.citationCaveat, /date can move/i);
+  assert.match(INCOMING.citationCaveat, /not yet cited/i);
 });

@@ -44,9 +44,10 @@ export function scanForm(prefill = '', error = '') {
      standard &mdash; a customer's procurement form, a tender, your own legal
      team. This answers that for one page, in <strong>clause numbers</strong>,
      which is the form the answer has to be given in.</p>
-     <p>It also says what changes on 30&nbsp;November, when the standard moves to
-     WCAG&nbsp;2.2, and it lists the clauses no machine can check &mdash; including
-     five of the six arriving that day.</p>
+     <p>It also says what changes when the standard moves to WCAG&nbsp;2.2 &mdash;
+     V4.1.1 was published on 2&nbsp;September and takes effect when it is cited in
+     the Official Journal, expected late this year &mdash; and it lists the clauses
+     no machine can check, including five of the six criteria arriving.</p>
 
      <p class="actions"><a class="btn btn-ghost" href="/scan/example">Read a
      complete example first</a></p>
@@ -69,8 +70,8 @@ export function scanForm(prefill = '', error = '') {
       description:
         'Free EN 301 549 checker. Paste a URL, get the failures as clause ' +
         'numbers of the harmonised European standard, ranked by regulatory ' +
-        'exposure, with what changes on 30 November and the clauses no tool ' +
-        'can check listed rather than left out.',
+        'exposure, with what changes when V4.1.1 is cited and the clauses no ' +
+        'tool can check listed rather than left out.',
     }
   );
 }
@@ -199,9 +200,8 @@ export function scanResult(analysis, meta) {
        Produced by ${esc(analysis.tool.name)} ${esc(analysis.tool.version)}, judged
        against ${esc(analysis.standard.standard)} ${esc(analysis.standard.version)}.
        Which version of the standard a finding is measured against is fixed by the
-       release, not by today's date, so this page says the same thing before and
-       after the citation on ${esc(analysis.incoming?.expectedCitation ?? '')} until
-       the release that moves it.</p>` : ''}
+       release, not by today's date, so this page reads the same before and after
+       citation, and changes when the release that moves it is installed.</p>` : ''}
 
      ${analysis.provenance ? `<p class="micro mt-1">
        Evaluated by ${esc(analysis.provenance.engine)}, rule tags

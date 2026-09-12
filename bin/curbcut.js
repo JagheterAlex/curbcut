@@ -212,7 +212,7 @@ if (analysis.assetWarnings.length) {
 const t = analysis.transition;
 if (t && (t.becomingRequired.length || t.noLongerRequired.length)) {
   log('');
-  log('When ' + t.to.version + ' is cited (scheduled ' + t.to.expectedCitation + '):');
+  log('When ' + t.to.version + ' is cited (' + t.to.expectedCitation + '):');
   if (t.becomingRequired.length) {
     log('  ' + t.becomingRequired.length + ' current finding(s) become obligations — ' +
         t.becomingRequired.map((f) => f.clause).join(', '));
