@@ -25,8 +25,8 @@ export const HARMONISED = {
 //
 // The work programme had 30 November 2026 for the citation and that is still
 // the commonly quoted figure, but it is an estimate that has already been
-// restated more than once, and V3.2.1 itself was cited months later than first
-// planned. So no date is printed as settled anywhere in this tool. Somebody
+// restated more than once, and V3.2.1 itself took about five months to go from
+// publication to citation. So no date is printed as settled anywhere in this tool. Somebody
 // planning a budget around a date we invented would have a fair complaint.
 //
 // It matters because it cuts both ways, which almost nobody says out loud. Six
