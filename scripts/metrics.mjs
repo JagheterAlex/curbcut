@@ -223,6 +223,12 @@ async function dayDetail(date) {
  * free plan — "does not have access to the field" — so the pages they chose
  * are the closest available substitute. Do not reintroduce that field without
  * checking the plan first; it fails at query time, not at review time.
+ *
+ * The browser breakdown is printed beside it because the two together answer
+ * the question the daily series keeps raising. A day of stylesheet fetches
+ * under browsers people actually use is an audience; the same count under
+ * HeadlessChrome or Unknown is a crawler that renders, which is what August's
+ * spikes turned out to be once they were counted by caller.
  */
 async function whereFrom(date) {
   const detail = await dayDetail(date);
@@ -236,6 +242,67 @@ async function whereFrom(date) {
   }
   console.log('\n  stylesheet ' + detail.stylesheetFetches +
     ' · pages ' + detail.pageRequests + ' · probes ' + detail.probeRequests);
+
+  const seenBy = await browsers(date);
+  console.log('\nPage views on ' + date + ', by browser family:');
+  for (const [family, count] of seenBy) {
+    console.log('  ' + String(count).padStart(5) + '  ' + family);
+  }
+
+  const hours = await stylesheetByHour(date);
+  console.log('\nStylesheet fetches by hour, UTC:');
+  console.log('  ' + hours.map((n, h) => (n ? String(h).padStart(2, '0') + ':' + n : '')).filter(Boolean).join('  '));
+}
+
+/**
+ * The hour-by-hour spread of stylesheet fetches, which is what separates the
+ * two explanations of a good-looking day.
+ *
+ * A day's worth of arrivals spread over waking hours is people. The same count
+ * inside one or two hours is one process with a list of URLs. The daily total
+ * cannot tell those apart and we have twice believed the flattering reading.
+ */
+async function stylesheetByHour(date) {
+  const query = `query($zone:String!,$since:Time!,$until:Time!){
+    viewer{zones(filter:{zoneTag:$zone}){
+      httpRequestsAdaptiveGroups(limit:200,filter:{
+        datetime_geq:$since,datetime_leq:$until,clientRequestPath:"/style.css"}){
+        count dimensions{datetimeHour}
+      }}}}`;
+  const body = await cf('https://api.cloudflare.com/client/v4/graphql', {
+    method: 'POST',
+    body: JSON.stringify({
+      query,
+      variables: { zone: ZONE, since: date + 'T00:00:00Z', until: date + 'T23:59:59Z' },
+    }),
+  });
+  if (body.errors) throw new Error(JSON.stringify(body.errors).slice(0, 300));
+  const hours = new Array(24).fill(0);
+  for (const g of body.data.viewer.zones[0].httpRequestsAdaptiveGroups) {
+    hours[new Date(g.dimensions.datetimeHour).getUTCHours()] += g.count;
+  }
+  return hours;
+}
+
+// Which browser families the day's page views came under. Same dataset as the
+// daily arrivals row, which already reduces this to one number; here it is
+// printed unreduced, because the shape is the part worth looking at by hand.
+async function browsers(date) {
+  const query = `query($zone:String!,$since:Date!,$until:Date!){
+    viewer{zones(filter:{zoneTag:$zone}){
+      httpRequests1dGroups(limit:1,filter:{date_geq:$since,date_leq:$until}){
+        sum{browserMap{uaBrowserFamily pageViews}}
+      }}}}`;
+  const body = await cf('https://api.cloudflare.com/client/v4/graphql', {
+    method: 'POST',
+    body: JSON.stringify({ query, variables: { zone: ZONE, since: date, until: date } }),
+  });
+  if (body.errors) throw new Error(JSON.stringify(body.errors).slice(0, 300));
+  const groups = body.data.viewer.zones[0].httpRequests1dGroups;
+  if (!groups.length) return [];
+  return groups[0].sum.browserMap
+    .map((b) => [b.uaBrowserFamily, b.pageViews])
+    .sort((a, b) => b[1] - a[1]);
 }
 
 if (process.argv.includes('--where')) {
