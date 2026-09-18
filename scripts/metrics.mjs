@@ -201,7 +201,46 @@ async function dayDetail(date) {
     else if (PROBE.test(path)) probeRequests += c;
     else if (PAGE.test(path) && !path.split('/').pop().includes('.')) pageRequests += c;
   }
-  return { stylesheetFetches, pageRequests, probeRequests };
+  // byPath is for `--where` to print and is deliberately not stored: the daily
+  // file is a series meant to stay readable by eye, and sixty paths a day would
+  // bury the six numbers anyone actually compares.
+  const byPath = body.data.viewer.zones[0].httpRequestsAdaptiveGroups
+    .map((r) => [r.dimensions.clientRequestPath, r.count]);
+  return { stylesheetFetches, pageRequests, probeRequests, byPath };
+}
+
+/**
+ * What a single day was actually made of, page by page. `--where 2026-09-18`.
+ *
+ * Written on 18 September, when stylesheet fetches went from a week of nought
+ * to three to thirty-one in a morning and the daily series could say that it
+ * happened but not what the visitors read. Thirty browsers spread over the
+ * whole site and thirty browsers all on one article mean different things, and
+ * only the second one is somebody linking to us.
+ *
+ * It does not answer where they came from. Referrers are the obvious way and
+ * they are not on offer: `clientRefererHost` is refused for this zone on the
+ * free plan — "does not have access to the field" — so the pages they chose
+ * are the closest available substitute. Do not reintroduce that field without
+ * checking the plan first; it fails at query time, not at review time.
+ */
+async function whereFrom(date) {
+  const detail = await dayDetail(date);
+  if (!detail) {
+    console.log('No detail for ' + date + ' — past the ' + RETAINED_DAYS + '-day retention.');
+    return;
+  }
+  console.log('Requests on ' + date + ', UTC, by path:');
+  for (const [path, count] of detail.byPath) {
+    console.log('  ' + String(count).padStart(5) + '  ' + path);
+  }
+  console.log('\n  stylesheet ' + detail.stylesheetFetches +
+    ' · pages ' + detail.pageRequests + ' · probes ' + detail.probeRequests);
+}
+
+if (process.argv.includes('--where')) {
+  await whereFrom(process.argv[process.argv.indexOf('--where') + 1] ?? day(0));
+  process.exit(0);
 }
 
 // Downloads of the published tool. Public, unauthenticated, and the one number
@@ -318,7 +357,10 @@ const wanted = Object.keys(history)
 
 for (const date of wanted) {
   const detail = await dayDetail(date);
-  if (detail) history[date] = { ...history[date], ...detail, detailWindow: 'calendar-day-utc' };
+  if (detail) {
+    const { byPath, ...stored } = detail;
+    history[date] = { ...history[date], ...stored, detailWindow: 'calendar-day-utc' };
+  }
 }
 history.meta = {
   lastRun: new Date().toISOString(),
