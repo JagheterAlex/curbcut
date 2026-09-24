@@ -299,7 +299,9 @@ footer p { max-width: 44rem; margin-top: .85rem; }
 .prose strong { color: var(--text); }
 .prose ul { padding-left: 1.2rem; }
 .prose li { margin-bottom: .5rem; }
-.prose > p + p, .prose h2 + p, .prose h3 + p, .prose p + ul { margin-top: .85rem; }
+/* No child combinator: blog articles sit inside <article>, and with `>` their
+   paragraphs ran together with no gap from 21 August to 24 September 2026. */
+.prose p + p, .prose h2 + p, .prose h3 + p, .prose p + ul { margin-top: .85rem; }
 
 /* ─────────────── article code blocks ─────────────── */
 

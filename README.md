@@ -97,8 +97,8 @@ Two things are on sale to solve this, and neither does.
 Federal Trade Commission brought a case over exactly that promise in January
 2025 and approved the final order in April, requiring accessiBe to pay
 **$1,000,000**; the same complaint covered reviews presented as independent that
-were not. UsableNet's 2025 midyear report counted **456 US accessibility
-lawsuits, 22.6% of the total**, filed against sites that already had an overlay
+were not. UsableNet's 2026 midyear report found that **about 20% of the
+companies sued** over digital accessibility in the US already had an overlay
 installed — the widget is a liability, not a shield. The National Federation of
 the Blind, the American Council of the Blind and hundreds of disability
 organisations have said so publicly for years.
